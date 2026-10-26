@@ -17,15 +17,16 @@ Classical AI planning solves narrative coherence through explicit goal represent
 
 This thesis tackles two main research questions: 
 
-\begin{itemize}
+\begin{enumerate}
     \item How can LLM-based characters maintain narrative coherence and stay on-story when users interrupt or ask unexpected questions?
 
     \item How can LLM-based characters plan and execute complete narratives within fixed time budgets?
 
-\end{itemize}
-. 
+\end{enumerate}
 
-This thesis proposes an integrated system that combines the narrative rigor of planning with the dialogue fluency of language models, within temporal constraints. The core contribution consists of three components:
+These questions follow directly from the gap described above. The first targets the failure mode that motivates this thesis: a language model has no explicit notion of where it is in a story, so a single off-topic question can pull the character away from the intended arc for good. The second addresses a practical constraint that existing LLM-based systems largely ignore: many real uses of interactive storytelling, such as a classroom session or a scheduled demo, have a fixed duration, so a story that is coherent but never reaches its ending, or that ends abruptly when time runs out, is of little use. Together, the two questions ask whether a character can be both resilient to interruption and able to reliably complete its story.
+
+This thesis proposes an integrated, working demo system that lets users interact with all three components described below. It combines the narrative rigor of planning with the dialogue fluency of language models, within temporal constraints. The core contribution consists of three components:
 
 
 
@@ -39,4 +40,4 @@ This thesis proposes an integrated system that combines the narrative rigor of p
 
 \end{enumerate}
 
-We validate the approach through LLM-as-Judge  through controlled user study with multiple narrative conditions. Results demonstrate that director mode significantly improves story coherence and resistance to user derailment compared to baseline interaction. Notably, adding temporal constraints does not degrade narrative quality, and participants maintain high engagement throughout extended multi-phase interactions. These findings suggest that explicit narrative structure, combined with real-time steering, enables language models to maintain story coherence while preserving the conversational fluency that makes interactive storytelling engaging.
+We validate the approach through an LLM-as-Judge evaluation and a controlled user study with multiple narrative conditions. Results demonstrate that director mode significantly improves story coherence and resistance to user derailment compared to baseline interaction. Notably, adding temporal constraints does not degrade narrative quality, and participants maintain high engagement throughout extended multi-phase interactions. These findings suggest that explicit narrative structure, combined with real-time steering, enables language models to maintain story coherence while preserving the conversational fluency that makes interactive storytelling engaging.
