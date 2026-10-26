@@ -20,18 +20,18 @@ Recent work has explored multi-agent frameworks in which specialized LLM agents 
 CoDi \cite{kim2025codi} exemplifies this approach. It uses a multi-agent framework with four specialized agents that work together:
 
 \begin{itemize}
-    \item Planner LLM: Sets up the story world, characters, and high-level narrative goals.
-    \item Director LLM: Reads the story state and decides what should happen next to advance those goals.
-    It does this by representing narrative goals as continuous utility functions over state variables. A utility function is a numerical score that measures how well a story state fulfills a particular objective.
-    \item Actor LLM (one per character): Generates dialogue and actions in response to the director's instructions.
+    \item Planner LLM: Sets up the story world, character profiles, and high-level narrative goals.
+    \item Director LLM: Reads the story so far each turn and issues a high-level instruction of one of four types (character action, description, intervention, or ending) to advance those goals.
+    The narrative goals are encoded as a utility function: a list of natural-language goals, each with a numerical weight reflecting its importance. The story state is not tracked explicitly; the director infers it from the narrative so far.
+    \item Character LLM (one per character): Generates the character's inner thought, action and dialogue in response to the director's instructions, guided by its own profile and utility function.
     \item Editor LLM: Formats the output into screenplay or novel form.
 \end{itemize}
 
-CoDi demonstrates that planning and performance separation improves story quality and robustness. Yet CoDi is designed for adaptive storytelling, where the system flexibly adjusts narratives to achieve predefined goals. It is not designed for user-interactive storytelling, where actual users interrupt and control the narrative in real-time.This is a critical distinction. CoDi recomputes utility weights when goals shift, but it provides no explicit interruption detection or recovery mechanism for when users derail the narrative. The system has no way to recognize an interruption and steer back to narrative coherence.
+CoDi shows that giving the director explicit narrative goals and dedicated intervention instructions yields stories that outperform a prior director-actor system and approach human-written stories on several dimensions. Yet CoDi is designed for adaptive storytelling, where the system flexibly adjusts narratives to achieve predefined goals. Its evaluation uses autonomously generated stories without live user input, and supporting more complex user interactions is left to future work. This is a critical distinction. CoDi's character agents periodically update their own utility functions as the story unfolds, but the paper describes no mechanism for detecting a user interruption or steering back to narrative coherence.
 
 \section{Beat-Based Narrative Representation}
 
-While CoDi uses continuous utility functions to represent narrative goals, an alternative approach represents stories as sequences of discrete narrative beats. Each beat is a distinct moment or scene with clear dramatic function. This abstraction is grounded in screenwriting theory \cite{mckee1997story} and provides a middle ground between rigid symbolic planning and unconstrained LLM generation.
+While CoDi represents narrative goals as weighted utility functions, an alternative approach represents stories as sequences of discrete narrative beats. Each beat is a distinct moment or scene with clear dramatic function. This abstraction is grounded in screenwriting theory \cite{mckee1997story} and provides a middle ground between rigid symbolic planning and unconstrained LLM generation.
 
 NarrativeGenie \cite{kumaran2024narrativegenie} is the most directly relevant precedent in this space. It converts free-text story outlines into structured sequences of narrative beats, establishes causal dependencies between beats to form a partial order, and grounds characters and props in the world. Dialogue and actions are then generated within each beat. By constraining generation to a single beat at a time, the system maintains coherence throughout the story. It also offers a degree of interruption handling: when a player acts out of order, it generates alternate character dialogue intended to guide the player back on track, and an adaptive dialogue manager responds to the current game state in real time.
 
