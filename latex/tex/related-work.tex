@@ -1,0 +1,61 @@
+\setcounter{chapter}{1}
+
+\chapter{Related Work}\label{sec:relatedwork}
+
+
+Controllable narrative generation is increasingly central to interactive media. Our work builds on an existing interactive narrative system developed at Disney Research Studios, extending it to handle real-time interruptions and time pressure. To understand this challenge, we examine how interactive narrative systems have evolved, from symbolic planning approaches to modern LLM-based generation. Our focus narrows to two key areas: multi-agent architectures and beat-based representations that are most relevant to controllable storytelling under interruption and time constraints.
+
+\section{Symbolic and Goal-Driven Narrative Planning}
+
+Early narrative systems relied on symbolic planning, treating story generation as a search problem through logical states and actions \citep{Meehan1977}. Systems like IPOCL and SABRE formalized narrative planning as hierarchical task decomposition with character goals and believability constraints. These approaches guaranteed logical coherence by construction, but they produced rigid, constrained narratives that lacked the fluidity interactive applications demanded.
+
+A foundational insight emerged from {Façade} \citep{mateas2003facade}, a landmark interactive drama system. Façade demonstrated something crucial: narrative control becomes more robust when you separate what should happen next (narrative deliberation) from how characters express it (performance and dialogue generation). The system's three-layer architecture operated with story planning on one level, character behavior on another, and performance at a third. This decoupling enabled interactive steering while preserving character believability. The principle remains influential today: separating narrative decisions from character-level execution lets systems respond to user input without losing coherence. Every hierarchical approach that has followed builds on this insight.
+
+\section{LLM-based Storytelling}
+
+The emergence of large language models revolutionized narrative generation by replacing symbolic planning with learned, fluent text generation. However, unguided LLMs suffer from narrative drift. They meander without maintaining explicit plot structure, contradict earlier plot points, or fail to reach satisfying conclusions. This limitation motivated a return to hierarchical architectures that combine LLM generative power with explicit narrative control.
+
+
+Recent work has explored multi-agent frameworks in which specialized LLM agents coordinate narrative generation.
+CoDi \citep{zhang2024codi} exemplifies this approach. It uses a multi-agent framework with four specialized agents that work together:
+
+\begin{itemize}
+    \item Planner LLM: Sets up the story world, characters, and high-level narrative goals.
+    \item Director LLM: Reads the story state and decides what should happen next to advance those goals.
+    It does this by representing narrative goals as continuous utility functions over state variables. A utility function is a numerical score that measures how well a story state fulfills a particular objective.
+    \item Actor LLM (one per character): Generates dialogue and actions in response to the director's instructions.
+    \item Editor LLM: Formats the output into screenplay or novel form.
+\end{itemize}
+
+CoDi demonstrates that planning and performance separation improves story quality and robustness. Yet CoDi is designed for adaptive storytelling, where the system flexibly adjusts narratives to achieve predefined goals. It is not designed for user-interactive storytelling, where actual users interrupt and control the narrative in real-time.This is a critical distinction. CoDi recomputes utility weights when goals shift, but it provides no explicit interruption detection or recovery mechanism for when users derail the narrative. The system has no way to recognize an interruption and steer back to narrative coherence.
+
+\section{Beat-Based Narrative Representation}
+
+While CoDi uses continuous utility functions to represent narrative goals, an alternative approach represents stories as sequences of discrete narrative beats. Each beat is a distinct moment or scene with clear dramatic function. This abstraction is grounded in screenwriting theory \citep{mckee1997story} and provides a middle ground between rigid symbolic planning and unconstrained LLM generation.
+
+NarrativeGenie \cite{jansen2024narrativegenie} is the most directly relevant precedent in this space. It converts free-text story outlines into structured sequences of narrative beats, establishes causal dependencies between beats to form a partial order, and grounds characters and props in the world. Dialogue and actions are then generated within each beat. By constraining generation to a single beat at a time, the system maintains coherence throughout the story. It also enables principled interruption handling. User inputs are evaluated relative to the current beat's objective, and the system can recover to a narrative beat if the user derails.
+
+Beats offer three key advantages over utility-function-based approaches. First, interpretability: beat objectives are expressed in natural language, making narrative logic transparent and debuggable, unlike the opaque numerical trade-offs of utility functions. Second, checkpointing: each beat represents a natural checkpoint where the system can verify whether the goal is satisfied, enabling principled decisions about recovery and pacing. Third, temporal reasoning: knowing N beats remain and t seconds remain means we can compute a pacing target directly, providing a clearer implementation path than utility functions allow.
+
+This thesis adopts beat-based representation as its foundational abstraction. As we will show, beats prove essential for addressing the real-time challenges of user interruption and time-constrained storytelling
+
+\section{Interruption Handling }
+
+Several interactive narrative systems demonstrate approaches to handling unexpected user inputs. Whispers of the Star \citep{Guo2026}, a collaborative multiplayer game, employs a director-like architecture ("whisperer" to issue real-time steering directives during gameplay. AI Dungeon \citep{panickssery2024llm}, a text adventure game, generates story responses to user input in real-time, allowing players to interrupt and redirect the narrative dynamically. Character. AI's interactive book feature enables conversational storytelling where users engage with AI characters, make choices, and request narrative changes through dialogue.
+
+These systems maintain narrative control through context windows and character profiles that constrain generation. However , the challenge is not merely responding to interruptions, but doing so while maintaining long-term plot coherence and meeting temporal deadlines.
+
+\section{Time-Constrained Generation}
+
+A distinct but crucial challenge is narrative completion within fixed time budgets. Prior work on time-aware planning \citep{BoppBonoliMartin2012,CavazzaCharlesMead2001} has addressed temporal constraints in symbolic storytelling and embodied agents, but systematic treatment of pacing adaptation in LLM-based systems remains largely unexplored. Most LLM systems ignore time entirely, relying on implicit and unreliable length targets.Our work addresses this gap by introducing explicit temporal monitoring mechanisms.
+
+\section{LLM-as-Judge}
+
+Assessing narrative quality is inherently subjective. It spans coherence, character consistency, recovery from interruption, and pacing appropriateness. 
+
+Recent work has adopted LLM-as-Judge evaluation. Structured prompts elicit fine-grained scoring across multiple dimensions without requiring extensive manual annotation. This approach permits scaling to many samples and enables scoring of complex, subjective properties like how well the system recovers from user interruptions.
+
+However, LLM judges exhibit position bias, showing a tendency to favor certain positions over others, with most judges biased toward the first answer and only GPT-4 demonstrating consistency in more than 60\% of cases \cite{zheng2023judging}. 
+
+To mitigate this bias in our evaluation, we employ order-counterbalancing by evaluating systems in both AB and BA orderings. As well as employing a user study for human evaluation. 
+

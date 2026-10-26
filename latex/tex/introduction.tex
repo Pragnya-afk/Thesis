@@ -1,0 +1,42 @@
+% set counter to n-1:
+\setcounter{chapter}{0}
+
+\chapter{Introduction}\label{sec:introduction}
+
+Stories are fundamentally interactive. From oral traditions where audiences shape the narrator's emphasis and pacing, to modern interactive fiction where players determine plot progression, the engagement of a story depends not only on what the teller says but on how the teller responds to the listener. Today's language models can generate fluent dialogue and compelling character voices, yet they struggle with this responsiveness. Ask an LLM-powered character to tell you the story of Frozen, and it will produce beautiful prose, until you interrupt with an unexpected question. Then it drifts. It forgets where it was in the narrative. It wanders down conversational tangents, never finding its way back to the story arc it was meant to tell.
+
+This thesis addresses a specific, high-impact gap: how to build interactive AI characters that stay on story despite user derailment, and that reliably complete narratives within fixed time windows. The problem is increasingly relevant. Interactive narratives appear in educational games (where coherent stories improve learning), in dialogue systems (where consistent character motivation matters), and in generative entertainment (where unpredictable divergence breaks immersion). Yet no existing method reliably solves both problems at once.
+
+\section*{The Problem}
+
+Large language models are powerful dialogue engines, but they lack explicit goals. When prompted to tell a story, they optimize locally: answering the immediate user query, maintaining conversational coherence, being helpful. This myopic optimization causes two concrete failures. First, when users deviate from expected paths (asking off-topic questions, challenging the narrative, testing the character), the model has no mechanism to recognize this as deviation. It treats the tangent as normal conversation and continues, eventually abandoning the story entirely. Second, language models have no sense of time. Without explicit temporal reasoning, they generate at constant pacing, never accelerating toward a climax or compressing secondary beats to meet a deadline. The result is unbounded dialogue: a five-minute narrative that sprawls into fifteen minutes, or stops prematurely because the model doesn't know how much time remains.
+
+Classical AI planning solves narrative coherence through explicit goal representation and state tracking. But planning requires hand-authored domain models (specifying every possible action, precondition, and effect), which is expensive and brittle. Interactive narratives authored this way are rigid: characters follow scripted paths with little conversational flexibility. The trade-off has been stark: planning gives coherence at the cost of authorship overhead and stilted dialogue.
+
+\section*{Our Contribution}
+
+This thesis tackles two main research questions: 
+
+\begin{itemize}
+    \item How can LLM-based characters maintain narrative coherence and stay on-story when users interrupt or ask unexpected questions?
+
+    \item How can LLM-based characters plan and execute complete narratives within fixed time budgets?
+
+\end{itemize}
+. 
+
+This thesis proposes an integrated system that combines the narrative rigor of planning with the dialogue fluency of language models, within temporal constraints. The core contribution consists of three components:
+
+
+
+\begin{enumerate}
+\item \textbf{Beat-based story representation}: Stories are decomposed into discrete narrative plot points ("beats") that anchor the character's generation. 
+
+\item \textbf{Director-mode}: Each turn, the director analyzes the user's input, assigns it to one of six decision types, and generates a director instruction that guides the character LLM's response generation.
+
+\item \textbf{Temporal Pacing}: A TemporalMonitor tracks time budget and adapts story pacing through five dynamic modes (too\_fast, normal, hurry, critical, final). As time pressure increases, the system automatically compresses or skips secondary beats, prioritizing narrative plot points that advance the climax.
+
+
+\end{enumerate}
+
+We validate the approach through LLM-as-Judge  through controlled user study with multiple narrative conditions. Results demonstrate that director mode significantly improves story coherence and resistance to user derailment compared to baseline interaction. Notably, adding temporal constraints does not degrade narrative quality, and participants maintain high engagement throughout extended multi-phase interactions. These findings suggest that explicit narrative structure, combined with real-time steering, enables language models to maintain story coherence while preserving the conversational fluency that makes interactive storytelling engaging.

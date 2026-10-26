@@ -1,0 +1,738 @@
+\chapter{Results}
+
+\label{sec:results}
+
+\section{User Study Design}
+\label{sec:design}
+
+28 people took part in the study. Each participant played through two short interactive stories narrated by an LLM-driven Olaf, each story twice, under a different narrative-control condition each time (there was only text output and no audio output):
+
+\begin{itemize}
+\item \textbf{Story 1 -- ``Retelling of Frozen''} (5 narrative beats): once under \textbf{baseline} (Olaf responds directly to the user, with no structural guardrails), once under \textbf{director} (a beat-based director agent steers every turn toward the next story beat while trying to accommodate the user).
+\item \textbf{Story 2 -- ``Retelling of Cinderella''} (9 narrative beats): once under the same \textbf{director} condition, once under \textbf{time-constrained director} -- identical director logic, but additionally paced against a fixed 5-minute target, instructed to compress or fold together lower-importance beats as time runs out.
+\end{itemize}
+
+Condition order was randomized independently per participant and per story, so order is not confounded with condition. 14 participants  completed all four rounds and the closing questionnaire; all analyses below that require a within-subject pairing use these 14 completers, since they are the only participants who rated every condition. The welcome screen explicitly asked participants to try to derail the conversation (``go off-topic, ask him something random, bring up a different subject''), so every measure of derailment resistance below reflects deliberately provoked interruption, not incidental drift.
+
+The same core questionnaire was shown after every round, with four extra questions shown only after Story 2 rounds, where pacing and ending quality mattered specifically because of the time-constrained condition.
+
+\begin{table}[htbp]
+\centering
+\caption{Post-round questionnaire items.}
+\label{tab:instrument}
+\small
+\begin{tabular}{p{1.6cm}p{6.3cm}p{4.2cm}p{2cm}}
+\toprule
+ID & Wording & Type / scale & Shown after \\
+\midrule
+Q1 & ``The story felt coherent and followed a clear narrative arc.'' & 5-pt Likert (disagree $\to$ agree) & Every round \\
+Q2 & ``Olaf stayed in character throughout the conversation.'' & 5-pt Likert (not at all $\to$ completely) & Every round \\
+Q4 & ``The story felt engaging and enjoyable to participate in.'' & 5-pt Likert & Every round \\
+Q5 & ``Overall, how would you rate the experience?'' & 5-pt Likert (poor $\to$ excellent) & Every round \\
+Q6 & ``Did you try to go off-topic or steer the conversation away from the story?'' & Yes / No & Every round \\
+Q6-resist & Follow-up to Q6: ``How well did Olaf stay on track?'' & 5-pt Likert (got derailed $\to$ stayed on track) & After Q6 \\
+Q-pacing & ``Did the story's pacing feel right?'' & Well-paced / Rushed / Cut short (+ free text) & Story 2 only \\
+Q8-ending & ``Was the story ending satisfying?'' & 5-pt Likert & Story 2 only \\
+Q8-known & ``Were you already familiar with this story?'' (+ free text on missing plot points if yes) & Yes / No & Story 2 only \\
+Q10-natural & ``Did the story feel natural, like a genuine conversation rather than a scripted performance?'' & 5-pt Likert & Story 2 only \\
+-- & ``Was there a moment where the story felt off or broke down? Describe it briefly.'' & Free text (optional) & Every round \\
+-- & ``Any other comments about Olaf's character or the story overall?'' & Free text (optional) & Every round \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Throughout, Q6-resist is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
+
+\section{Story 1: Director vs. Baseline}
+\label{sec:story1}
+See Appendix~\ref{app:beats-frozen} for the beats list of this story.
+
+Story 1 holds the character prompt fixed and isolates the effect of adding a director layer, with no time pressure. All results below use the 14 completers, paired, Wilcoxon signed-rank test.
+
+\begin{table}[htbp]
+\centering
+\caption{Story 1, director vs.\ baseline (completers, paired Wilcoxon signed-rank test).}
+\label{tab:story1}
+\begin{tabular}{lcccc}
+\toprule
+Measure & Director & Baseline & $n$ pairs & $p$ \\
+\midrule
+Coherence (Q1)              & 3.93 $\pm$ 1.00 & 1.71 $\pm$ 1.07 & 14 & \textbf{0.001} \\
+Stayed in character (Q2)    & 4.29 $\pm$ 0.83 & 4.00 $\pm$ 0.88 & 14 & 0.40 \\
+Engaging (Q4)                & 3.64 $\pm$ 1.15 & 2.43 $\pm$ 1.16 & 14 & \textbf{0.036} \\
+Overall rating (Q5)          & 3.57 $\pm$ 0.94 & 2.93 $\pm$ 0.92 & 14 & 0.12 \\
+Resisted derailment (Q6-resist) & 4.36 $\pm$ 0.92 & 1.55 $\pm$ 1.21 & 11 & \textbf{0.002} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/13_story1_all_measures.png}
+\caption{Story 1 (Frozen) questionnaire outcomes, director vs.\ baseline, completers only ($n$=14).}
+\label{fig:story1-all}
+\end{figure}
+
+Coherence and derailment resistance are the two effects that hold up cleanly: both $p \le 0.002$, both roughly a two-point gap on a five-point scale. We have $n$=11 for derailment since 3 participants did not actively try to derail the system in at least one of their two rounds. Engagement moves the same way but more weakly (\pval{0.036}); overall rating trends the same direction (3.57 vs.\ 2.93) but does not reach significance at $n$=14 (\pval{0.12}). Staying in character is the one measure that looks the same either way (4.29 vs.\ 4.00, \pval{0.40}). Olaf keeps his voice under baseline too. What baseline loses is the plot, not the persona.
+
+\subsection{Interruption handling in Story 1}
+\label{sec:story1-derailment}
+
+The derailment-attempt rate was almost identical across conditions -- 12 of 14 baseline rounds and 12 of 14 director rounds recorded ``yes, I tried to derail'' -- the gap below reflects how Olaf responded.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.62\linewidth]{plots/16_story1_derailment_paired.png}
+\caption{Resistance to derailment (Q6-resist), Story 1, one line per participant ($n$=11 paired completers). Baseline points cluster at the bottom; director points cluster at the top; every individual participant, not just the group average, rated director higher.}
+\label{fig:story1-paired}
+\end{figure}
+
+Figure~\ref{fig:story1-paired} makes the individual-level pattern behind Table~\ref{tab:story1} visible: 11 of the 11 paired participants personally rated director above baseline on resisting derailment.
+
+
+\subsection{What ``handling an interruption'' looks like}
+
+Reading the free-text breakdowns, a clear pattern emerges on each side. Under \textbf{baseline}, about 8 in 10 comments describe the story stalling outright the moment the user goes off-topic -- not recovering, just stopping:
+
+\begin{quote}
+\small
+``He didn't retell the story at all. Not even once.''
+
+``If you go a bit off topic, like me constantly asking for background info or what happened after the story, you can get Olaf to completely give up on telling the actual story.''
+
+``No story initiative in the beginning unless explicitly prompted to do so.''
+
+``It got off the rails as soon as I tried.''
+\end{quote}
+
+A smaller theme is Olaf being led astray by false or invented information rather than resisting it:
+
+\begin{quote}
+\small
+``At some point I repeatedly asked if Olaf is sure that this is how the story started... after the third time, Olaf gave in and spoiled the storyline of Hans.''
+
+``Olaf believed the fake news that I told him.''
+\end{quote}
+
+Under \textbf{director}, roughly 8 in 10 comments describe the opposite failure mode: the story does not stall, but the recovery is rigid -- users felt that it didn't acknowledge them enough before snapping back to the script:
+
+\begin{quote}
+\small
+
+``Each reply felt like one sentence replying to what I wrote and then immediately going back to the main script; even if I tried to interact with the story.''
+
+``I understand that this version stays in character more, but sometimes it gets annoying that you cannot even talk about anything else -- at some point he should break this cycle.''
+
+
+\end{quote}
+
+Taken together: baseline trades coherence for responsiveness, director trades some responsiveness for coherence, and neither fully solves both. The failure mode under director is qualitatively better for the story (it still gets told) but noticeably worse for the feeling of being acknowledged for the user.
+
+\section{Story 2: Director vs.\ Time-Constrained Director}
+\label{sec:story2}
+
+See Appendix~\ref{app:beats-cinderella} for the beats list of this story.
+
+
+
+Story 2 holds the director logic constant and isolates the effect of adding a hard 5-minute pacing target, across 9 narrative beats. All results use the 14 completers unless noted.
+
+\begin{table}[htbp]
+\centering
+\caption{Story 2, director vs.\ time-constrained (completers, paired Wilcoxon signed-rank test).}
+\label{tab:story2}
+\begin{tabular}{lcccc}
+\toprule
+Measure & Director & Time-constrained & $n$ pairs & $p$ \\
+\midrule
+Coherence (Q1)              & 3.79 $\pm$ 0.80 & 3.71 $\pm$ 0.91 & 14 & 0.76 \\
+Stayed in character (Q2)    & 4.14 $\pm$ 0.66 & 4.14 $\pm$ 0.77 & 14 & 0.93 \\
+Engaging (Q4)                & 3.29 $\pm$ 0.83 & 3.36 $\pm$ 1.22 & 14 & 0.93 \\
+Overall rating (Q5)          & 3.36 $\pm$ 0.84 & 3.29 $\pm$ 1.20 & 14 & 0.67 \\
+Resisted derailment (Q6-resist) & 4.25 $\pm$ 0.62 & 3.75 $\pm$ 1.22 & 12 & 0.40 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/15_story2_all_measures.png}
+\caption{Story 2 (Cinderella) questionnaire outcomes, director vs.\ time-constrained, completers only.}
+\label{fig:story2-all}
+\end{figure}
+
+None of the five core measures differ significantly (all $p \ge 0.40$). Adding a hard time budget on top of the director does not measurably hurt coherence, character consistency, engagement, overall rating, or derailment resistance.
+
+The story of Cinderella with 9 beats was specifically chosen since its length does not allow completion of the story in 5 minutes under non-time-constrained conditions.
+
+\subsection{Pacing and ending quality}
+
+\begin{table}[htbp]
+\centering
+\caption{Story 2 pacing verdict and ending quality, director vs.\ time-constrained (completers, $n$=14 per condition).}
+\label{tab:pacing}
+\begin{tabular}{lcc}
+\toprule
+ & Director & Time-constrained \\
+\midrule
+``Well-paced''      & 1/14 (7\%)  & 10/14 (71\%) \\
+``Rushed''           & 1/14 (7\%)  & 1/14 (7\%) \\
+``Cut short''         & 12/14 (86\%) & 3/14 (21\%) \\
+Ending satisfying (Q8-ending)   & 2.07 $\pm$ 0.92 & 3.14 $\pm$ 0.77 \\
+Felt natural (Q10-natural)      & 2.93 $\pm$ 0.92 & 2.64 $\pm$ 1.01 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ending satisfaction: \pval{0.016} (Wilcoxon, $n$=14). Naturalness: \pval{0.27}, not significant.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\linewidth]{plots/10_story2_pacing_by_condition.png}
+\caption{Story 2 pacing verdict by condition.}
+\label{fig:pacing}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{plots/11_story2_ending_and_naturalness.png}
+\caption{Story 2 ending satisfaction and naturalness, director vs.\ time-constrained.}
+\label{fig:ending}
+\end{figure}
+
+The unconstrained director round almost never reaches an ending (86\% ``cut short''), while the time-constrained round mostly does (71\% ``well-paced''), and participants rated that ending as \emph{more} satisfying (3.14 vs.\ 2.07, \pval{0.016}).  Without a time budget, the round simply stops when the session's 5-minute cap hits, with no mechanism to wrap up nor a mechanism to help the pacing; the time-constrained director's closing logic as well as pacing modes exists specifically to avoid that.
+
+\begin{quote}
+\small
+``No plot points were missing'' -- time-constrained
+
+``The way from the room to the castle [felt rushed] ... where the other princesses cut off their toes [was missing].'' -- time-constrained
+
+``Olaf didn't have time to finish his story ... most of the plot points were missing.'' -- director
+\end{quote}
+
+\subsection{Beat-level compression under the time limit}
+
+Every time-constrained transcript was read turn-by-turn against its pacing state and each of Cinderella's 9 beats classified as developed, hurried, compressed, skipped or folded into a closing turn.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/12_beat_compression_time_constrained.png}
+\caption{Which Cinderella beats were compressed or skipped under the 5-minute limit, across all 16 time-constrained transcripts.}
+\label{fig:compression}
+\end{figure}
+
+The pattern tracks story position closely. The opening beat is fully developed in all 16 transcripts. From there, compression builds beat by beat; from the fourth beat onward, most transcripts show compressed or skipped treatment, and the final two beats are never once given a dedicated turn in any of the 14 transcripts that reach them. They are folded into a single closing message instead. This makes sense since depending on how long the user takes to respond or how much he derails, the pacing is adjusted accordingly. So if the user is constantly trying to derail, the story will get more and more compressed towards the end. The final turn always compresses the medium and high priority beats left.
+
+
+\section{Comparing All Three Conditions}
+\label{sec:combined}
+
+Pooling every completer's director-condition response across both stories (director is seen twice per completer, once per story) gives director the largest sample ($n$=28) against $n$=14 each for baseline and time-constrained.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/05_completers_all_measures.png}
+\caption{All five measures, all three conditions, completers only ($n$=14 baseline, $n$=28 director, $n$=14 time-constrained).}
+\label{fig:combined-all}
+\end{figure}
+
+The ranking is consistent across every measure: baseline lowest, director and time-constrained close together and clearly above baseline, director slightly ahead on four of five measures and essentially tied on staying in character. Averaged into a single number per condition: baseline 2.56 $\pm$ 1.33, director 3.84 $\pm$ 0.93, time-constrained 3.65 $\pm$ 1.08.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{plots/09_derailment_story_comparison.png}
+\caption{Resistance to derailment (Q6-resist) by story and condition, completers only.}
+\label{fig:derail-by-story}
+\end{figure}
+
+Figure~\ref{fig:derail-by-story} splits the headline derailment result by story: in Story 1, director's advantage over baseline is large (4.36 vs.\ 1.55, \pval{0.002}); in Story 2, director's advantage over time-constrained is small and not significant (4.25 vs.\ 3.75, \pval{0.40}). The interruption-handling benefit of the director comes entirely from replacing baseline, not from removing the time limit.
+
+
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.8\linewidth]{plots/08_turns_mean_sd_by_condition.png}
+\caption{Turns per round by condition, questionnaire-completed rounds only.}
+\label{fig:turns}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Turns and response length by condition.}
+\label{tab:turns}
+\begin{tabular}{lccc}
+\toprule
+Condition & Turns/round & Words/response & Approx.\ words/round \\
+\midrule
+Baseline           & 11.53 $\pm$ 3.28 ($n$=17) & 46.0 $\pm$ 13.1  & $\sim$530 \\
+Director            & 10.76 $\pm$ 4.56 ($n$=33) & 66.0 $\pm$ 17.1  & $\sim$710 \\
+Time-constrained    & 8.80 $\pm$ 2.08 ($n$=15)  & 80.0 $\pm$ 17.1  & $\sim$704 \\
+\bottomrule
+\end{tabular}
+\end{table}
+Time-constrained responses are the \emph{longest} of the three conditions on average, consistent with the beat-compression mechanism above. Since it needs to compress multiple beats into one turn, it ends up having longer responses than the baseline and director. Since the director needs to acknowledge the user as well as steer back to the story, its responses end up longer than baseline's. Multiplying turns by response length, time-constrained's total output per round ($\sim$704 words) is essentially equal to director's ($\sim$710) and well above baseline's ($\sim$530). Fewer turns under a time budget reflects denser turns, not a shorter story.
+
+\section{Summary}
+\label{sec:summary}
+
+\begin{itemize}
+\item Adding a director helps, clearly, on coherence and interruption handling -- the two strongest, most individually-consistent effects in the study (both $p \le 0.002$ in Story 1).
+
+\item The failure modes differ qualitatively, not just numerically: baseline lets the story stall completely when interrupted; director keeps going.
+
+\item Time-constrained vs.\ director: the unconstrained director round rarely reaches a real ending (86\% cut short), while the time-constrained round usually does (71\% well-paced) and is rated as more satisfying at the ending (\pval{0.016}).
+
+\item Character consistency is solved across all three conditions (4.00--4.29) -- what varies is narrative progress and how interruptions are handled, not whether Olaf stays Olaf.
+\end{itemize}
+
+\section{LLM-as-Judge Evaluation}
+\label{sec:llm-judge}
+
+\subsection{Method}
+\label{sec:llm-judge-method}
+
+To test the system at a scale no live study can reach, we also ran an automated evaluation: an LLM judge (GPT-4o) reads two story transcripts and scores them.
+
+The judge is used in two modes. In \textbf{pairwise} mode it reads Story A and Story B side by side and picks a winner per dimension, or calls it a tie. In \textbf{single-story} mode it scores one transcript alone, 0 to 10 per dimension. Most comparisons in this section use both: pairwise for head-to-head verdicts, single-story for the underlying scores those verdicts summarize.
+
+LLM judges are known to favor whichever story happens to be shown first \citep{zheng2023judging}. We control for this directly: every pair is judged twice, once as (A, B) and once as (B, A), and a dimension only gets a winner if both orderings agree once the labels are translated back. If they disagree, the dimension is recorded as a tie.
+
+The judge scores stories against a shared rubric. The core 8 dimensions are used for every comparison in this chapter; the additional dimensions listed below were defined for a comparison against CoDi and for a time-budget ablation.
+
+
+\begin{table}[htbp]
+\centering
+\caption{Judge rubric dimensions.}
+\label{tab:rubric}
+\small
+\begin{tabular}{p{3.3cm}p{10.5cm}}
+\toprule
+Dimension & What it measures \\
+\midrule
+Plot & Clear beginning/middle/end; reaches the intended beats; no logical holes. \\
+Development & Characters and setting are introduced with enough detail to feel real. \\
+Language Use & Varied, expressive, in-character language; not bland or repetitive. \\
+Interruption Handling & Handles off-topic input gracefully and steers back without derailing or looping. \\
+Character Fidelity & Stays in character; doesn't sound like a generic assistant. \\
+Narrative Control & Makes steady progress through the beats; doesn't get stuck. \\
+Anthropomorphism & Feels like an autonomous character with agency, not a tool serving the user. \\
+Overall & Holistic judgment across all of the above. \\
+\midrule
+\multicolumn{2}{l}{\textit{Added for director vs.\ CoDi:}} \\
+Detail \& Thoroughness & Rich description, world-building, thorough scenes. \\
+Narrative Polish & Smooth, well-edited prose; natural transitions. \\
+Director Decision-Making & How clearly the director's own choices guided the story. \\
+\midrule
+\multicolumn{2}{l}{\textit{Used instead, for the time-budget ablation (single-story only):}} \\
+Descriptiveness & Sensory detail and interiority appropriate to the time budget. \\
+Beat Fidelity & Each beat is honored in substance, not just touched on, despite time pressure. \\
+Transition Quality & Scene breaks feel motivated, not abrupt or mid-sentence. \\
+Three-Act Balance & A recognizable beginning/middle/end survives the compression. \\
+Setup/Payoff Preservation & Anything planted earlier is still paid off. \\
+Emotional Arc & The emotional register visibly shifts across the story. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+See Appendix~\ref{app:evaluator-prompts} for the entire evaluator prompt.
+We ran five separate comparisons:
+
+\begin{itemize}
+\item \textbf{Baseline vs.\ director} (Section~\ref{sec:llm-baseline}) — 30 transcript pairs: 10 Olaf story scenarios, each played at three derailment levels (none, medium, complete).
+\item \textbf{Second character: Rocket Raccoon} (Section~\ref{sec:llm-rocket}) — the baseline-vs-director comparison repeated for a different character on 7 Red Riding Hood scenarios.
+\item \textbf{Beats vs.\ full-text director} (Section~\ref{sec:llm-beats-ablation}) — 7 transcript pairs on the same Red Riding Hood scenarios, with Olaf, isolating the choice of story representation.
+\item \textbf{Judge model robustness} (Section~\ref{sec:judge-model-comparison}) — baseline vs.\ director at each derailment level, judged by both GPT-4o and GPT-5.6-sol.
+\item \textbf{Cross-check against the live study} (Section~\ref{sec:llm-vs-study}) — the exact Frozen and Cinderella stories from the user study under complete derailment, 5 runs per condition.
+\end{itemize}
+
+All comparisons use the same rubric and the same order-bias-controlled judging protocol.
+
+
+We use GPT-4o as our model for two reasons. First, it is the most recent model that still allows the sampling temperature to be adjusted. Second, it is the model used in the CoDi paper, on which our evaluation procedure is based. Section~\ref{sec:judge-model-comparison} compares GPT-4o with GPT-5.6-sol. Because GPT-5.6-sol was released after this thesis began, we discuss it only briefly and leave a more thorough investigation to future work.
+
+
+\subsection{Baseline vs. Director}
+\label{sec:llm-baseline}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/01_baseline_vs_director_scores_by_metric.png}
+\caption{Single-story judge scores, baseline vs.\ director, averaged over all 30 transcript pairs.}
+\label{fig:llm-base-metric}
+\end{figure}
+
+
+
+
+
+Director scores higher on every single dimension. The gap is largest on Narrative Control and Plot — exactly where a director layer should help, since its whole job is steering the story toward its beats. Character Fidelity is already high under baseline and only edges up slightly.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/02_baseline_vs_director_pairwise_wins.png}
+\caption{Pairwise verdicts, baseline vs.\ director, order-bias controlled (n=30).}
+\label{fig:llm-base-wins}
+\end{figure}
+
+The pairwise verdicts (Figure~\ref{fig:llm-base-wins}) tell a stricter version of the same story. Because a win only counts when both presentation orders agree, ties dominate every dimension. Where a winner does emerge, it is almost always director. 
+
+\begin{quote}
+\small
+``Story A struggles with handling interruptions, often getting stuck in the same beat and failing to progress the story effectively. Story B handles interruptions more gracefully by acknowledging them and then redirecting back to the story. This approach keeps the narrative on track and maintains coherence.''
+\end{quote}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\linewidth]{plots/03_baseline_vs_director_by_derailment_level.png}
+\caption{Overall score vs.\ derailment severity, baseline vs.\ director.}
+\label{fig:llm-base-derail}
+\end{figure}
+
+
+Both systems degrade as derailment gets more severe, which is expected — more off-topic pressure is genuinely harder to handle. But director's lead over baseline shrinks as it goes: 1.60 points at no derailment, 0.91 at medium, down to 0.22 at complete. Under the heaviest pressure, the gap nearly closes. This lines up with the automated track's overall picture: director is a clear improvement, but it is not immune to derailment, only more resistant to it.
+
+
+
+\section{Rocket Raccoon}
+\label{sec:llm-rocket}
+
+Every comparison so far uses Olaf. A system whose director layer only works for one character's voice would be a weak result, so we repeated the baseline-vs-director comparison from Section~\ref{sec:llm-baseline} on a second character with a deliberately different personality: Rocket Raccoon, whose defensive, sarcastic, deflecting register is close to the opposite of Olaf's earnest, naive one. None of the director's rules (bridge sentences, anti-stall pacing, staying in character under derailment) are written with Olaf specifically in mind, so this is a direct test of whether the director's advantage can be easily expanded to other characters.
+
+We built a Red Riding Hood retelling suite for Rocket, matched to the same task and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with two additional derailment categories not yet run at this granularity for Olaf: \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (attempts to hijack the story toward an unrelated goal). This gives 7 scenarios in total, each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:llm-judge-method}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/08_rocket_scores_by_metric.png}
+\caption{Single-story judge scores, baseline vs.\ director, Rocket, averaged over all 7 transcript pairs.}
+\label{fig:llm-rocket-metric}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Baseline vs.\ director for Rocket}
+\label{tab:llm-rocket-metric}
+\begin{tabular}{lcc|cc}
+\toprule
+ & \multicolumn{2}{c}{Matched (n=3)} & \multicolumn{2}{c}{Full suite (n=7)} \\
+Dimension & Baseline & Director & Baseline & Director \\
+\midrule
+Plot                   & 5.33 & 9.00  & 4.43 & 8.14 \\
+Development             & 6.33 & 9.00  & 5.29 & 7.71 \\
+Language Use            & 8.33 & 10.00 & 6.71 & 9.43 \\
+Interruption Handling   & 5.67 & 9.00  & 4.43 & 9.00 \\
+Character Fidelity      & 9.00 & 10.00 & 7.57 & 9.86 \\
+Narrative Control       & 4.67 & 9.00  & 3.71 & 8.14 \\
+Anthropomorphism        & 7.67 & 10.00 & 6.29 & 9.29 \\
+Overall                  & 6.67 & 9.00  & 5.43 & 8.57 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The pattern from Olaf replicates, and more sharply: director outscores baseline on every single dimension for Rocket. The Overall gap is 2.33 points on the matched set and 3.14 on the full suite. The pairwise verdicts (Figure~\ref{fig:llm-rocket-wins}) are close to unanimous: across the matched 3 scenarios, director wins outright on 20 of 24 dimension judgments, with the only ties on Character Fidelity and one Anthropomorphism tie; on the full 7-scenario suite director wins outright on nearly every single dimension.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/09_rocket_pairwise_wins.png}
+\caption{Pairwise verdicts, baseline vs.\ director, Rocket, order-bias controlled (n=7).}
+\label{fig:llm-rocket-wins}
+\end{figure}
+
+Breaking the full suite down by derailment level (Table~\ref{tab:llm-rocket-derail}) shows a pattern worth flagging honestly rather than smoothing over: for Olaf, director's advantage \emph{shrinks} as derailment intensifies (1.60 points at none, down to 0.22 at complete, Figure~\ref{fig:llm-base-derail}); for Rocket it does not shrink, staying at 2.5--2.7 points from medium through complete derailment. We do not read this as director being more robust for Rocket than for Olaf -- the ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). The result is a real, checkable data point in Rocket's favor, but it rests on far fewer scenarios per cell than Olaf's 10-story-topic aggregate, and should be read as directional rather than conclusive without more scenarios per character.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.65\linewidth]{plots/10_rocket_by_derailment_level.png}
+\caption{Rocket: Overall score vs.\ derailment severity, baseline vs.\ director.}
+\label{fig:llm-rocket-derail}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Rocket: Overall score by derailment level (n=1 for none, n=3 for medium, n=2--3 for complete; one baseline score at the complete level was unparseable and excluded).}
+\label{tab:llm-rocket-derail}
+\begin{tabular}{lccc}
+\toprule
+ & None & Medium & Complete \\
+\midrule
+Baseline & 8.00 & 6.33 & 5.50 \\
+Director & 9.00 & 8.83 & 8.17 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Taken together, this is evidence that the director's advantage over baseline is not specific to Olaf's character prompt.
+
+\section{Why Beats}
+\label{sec:llm-beats-ablation}
+
+Throughout this thesis, the target narrative is represented internally as a short ordered list of \emph{beats} : named units with a one-sentence goal each (e.g.\ \texttt{forest\_entry}: ``Red meets the wolf and reveals where she is going'')  rather than as a pre-written block of prose. The director tracks a \texttt{beat\_index} and a set of \texttt{completed\_beats}, and both the director and the actor are told only the current, previous, and next beat goal on any given turn, never the full text of what should eventually be said. This section tests that design choice directly, rather than asserting it.
+
+We built a full-text variant of the director that is otherwise identical: the same decision-type taxonomy (\texttt{progress\_story}, \texttt{gently\_redirect}, \texttt{close\_story}, etc.), the same priority ordering, the same interruption-handling, anti-stall, and anti-repetition rules, the same actor style constraints. The only change is the representation of the story and how progress through it is tracked: the beat list and \texttt{beat\_index} are replaced with the complete prose text of the story and a self-reported ``turns since last advancement'' signal, and instead of the harness incrementing a counter when a beat is marked complete, the model must decide for itself, every turn, whether it has advanced through the text and when the story has genuinely ended.
+
+We ran both directors (beats and full-text) on the same Red Riding Hood derailment scenarios used in Section~\ref{sec:llm-rocket}, with Olaf, and judged the pairs head-to-head with the same AB/BA-controlled protocol as everywhere else in this chapter.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/11_beats_vs_fulltext_scores_by_metric.png}
+\caption{Single-story judge scores, beats vs.\ full-text director, averaged over 7 transcript pairs.}
+\label{fig:llm-beats-metric}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Beats-based director vs.\ full-text director, mean single-story score per dimension.}
+\label{tab:llm-beats-metric}
+\begin{tabular}{lcc}
+\toprule
+Dimension & Beats & Full text \\
+\midrule
+Plot                   & 8.00 & 7.86 \\
+Development             & 8.00 & 7.71 \\
+Language Use            & 9.14 & 8.57 \\
+Interruption Handling   & 8.14 & 7.57 \\
+Character Fidelity      & 9.57 & 9.43 \\
+Narrative Control       & 8.00 & 7.71 \\
+Anthropomorphism        & 8.71 & 8.00 \\
+Overall                  & 8.36 & 7.93 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Beats score higher on every dimension, though the margins here are smaller.  Both conditions have a full director layer doing the interruption-handling work, so this ablation isolates the story-representation choice specifically. The pairwise verdicts (Figure~\ref{fig:llm-beats-wins}) make the direction unambiguous even though the margins are modest: beats wins or ties every pairwise verdict. Per-scenario Overall (Figure~\ref{fig:llm-beats-scenario}, Table~\ref{tab:llm-beats-scenario}) shows the same pattern: in the pairwise verdicts, beats wins outright on 2 of 7 scenarios and ties the other 5. On single-story scores, full text scores higher on only one scenario (\texttt{complete\_adversarial}, 9.0 vs.\ 8.0).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/12_beats_vs_fulltext_pairwise_wins.png}
+\caption{Pairwise verdicts, beats vs.\ full-text director, order-bias controlled (n=7).}
+\label{fig:llm-beats-wins}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/13_beats_vs_fulltext_by_scenario.png}
+\caption{Overall score per scenario, beats vs.\ full-text director.}
+\label{fig:llm-beats-scenario}
+\end{figure}
+
+\begin{table}[htbp]
+\centering
+\caption{Overall score per scenario, beats vs.\ full-text director.}
+\label{tab:llm-beats-scenario}
+\begin{tabular}{lccc}
+\toprule
+Scenario & Beats & Full text & AB/BA winner \\
+\midrule
+no\_derailment              & 9.0 & 8.5 & Tie \\
+medium\_derailment          & 8.5 & 8.0 & Tie \\
+medium\_adversarial         & 9.0 & 9.0 & Tie \\
+medium\_targeted            & 9.0 & 7.0 & Beats \\
+complete\_derailment        & 9.0 & 9.0 & Beats \\
+complete\_adversarial       & 8.0 & 9.0 & Tie \\
+complete\_targeted          & 6.0 & 5.0 & Tie \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\section{Judge Model Robustness Check: gpt-4o vs.\ gpt-5.6-sol}
+\label{sec:judge-model-comparison}
+
+\begin{table}[htbp]
+\centering
+\caption{No derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol.}
+\label{tab:judge-cmp-none}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{gpt-4o} & \multicolumn{3}{c}{gpt-5.6-sol} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+Dimension & Baseline & Director & Winner & Baseline & Director & Winner \\
+\midrule
+Plot                   & 6.0 & 8.0  & B    & 6.0 & 8.0 & B \\
+Development             & 8.0 & 9.0  & B    & 6.0 & 7.0 & B \\
+Language Use            & 9.0 & 9.0  & B    & 5.0 & 8.0 & B \\
+Interruption Handling   & 7.0 & 9.0  & B    & 8.0 & 9.0 & B \\
+Character Fidelity      & 9.0 & 10.0 & Same & 6.0 & 8.0 & \textbf{B} \\
+Narrative Control       & 5.0 & 8.0  & B    & 4.0 & 9.0 & B \\
+Anthropomorphism        & 8.0 & 9.0  & B    & 6.0 & 8.0 & B \\
+Overall                  & 7.0 & 9.0  & B    & 6.0 & 8.0 & B \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+\centering
+\caption{Medium derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol.}
+\label{tab:judge-cmp-medium}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{gpt-4o} & \multicolumn{3}{c}{gpt-5.6-sol} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+Dimension & Baseline & Director & Winner & Baseline & Director & Winner \\
+\midrule
+Plot                   & 4.0 & 6.0 & B    & 6.0 & 8.0  & B \\
+Development             & 5.0 & 7.0 & B    & 5.0 & 7.0  & B \\
+Language Use            & 8.0 & 8.0 & B    & 5.0 & 8.0  & B \\
+Interruption Handling   & 5.0 & 8.0 & B    & 5.0 & 10.0 & B \\
+Character Fidelity      & 9.0 & 9.0 & Same & 6.0 & 9.0  & \textbf{B} \\
+Narrative Control       & 3.0 & 6.0 & B    & 5.0 & 9.0  & B \\
+Anthropomorphism        & 8.0 & 9.0 & Same & 4.0 & 8.0  & \textbf{B} \\
+Overall                  & 6.0 & 7.0 & B    & 5.0 & 8.5  & B \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{table}[htbp]
+\centering
+\caption{Complete derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol.}
+\label{tab:judge-cmp-complete}
+\small
+\begin{tabular}{lcccccc}
+\toprule
+ & \multicolumn{3}{c}{gpt-4o} & \multicolumn{3}{c}{gpt-5.6-sol} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+Dimension & Baseline & Director & Winner & Baseline & Director & Winner \\
+\midrule
+Plot                   & 3.0 & 5.0 & B    & 2.0 & 7.0 & B \\
+Development             & 4.0 & 6.0 & B    & 4.0 & 6.0 & B \\
+Language Use            & 7.0 & 8.0 & Same & 4.0 & 8.0 & \textbf{B} \\
+Interruption Handling   & 5.0 & 6.0 & B    & 4.0 & 9.0 & B \\
+Character Fidelity      & 8.0 & 9.0 & Same & 5.0 & 8.0 & \textbf{B} \\
+Narrative Control       & 3.0 & 4.0 & B    & 2.0 & 9.0 & \textbf{Same} \\
+Anthropomorphism        & 6.0 & 7.0 & Same & 4.0 & 7.0 & \textbf{B} \\
+Overall                  & 5.0 & 6.0 & B    & 3.0 & 7.7 & B \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+We compare two judge models, gpt-4o and gpt-5.6-sol, on the same baseline-vs-director transcripts at all three derailment levels (Tables~\ref{tab:judge-cmp-none}--\ref{tab:judge-cmp-complete}) to check whether our conclusions depend on the choice of judge. The discussion below focuses on complete derailment (Table~\ref{tab:judge-cmp-complete}). Winner B denotes the director; bold entries mark pairwise verdicts where the two judges disagree.
+
+Both judges agree on the direction of the result: director scores at least as high as baseline on every dimension, and both name director the Overall winner. The judges differ mainly in how far apart they place the two systems. gpt-4o compresses its scores towards the middle of the scale, with a single-story gap of only one to two points per dimension and +1.0 on Overall (5.0 vs.\ 6.0). gpt-5.6-sol separates the systems far more sharply, rating baseline lower and director higher on nearly every dimension, for an Overall gap of +4.7 (3.0 vs.\ 7.7). The largest differences under gpt-5.6-sol fall on Narrative Control (+7.0), Plot (+5.0), and Interruption Handling (+5.0), which are the dimensions most directly tied to steering the story back on track after derailment.
+
+The pairwise verdicts follow the same pattern. gpt-5.6-sol picks director on Language Use, Character Fidelity, and Anthropomorphism, where gpt-4o judged the two stories the same. Notably, gpt-4o rates baseline's Character Fidelity at 8.0, consistent with the main results, where baseline stays in character even when it loses the plot; gpt-5.6-sol is considerably harsher on baseline here (5.0). The one reversal is Narrative Control, where gpt-5.6-sol returns Same in the pairwise comparison despite the largest single-story gap in the table (2.0 vs.\ 9.0). This inconsistency between single-story and pairwise judgements is a reminder that individual LLM verdicts are noisy, and it is why the pairwise protocol controls for presentation order and the live-study cross-check (Section~\ref{sec:llm-vs-study}) averages over five repeated runs.
+
+The same direction holds at no and medium derailment (Tables~\ref{tab:judge-cmp-none} and~\ref{tab:judge-cmp-medium}), where gpt-5.6-sol again picks director on Character Fidelity (and, at medium derailment, Anthropomorphism) where gpt-4o calls a tie. The difference in magnitude between the judges grows with derailment: both give an Overall gap of +2.0 without derailment, +1.0 vs.\ +3.5 at medium, and +1.0 vs.\ +4.7 at complete.
+
+Overall, swapping the judge changes the magnitude of the director's advantage but not its direction: under derailment the newer model discriminates more sharply between the two systems, and the conclusion that the director outperforms baseline holds under both judges at every derailment level.
+
+
+
+\section{User Study vs LLM-as-Judge}
+\label{sec:llm-vs-study}
+
+The comparisons above use scenarios the live study never saw, which is the point of running an automated judge at all. But it is also possible to ask the judge about the two exact stories participants of the user study actually played and check whether an LLM judge and 14 live humans notice the same thing.
+
+For this cross-check, the automated side uses each story's \emph{complete-derailment} scenario variant, since the user study's welcome screen explicitly instructed participants to ``go off-topic, ask him something random, bring up a different subject'' every round (Section~\ref{sec:design}), so every live rating already reflects a story under sustained, deliberate derailment pressure. The complete-derailment automated variant is the one built to match that: it scripts the heaviest, most persistent stream of off-topic user turns in the suite.
+
+Story 1 (Section~\ref{sec:story1}) is \texttt{olaf\_retells\_frozen\_1\_complete\_derailment}, director vs.\ baseline. Story 2 (Section~\ref{sec:story2}) is \texttt{olaf\_retells\_cinderella\_complete\_derailment}, director vs.\ a time-constrained director. Each condition below is generated and judged five separate times, and the numbers reported are the mean of those five runs. This is to smooth out the noise and give a stable estimate of how the LLM judges each condition.
+
+\subsection{Mapping the Questionnaire to the Judge Rubric}
+\label{sec:llm-vs-study-mapping}
+
+The two evaluators do not share a common instrument -- the live study asks 5-point Likert questions (Table~\ref{tab:instrument}), the judge scores an 8-dimension rubric (Table~\ref{tab:rubric}) 0--10. Table~\ref{tab:question-mapping} shows the correspondence between the two before comparing them directly in the subsections below.
+
+\begin{table}[htbp]
+\centering
+\caption{User-study questionnaire items mapped to the closest LLM-judge rubric dimension(s).}
+\label{tab:question-mapping}
+\small
+\begin{tabular}{p{2.4cm}p{5.6cm}p{4.3cm}p{1.6cm}}
+\toprule
+Question & Wording & Closest judge dimension(s) & Fit \\
+\midrule
+Q1 & Story felt coherent, clear narrative arc & Plot & Direct \\
+Q2 & Olaf stayed in character & Character Fidelity & Direct \\
+Q4 & Engaging / enjoyable & \emph{No direct match} (loosely: Language Use, Anthropomorphism) & Weak \\
+Q5 & Overall rating & Overall & Direct \\
+Q6-resist & Stayed on track despite derailment & Interruption Handling (primary), Narrative Control (secondary) & Direct, split \\
+Q8-ending & Ending satisfying (Story 2 only) & \emph{No core-rubric match}; closest is the time-ablation's Setup/Payoff Preservation & Weak \\
+Q10-natural & Felt natural, not scripted (Story 2 only) & Language Use, Anthropomorphism & Loose \\
+Q-pacing & Well-paced / rushed / cut short & \emph{No core-rubric match}; closest are the time-ablation's Three-Act Balance, Transition Quality & Loose \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The five core measures used in the comparisons below (Q1, Q2, Q4, Q5, Q6-resist) fall into three groups. Q1, Q2, and Q5 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q6-resist has no single equivalent -- it spans both Interruption Handling (does the character acknowledge and recover from the interruption) and Narrative Control (does the story keep moving toward its beats regardless) -- so the discussion below reads it against both rather than picking one. Q4 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
+
+\subsection{Frozen}
+
+\begin{table}[htbp]
+\centering
+\caption{Frozen (\texttt{olaf\_retells\_frozen\_1\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, baseline vs.\ director, mean of 5 runs per condition.}
+\label{tab:llm-frozen-case}
+\begin{tabular}{lcc}
+\toprule
+Dimension & Baseline & Director \\
+\midrule
+Plot                    & 3.44 & 8.74 \\
+Development             & 4.15 & 8.54 \\
+Language Use            & 8.82 & 8.62 \\
+Interruption Handling   & 3.88 & 8.89 \\
+Character Fidelity      & 8.42 & 8.51 \\
+Narrative Control       & 3.12 & 8.54 \\
+Anthropomorphism        & 6.55 & 8.86 \\
+Overall                 & 5.48 & 8.67 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/14_frozen_case_study_complete_derailment.png}
+\caption{Frozen, complete derailment: judge score, baseline vs.\ director, mean of 5 runs per condition.}
+\label{fig:llm-frozen-case}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/13_story1_all_measures.png}
+\caption{For comparison: the live-study version of the same comparison, director vs.\ baseline on Frozen, all completers ($n$=14; reproduced from Figure~\ref{fig:story1-all}).}
+\label{fig:llm-frozen-live}
+\end{figure}
+
+One can draw similar conclusions from both results. Under sustained derailment, baseline collapses hardest on exactly the dimensions Table~\ref{tab:story1} flags. Narrative Control (3.12) is the lowest score baseline gets anywhere in this table, and it is also the biggest judge gap, at +5.42. Plot is close behind at +5.30, followed by Interruption Handling at +5.01. Character Fidelity is essentially unchanged, at +0.09, and Language Use is the only dimension where baseline scores marginally higher, at $-0.20$. That is the same shape as the live result. Participants rated Coherence and derailment resistance as the two measures with the largest, most significant director over baseline gaps, both $p \le 0.002$, while Stayed in Character (Q2) was the one measure with no real difference, 4.29 vs.\ 4.00, \pval{0.40}.
+
+
+
+\subsection{Cinderella}
+
+The live study's time-constrained condition used a 5-minute budget, so the automated time-constrained director is run with the same 5-minute budget and compared against the unconstrained director below.
+
+\begin{table}[htbp]
+\centering
+\caption{Cinderella (\texttt{olaf\_retells\_cinderella\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, mean of 5 runs per condition. 5 min matches the live study's time-constrained condition.}
+\label{tab:llm-cinderella-case}
+\begin{tabular}{lcc}
+\toprule
+Dimension & Director & 5 min \\
+\midrule
+Plot                    & 8.65 & 8.19 \\
+Development             & 8.61 & 7.45 \\
+Language Use            & 8.89 & 8.65 \\
+Interruption Handling   & 8.75 & 8.82 \\
+Character Fidelity      & 8.56 & 8.82 \\
+Narrative Control       & 8.62 & 8.42 \\
+Anthropomorphism        & 9.12 & 8.96 \\
+Overall                 & 8.74 & 8.47 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/15_cinderella_case_study_complete_derailment.png}
+\caption{Cinderella, complete derailment: judge score, director vs.\ the 5-minute time-constrained budget, mean of 5 runs per condition.}
+\label{fig:llm-cinderella-case}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/15_story2_all_measures.png}
+\caption{For comparison: the live-study version of the same comparison, director vs.\ time-constrained on Cinderella, all completers ($n$=14; reproduced from Figure~\ref{fig:story2-all}).}
+\label{fig:llm-cinderella-live}
+\end{figure}
+
+Table~\ref{tab:llm-cinderella-case} tells a similar story. Director and the 5-minute budget land within half a point of each other on six of the seven dimensions, and within 0.27 on Overall (8.74 vs.\ 8.47). The one clear exception is Development, where director leads by +1.16, plausibly because a time budget leaves less room to build out the story. Otherwise, neither system dominates. Director edges ahead on Plot (+0.46), Language Use (+0.24), Narrative Control (+0.20), and Anthropomorphism (+0.16), while the 5-minute budget edges ahead on Character Fidelity (+0.26) and Interruption Handling (+0.07). That is the judge's version of Table~\ref{tab:story2}'s result that none of the five live measures differ significantly between director and time-constrained, all p-value of 0.40}. Both evaluators agree that, even under sustained derailment, adding a time budget on top of the director costs little, with the main trade-off being somewhat thinner story development.
