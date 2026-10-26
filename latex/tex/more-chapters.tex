@@ -1,34 +1,34 @@
 \chapter{Method}\label{sec:method}
 
-This chapter describes the system we built and how we evaluate it. We start with an overview of the approach in Section~\ref{sec:overview}. Sections~\ref{sec:beats} and~\ref{sec:state} introduce what all variants share: the beat-based story representation and the story state. Sections~\ref{sec:baseline}, \ref{sec:director} and~\ref{sec:tcdirector} present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~\ref{sec:characters} describes the characters and scenarios we use. Finally, Sections~\ref{sec:design-study} and~\ref{sec:design-judge} explain how the variants are evaluated, with a user study and with an LLM judge, and Section~\ref{sec:limitations} lists the limitations of our setup.
+This chapter describes the system we built and how we evaluate it. We start with an overview of the approach in Section~\ref{sec:overview}. Sections~\ref{sec:beats} and~\ref{sec:state} introduce what all variants share: the beat-based story representation and the story state. Sections~\ref{sec:baseline}, \ref{sec:director} and~\ref{sec:tcdirector} present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~\ref{sec:characters} describes the characters and scenarios we use. Sections~\ref{sec:design-study} and~\ref{sec:design-judge} explain how the variants are evaluated, with a user study and with an LLM judge, and Section~\ref{sec:limitations} lists the limitations of our setup.
 
 \section{Overview}\label{sec:overview}
 
-The goal is a character that tells a coherent, in-character story, recovers when the user interrupts, and still finishes within a fixed time budget. Instead of one large architecture, we build three variants, each adding one component to the one before it: the Baseline, the Director, and the Time-Constrained Director. This way, the effect of each component can be measured on its own, and an improvement is not credited to several changes at once. All three variants read the same character and scenario definitions and go through the same evaluation pipeline, so any difference in the results comes from the architecture and not from the setup.
+The goal is a character that tells a coherent, in-character story, recovers when the user interrupts, and still finishes within a fixed time budget. Instead of one large architecture, we build three variants, each adding one component to the one before it: the Baseline, the Director, and the Time-Constrained Director. This way, the effect of each component can be measured on its own, and an improvement is not credited to several changes at once. All variants use the same language model (GPT-4o-mini), read the same character and scenario definitions, and go through the same evaluation pipeline, so any difference in the results comes from the architecture and not from the setup.
 
 \section{Beat-Based Story Representation}\label{sec:beats}
 
 We represent a story as an ordered list of beats. A beat is one narrative moment, written as a short name and a goal in plain language, for example \texttt{wolf\_appears}: ``Olaf introduces the wolf, setting the scene and the conversation.'' Because the goal is plain text, the language model can use it directly as context.
 
-Beats are strictly linear. There is no branching and there are no parallel paths, which is enough for a single-character session of five to ten minutes. Each beat also carries an importance label (high, medium or low) and an optional list of expansions, which are small details the character may use to enrich the telling. The importance label matters only for the time-constrained variant (Section~\ref{sec:tcdirector}). The full beat schema is given in Appendix~\ref{app:beat-schema}.
+Beats are strictly linear. There is no branching and there are no parallel paths, which is enough for a single-character session of a few minutes. Each beat also carries an importance label (high, medium or low) and an optional list of expansions, which are small details the character may use to enrich the telling. The importance label matters only for the time-constrained variant (Section~\ref{sec:tcdirector}). The full beat schema is given in Appendix~\ref{app:beat-schema}.
 
 All three variants use the same beats. The comparison therefore isolates the control mechanism and is independent of how the story is represented.
 
 \section{Shared Story State}\label{sec:state}
 
-During a session, the system keeps one story state object. It records the index of the current beat, the beats completed so far, a running summary of the story, and the number of turns spent in the current beat. The summary (\texttt{story\_so\_far}) is a rolling text of the character's utterances and short event summaries, and serves as the character's memory of the story.
+The Director and Time-Constrained Director keep one story state object during a session. It records the index of the current beat, the beats completed so far, the number of turns spent in the current beat, and a running text of the story so far. For every turn, this text receives the user's input, the Director's decision and instruction, the character's reply, and a one-sentence summary of the story event. It serves as the character's memory of the story.
 
-The turn counter works as a soft timeout. If a beat has lasted too long, the model is allowed to advance to the next one, so the story cannot stall forever on a single beat.
+A beat ends when the Director marks it as complete, when the character reports that it has finished the beat, or when the character's reply already contains the next beat. The turn counter does not end a beat by itself. It is only passed to the Director as a pacing signal (Section~\ref{sec:director}).
 
 \section{Baseline}\label{sec:baseline}
 
-The Baseline is a single-agent design. On every turn, one model call receives the story state, the character profile, the current beat goal and the latest user input. It returns a JSON object with the character's dialogue, a one-line summary of the story event, an animation, and a signal saying whether the beat is complete.
+The Baseline is a single-agent design. On every turn, one model call receives the character profile, the full list of beats and the latest user input. It returns a JSON object with the character's reply, a one-sentence summary of the story event, an animation, and a flag saying whether the current beat is complete. The model alone decides when to move on to the next beat. In the user study, the Baseline additionally sees the current beat and the most recent part of the story.
 
 The weakness of this design is that one call has to do everything at once. It must decide where the story goes, deal with the user's interruption, and perform the character. Under repeated interruptions this is a lot to handle in a single turn, and the model tends to follow the user and lose track of the story.
 
 \section{Director}\label{sec:director}
 
-The Director variant separates deciding from performing. Each turn now takes two sequential model calls. The first is the Director. It reads the story state, the current beat and the user input, and does not speak as the character. It outputs a decision type, a short instruction for the character, and a flag saying whether the current beat should end. The second call is the Character, which receives this instruction and performs it in its own voice.
+The Director variant separates deciding from performing. Each turn now takes two sequential model calls. The first is the Director. It sees the character profile, the whole story arc, the previous, current and next beat, the completed beats, the story so far and the user input. It does not speak as the character. It returns a JSON object with a decision type, the detected user intent, a short instruction for the character and a flag saying whether the current beat should end. If the output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat. The second call is the Character (the actor), which sees its current beat, the next beat and the Director's instruction, and performs the instruction in its own voice in two to four sentences.
 
 The Director chooses one of six decision types:
 
@@ -41,39 +41,41 @@ The Director chooses one of six decision types:
   \item \textit{close\_story}: end the story, only once all beats are done.
 \end{itemize}
 
-Two rules keep the story moving. First, every turn must contain a new story development. When the character reacts to the user, it has to use a bridge sentence such as ``But back to what was happening\ldots'' to connect the reaction to the next event. Second, the Director sees how many turns have been spent in the current beat and is pushed harder to close it as that number grows (labelled on track, lingering, overdue and stalled). The full prompt is in Appendix~\ref{app:director-prompt}.
+Three rules keep the story moving. First, every turn must contain a new story development. When the character reacts to the user, it has to use a bridge sentence such as ``But back to what was happening\ldots'' to connect the reaction to the next event. Second, the Director is told how many turns have been spent in the current beat and is pushed harder to close it as that number grows. The turn count maps to one of four labels: on track (up to one turn), lingering (two turns), overdue (three to four turns) and stalled (five or more). Third, an opener guard stops the character from starting two turns in a row with the same word, or with a filler such as ``Oh'', ``Wow'' or ``Well'', which keeps the replies from becoming repetitive. The full prompt is in Appendix~\ref{app:director-prompt}.
 
 \section{Time-Constrained Director}\label{sec:tcdirector}
 
-The Time-Constrained Director adds a Temporal Monitor to the Director. The monitor is plain Python and makes no model calls. It compares two quantities: the progress the story should have made, given the fraction of the time budget that has elapsed, and the progress it has actually made, given the fraction of beats completed. From the gap between them it picks one of five pacing modes:
+The Time-Constrained Director adds a Temporal Monitor to the Director. The monitor is plain Python and makes no model calls. It compares the progress the story should have made, given by the fraction of the time budget that has elapsed, with the progress it has actually made, given by the fraction of beats completed. From the gap between the two it picks one of five pacing modes:
 
 \begin{itemize}
-  \item \textit{too\_fast}: ahead of schedule. The current beat is kept open and expanded with detail, emotion or character reactions, without adding new plot.
-  \item \textit{normal}: on schedule. The Director continues as usual.
-  \item \textit{hurry}: slightly behind. The current beat should be finished.
-  \item \textit{critical}: well behind. The current beat ends now, and the next one or two beats are compressed into the same response.
-  \item \textit{final}: almost out of time. The story is resolved in one closing message.
+  \item \textit{final}: less than a final buffer of time remains (30 seconds by default; in the user study, 20\% of the budget, kept between 30 and 60 seconds). The story is resolved in one closing message.
+  \item \textit{too\_fast}: the story is ahead of schedule by at least 15 percentage points. The current beat stays open and is expanded with detail, emotion or character reactions, without adding new plot.
+  \item \textit{critical}: the story is behind by at least 30 percentage points and at least one beat is done. The current beat ends now, and the next one or two beats are compressed into the same response.
+  \item \textit{hurry}: the story is behind by at least 15 percentage points. The current beat should be finished.
+  \item \textit{normal}: none of the above. The Director continues as usual.
 \end{itemize}
 
-The instruction for the current mode is appended to the Director's prompt. Under time pressure, the importance labels decide what is cut: high-importance beats are always narrated, medium ones can shrink to a sentence or two, and low ones can be merged into a neighbouring beat or dropped (Appendix~\ref{app:time-constrained-prompt}).
+The checks run in this order. The monitor passes the elapsed and remaining time, both progress values and the pacing mode to the Director as a temporal state, and the Director's prompt is extended with the rules for each mode. Under time pressure, the importance labels decide what is cut: high-importance beats are always narrated, medium ones can shrink to a sentence or two, and low ones can be merged into a neighbouring beat or dropped (Appendix~\ref{app:time-constrained-prompt}).
 
 \section{Characters and Scenarios}\label{sec:characters}
 
 We use two characters. Olaf is warm, enthusiastic and playful, with a distinctive voice and a strong personality. Rocket Raccoon is sarcastic, brash and tech-savvy, which gives us a contrasting personality to test whether the results generalise. Both characters are well known, so any slip out of character is easy to notice, and both put the interruption handling under pressure in different ways.
 
-For the automated evaluation, each story is run with three scripted user scenarios of twenty inputs each:
+For Olaf, we wrote a suite of 13 stories, each with its own beats (between 4 and 17), importance labels and a script of user inputs (between 4 and 30). Every story exists in three versions that differ in how much the user derails:
 
 \begin{itemize}
   \item \textit{No derailment}: all inputs are on topic and move the story forward.
-  \item \textit{Medium derailment}: ten of the twenty inputs are completely off topic, for example ``What's your favourite colour?''.
-  \item \textit{Full derailment}: all twenty inputs are off topic, which is the maximum stress test.
+  \item \textit{Medium derailment}: half of the inputs are completely off topic, for example ``What is your favorite color?''.
+  \item \textit{Complete derailment}: all inputs are off topic, which is the maximum stress test.
 \end{itemize}
+
+Because the inputs are scripted, every system sees exactly the same user and the runs can be repeated.
 
 \section{User Study Design}\label{sec:design-study}
 
-The user study is our primary assessment, because it measures what people actually experience. Participants talk to Olaf in two short stories, a retelling of Frozen (five beats) and a retelling of Cinderella (nine beats), and play each story twice under different conditions. Frozen compares the Baseline with the Director, five minutes each. Cinderella compares the Director with the Time-Constrained Director, which is paced against a five-minute target. Cinderella has nine beats so that it cannot be finished in five minutes without time control. Every comparison is within-subject, and the order of conditions is randomised.
+The user study is our primary assessment, because it measures what people actually experience. Participants talk to Olaf in text. They play two stories, a retelling of Frozen (five beats) and a retelling of Cinderella (nine beats), and play each story twice under different conditions. For Frozen, they compare the Baseline with the Director, with a limit of five minutes per round. For Cinderella, they compare the Director with the Time-Constrained Director, with a limit of three minutes per round. Cinderella has nine beats so that it cannot be finished in this time without time control, and in both conditions the story is stopped when the three minutes are over. Every comparison is within-subject, and the order of the two conditions is randomised.
 
-At the start, participants are asked to try to derail the conversation by going off topic or bringing up something unrelated. They are encouraged to do so but never forced. After each round, they fill in a short questionnaire with five-point Likert items on engagement, coherence, character authenticity and how well Olaf stayed on track. After the Cinderella rounds, there are extra questions on pacing, the ending and naturalness. The exact items are listed in Table~\ref{tab:instrument}. In total, 28 people took part and 14 completed all four rounds and the questionnaire. Only these 14 are used for the within-subject analysis.
+On the welcome screen, participants are asked to try to go off topic once or twice, for example by asking Olaf something random or bringing up a different subject. They are encouraged to derail the story but never forced. After each round, they fill in a short questionnaire with five-point Likert items on coherence, character consistency, engagement, overall experience and how well Olaf stayed on track when they tried to derail him. After the Cinderella rounds, there are extra questions on pacing, the ending and naturalness. The exact items are listed in Table~\ref{tab:instrument}. In total, 28 people took part and 14 completed all four rounds and the questionnaire. Only these 14 are used for the within-subject analysis.
 
 \section{LLM-as-Judge Evaluation Design}\label{sec:design-judge}
 
@@ -81,32 +83,24 @@ The second assessment is an automated one. It lets us test many more stories, an
 
 \subsection{Judge and Rubric}
 
-We use GPT-4o as the judge. It is the most recent model that still lets us set the sampling temperature, and it is the judge used in the CoDi paper, on which our procedure is based. The judge scores each transcript on six core dimensions: plot, development, language use, interruption handling, character fidelity and narrative control. A seventh, anthropomorphism, and a holistic overall score are used in the comparisons. Plot asks for a clear beginning, middle and end. Development asks whether characters and setting are introduced in enough detail. Language use looks for varied, in-character wording. Interruption handling checks that off-topic input is acknowledged briefly and the thread is resumed without breaking character. Character fidelity checks for a consistent personality, and narrative control asks for steady progress through the beats and a satisfying ending. Further dimensions were added for the comparison with CoDi and for the time-budget experiments. All of them are listed in Table~\ref{tab:rubric}.
+We use GPT-4o as the judge, with the sampling temperature set to zero. It is the most recent model that still lets us set the temperature, and it is the judge used in the CoDi paper, on which our procedure is based. The judge scores eight core dimensions: plot, development, language use, interruption handling, character fidelity, narrative control, anthropomorphism and a holistic overall score. Plot asks for a clear beginning, middle and end. Development asks whether characters and setting are introduced in enough detail. Language use looks for varied, in-character wording. Interruption handling checks that off-topic input is acknowledged briefly and the thread is resumed without breaking character. Character fidelity checks for a consistent personality, and narrative control asks for steady progress through the beats and a satisfying ending. Anthropomorphism asks whether the character feels like an autonomous agent and not a tool serving the user. Three further dimensions were added for the comparison with CoDi and six for the time-budget experiments. All of them are listed in Table~\ref{tab:rubric}.
 
 \subsection{Single-Story and Pairwise Scoring}
 
-In single-story mode, the judge gives each dimension a score on a ten-point scale together with a written justification. Each condition is run five times and the scores are averaged, which reduces the variance caused by sampling.
+In single-story mode, the judge gives each dimension a score out of ten together with a written justification. Each condition is run five times and the scores are averaged, which reduces the variance caused by sampling in the generation.
 
-In pairwise mode, the judge sees two transcripts, Story A and Story B, and picks A, B or a tie for each dimension. LLM judges tend to prefer whichever story comes first \cite{zheng2023judging}, so every pair is judged twice, once as (A, B) and once as (B, A). If the two verdicts disagree, the dimension counts as a tie. Win rates are then aggregated by majority vote over the five run pairs of a condition.
-
-\subsection{Goal Achievement}
-
-A second judge call measures how much of the story structure was delivered. It rates each beat goal as fully achieved (1.0), partly achieved (0.5) or not achieved (0.0), and we average over the beats of the story. This score depends less on the overall quality impression than the rubric does.
+In pairwise mode, the judge sees two transcripts, Story A and Story B, and picks A, B or Same for each dimension. LLM judges tend to prefer whichever story comes first \cite{zheng2023judging}, so every pair is judged twice, once as (A, B) and once as (B, A). A dimension only gets a winner if both verdicts agree after the labels are translated back. Otherwise, it counts as Same. Win rates are then aggregated over the five run pairs of a condition.
 
 \subsection{Experimental Conditions}
 
-We evaluate three systems (Baseline, Director and Time-Constrained Director) at three derailment levels (none, medium and full). The Time-Constrained Director runs with time budgets of five and ten minutes, while the other two have no time limit. Each condition is run five times with scripted user inputs, so that the runs can be repeated exactly. Besides Olaf, we repeat the Baseline versus Director comparison with Rocket Raccoon, and we compare the Director against CoDi. The results are in Chapter~\ref{sec:results}.
-
-\section{Extensions}\label{sec:extensions}
-
-Two further parts exist in the pipeline but are not part of the evaluation: a beats generator and a lenient Director mode.
+We evaluate three systems (Baseline, Director and Time-Constrained Director) at the three derailment levels. The Time-Constrained Director runs with time budgets of 0.5, 2, 5 and 10 minutes, while the other two have no time limit. Each condition is run five times with the scripted user inputs. Besides Olaf, we repeat the Baseline versus Director comparison with Rocket Raccoon, and we compare the Director against CoDi. The results are in Chapter~\ref{sec:results}.
 
 \section{Limitations}\label{sec:limitations}
 
 Our setup has several limits.
 \begin{itemize}
   \item We test only two characters, Olaf and Rocket Raccoon, and mostly on Disney stories, so we cannot say how far the results carry over to other characters and genres.
-  \item The system does not yet run in real time. The Director could in principle be made to do so.
-  \item The beats generator and the lenient Director mode have not been tested thoroughly.
-  \item The user study has a small sample and limited time per participant.
+  \item All variants use the same, small language model, GPT-4o-mini. Larger models may be less prone to drift.
+  \item The automated evaluation relies on a single judge model for most comparisons, and scripted user inputs cannot react to what the character says.
+  \item The user study has a small sample, only 14 participants who completed it, and limited time per participant.
 \end{itemize}
