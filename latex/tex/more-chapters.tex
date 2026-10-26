@@ -1,10 +1,10 @@
 
 \chapter{Controllable Storytelling for Interactive AI Characters}
 
-
+This chapter describes the system developed in this thesis and how it is evaluated. Section~3.1 gives an overview of the approach: three system variants, each building on the one before. Sections~3.2 and~3.3 introduce the two components shared by all variants, the beat-based story representation and the shared story state. Sections~3.4 to~3.6 then present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~3.7 describes how characters and scenarios are configured. The remaining sections cover the evaluation: the LLM-as-Judge dimensions and scoring procedures, the experimental conditions, and the user study protocol, followed by possible expansions and the limitations of the approach.
 
 \section{Overview}
-The central challenge addressed by this work is building a system that can tell a coherent, character consistent story, recover gracefully when a user interrupts or derails the conversation, and still finish within a fixed time budget. Rather than designing a single monolithic architecture, this thesis takes a progressive approach: three system variants are built, each a strict superset of the one before it. This lets the effect of each added architectural component be isolated and measured on its own terms, rather than attributing improvements to a bundle of simultaneous changes. All three variants share the same input layer, taking the same character configuration and scenario definitions, and are evaluated through the same pipeline, so that differences in outcome can be attributed to the architecture itself rather than to inconsistencies in setup.
+The central challenge addressed by this work is building a system that can tell a coherent, character consistent story, recover gracefully when a user interrupts or derails the conversation, and still finish within a fixed time budget. Rather than designing a single monolithic architecture, this thesis takes a progressive approach: three system variants are built, each a strict superset of the one before it: the Baseline, the Director, and the Time-Constrained Director. This lets the effect of each added architectural component be isolated and measured on its own terms, rather than attributing improvements to a bundle of simultaneous changes. All three variants share the same input layer, taking the same character configuration and scenario definitions, and are evaluated through the same pipeline, so that differences in outcome can be attributed to the architecture itself rather than to inconsistencies in setup.
 
 \section{Narrative Representation: Beat-Based Story Structure}
 
@@ -23,7 +23,7 @@ The central challenge addressed by this work is building a system that can tell 
   \item \textit{turns\_in\_current\_beat}: soft timeout preventing indefinite stall; LLM can advance beat after threshold turns reached
 \end{itemize}
 
-\section{Variant 1}
+\section{Baseline}
 
 \begin{itemize}
   \item Single-agent design: one LLM call per turn receives full story state, character profile, current beat goal, latest user input
@@ -32,7 +32,7 @@ The central challenge addressed by this work is building a system that can tell 
   \item Cognitive overload under real user interruptions or temporal pressure
 \end{itemize}
 
-\section{Variant 2}
+\section{Director}
 
 \begin{itemize}
   \item Separates narrative deliberation from character performance across \textit{two sequential LLM calls per turn}
@@ -47,7 +47,7 @@ The central challenge addressed by this work is building a system that can tell 
   
 \end{itemize}
 
-\section{Variant 3}
+\section{Time-Constrained Director}
 
 \begin{itemize}
   \item Augments Director Agent with external \textit{Temporal Monitor} (pure Python, no LLM calls)
