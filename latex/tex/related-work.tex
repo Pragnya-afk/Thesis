@@ -20,11 +20,11 @@ Recent work has explored multi-agent frameworks in which specialized LLM agents 
 CoDi \cite{kim2025codi} exemplifies this approach. It uses a multi-agent framework with four specialized agents that work together:
 
 \begin{itemize}
-    \item Planner LLM: Sets up the story world, character profiles, and high-level narrative goals.
-    \item Director LLM: Reads the story so far each turn and issues a high-level instruction of one of four types (character action, description, intervention, or ending) to advance those goals.
+    \item \textbf{Planner LLM}: Sets up the story world, character profiles, and high-level narrative goals.
+    \item \textbf{Director LLM}: Reads the story so far each turn and issues a high-level instruction of one of four types (character action, description, intervention, or ending) to advance those goals.
     The narrative goals are encoded as a utility function: a list of natural-language goals, each with a numerical weight reflecting its importance. The story state is not tracked explicitly; the director infers it from the narrative so far.
-    \item Character LLM (one per character): Generates the character's inner thought, action and dialogue in response to the director's instructions, guided by its own profile and utility function.
-    \item Editor LLM: Formats the output into screenplay or novel form.
+    \item \textbf{Character LLM} (one per character): Generates the character's inner thought, action and dialogue in response to the director's instructions, guided by its own profile and utility function.
+    \item \textbf{Editor LLM}: Formats the output into screenplay or novel form.
 \end{itemize}
 
 CoDi shows that giving the director explicit narrative goals and dedicated intervention instructions yields stories that outperform a prior director-actor system and approach human-written stories on several dimensions. Yet CoDi is designed for adaptive storytelling, where the system flexibly adjusts narratives to achieve predefined goals. Its evaluation uses autonomously generated stories without live user input, and supporting more complex user interactions is left to future work. This is a critical distinction. CoDi's character agents periodically update their own utility functions as the story unfolds, but the paper describes no mechanism for detecting a user interruption or steering back to narrative coherence.
