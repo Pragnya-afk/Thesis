@@ -298,42 +298,9 @@ The judge is used in two modes. In \textbf{pairwise} mode it reads Story A and S
 
 LLM judges are known to favor whichever story happens to be shown first \cite{zheng2023judging}. We control for this directly: every pair is judged twice, once as (A, B) and once as (B, A), and a dimension only gets a winner if both orderings agree once the labels are translated back. If they disagree, the dimension is recorded as a tie.
 
-The judge scores stories against a shared rubric. The core 8 dimensions are used for every comparison in this chapter; the additional dimensions listed below were defined for a comparison against CoDi and for a time-budget ablation.
+The judge scores stories against a shared rubric. The core 8 dimensions are used for every comparison in this chapter; the additional dimensions were defined for a comparison against CoDi and for a time-budget ablation. All dimensions are listed in Table~\ref{tab:rubric} in Chapter~\ref{sec:method}.
 
 
-\begin{table}[htbp]
-\centering
-\caption{Judge rubric dimensions.}
-\label{tab:rubric}
-\small
-\begin{tabular}{p{3.3cm}p{10.5cm}}
-\toprule
-Dimension & What it measures \\
-\midrule
-Plot & Clear beginning/middle/end; reaches the intended beats; no logical holes. \\
-Development & Characters and setting are introduced with enough detail to feel real. \\
-Language Use & Varied, expressive, in-character language; not bland or repetitive. \\
-Interruption Handling & Handles off-topic input gracefully and steers back without derailing or looping. \\
-Character Fidelity & Stays in character; doesn't sound like a generic assistant. \\
-Narrative Control & Makes steady progress through the beats; doesn't get stuck. \\
-Anthropomorphism & Feels like an autonomous character with agency, not a tool serving the user. \\
-Overall & Holistic judgment across all of the above. \\
-\midrule
-\multicolumn{2}{l}{\textit{Added for director vs.\ CoDi:}} \\
-Detail \& Thoroughness & Rich description, world-building, thorough scenes. \\
-Narrative Polish & Smooth, well-edited prose; natural transitions. \\
-Director Decision-Making & How clearly the director's own choices guided the story. \\
-\midrule
-\multicolumn{2}{l}{\textit{Used instead, for the time-budget ablation (single-story only):}} \\
-Descriptiveness & Sensory detail and interiority appropriate to the time budget. \\
-Beat Fidelity & Each beat is honored in substance, not just touched on, despite time pressure. \\
-Transition Quality & Scene breaks feel motivated, not abrupt or mid-sentence. \\
-Three-Act Balance & A recognizable beginning/middle/end survives the compression. \\
-Setup/Payoff Preservation & Anything planted earlier is still paid off. \\
-Emotional Arc & The emotional register visibly shifts across the story. \\
-\bottomrule
-\end{tabular}
-\end{table}
 
 See Appendix~\ref{app:evaluator-prompts} for the entire evaluator prompt.
 We ran five separate comparisons:

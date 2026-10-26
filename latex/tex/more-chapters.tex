@@ -107,6 +107,43 @@ The second assessment is an automated one. It lets us test many more stories, an
 
 We use GPT-4o as the judge, with the sampling temperature set to zero. It is the most recent model that still lets us set the temperature, and it is the judge used in the CoDi paper, on which our procedure is based. The judge scores eight core dimensions: plot, development, language use, interruption handling, character fidelity, narrative control, anthropomorphism and a holistic overall score. Plot asks for a clear beginning, middle and end. Development asks whether characters and setting are introduced in enough detail. Language use looks for varied, in-character wording. Interruption handling checks that off-topic input is acknowledged briefly and the thread is resumed without breaking character. Character fidelity checks for a consistent personality, and narrative control asks for steady progress through the beats and a satisfying ending. Anthropomorphism asks whether the character feels like an autonomous agent and not a tool serving the user. Three further dimensions were added for the comparison with CoDi and six for the time-budget experiments. All of them are listed in Table~\ref{tab:rubric}.
 
+Most of these dimensions are not new. We take them from the evaluation protocol of CoDi \cite{kim2025codi}, which in turn uses plot, development, language use and overall quality from Agents' Room \cite{huot2025agents}, and anthropomorphism and character fidelity from CoSER \cite{wang2025coser}. Interruption handling and narrative control are our own additions. They measure what this thesis is about, namely how a character reacts to derailment and whether the story keeps moving.
+
+\begin{table}[htbp]
+\centering
+\caption{Judge rubric dimensions.}
+\label{tab:rubric}
+\small
+\begin{tabular}{p{3.3cm}p{10.5cm}}
+\toprule
+Dimension & What it measures \\
+\midrule
+Plot & Clear beginning/middle/end; reaches the intended beats; no logical holes. \\
+Development & Characters and setting are introduced with enough detail to feel real. \\
+Language Use & Varied, expressive, in-character language; not bland or repetitive. \\
+Interruption Handling & Handles off-topic input gracefully and steers back without derailing or looping. \\
+Character Fidelity & Stays in character; doesn't sound like a generic assistant. \\
+Narrative Control & Makes steady progress through the beats; doesn't get stuck. \\
+Anthropomorphism & Feels like an autonomous character with agency, not a tool serving the user. \\
+Overall & Holistic judgment across all of the above. \\
+\midrule
+\multicolumn{2}{l}{\textit{Added for director vs.\ CoDi:}} \\
+Detail \& Thoroughness & Rich description, world-building, thorough scenes. \\
+Narrative Polish & Smooth, well-edited prose; natural transitions. \\
+Director Decision-Making & How clearly the director's own choices guided the story. \\
+\midrule
+\multicolumn{2}{l}{\textit{Used instead, for the time-budget ablation (single-story only):}} \\
+Descriptiveness & Sensory detail and interiority appropriate to the time budget. \\
+Beat Fidelity & Each beat is honored in substance, not just touched on, despite time pressure. \\
+Transition Quality & Scene breaks feel motivated, not abrupt or mid-sentence. \\
+Three-Act Balance & A recognizable beginning/middle/end survives the compression. \\
+Setup/Payoff Preservation & Anything planted earlier is still paid off. \\
+Emotional Arc & The emotional register visibly shifts across the story. \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
 \subsection{Single-Story and Pairwise Scoring}
 
 In single-story mode, the judge gives each dimension a score out of ten together with a written justification. Each condition is run five times and the scores are averaged, which reduces the variance caused by sampling in the generation.
