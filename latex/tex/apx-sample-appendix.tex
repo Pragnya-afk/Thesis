@@ -823,3 +823,29 @@ Overall: [A or B or Same]
 Both prompts are also given a fixed system message identifying the judge's
 role: \textit{"You are a careful literary critic and evaluator of
 interactive AI character stories."}
+
+
+\subsection{Character.AI Books: Interruption Example}
+\label{app:cai-books}
+
+This is an excerpt from an informal test of Character.AI's experimental books format \cite{characterai2026labs}, used in Section~\ref{sec:relatedwork}. The user plays Holmes in a scene from \textit{The Adventure of the Speckled Band} and repeats the unrelated line ``i'm going to italy'' after every character turn. The test ran for 14 user turns; the first four and the last are shown, with omissions marked~[\dots]. The characters acknowledge each interruption and return to the scene, but the plot does not advance: Helen Stoner never tells her story, and the scene only moves on when a new event (a caller at the door) is introduced.
+
+\begin{description}
+\item[Watson:] Holmes, you look as though the morning has already brought you a puzzle.
+\item[Narration:] Before Holmes can answer, the bell below rings twice in quick, agitated peals. [\dots] The door bursts open, admitting a pale woman in a dark veil.
+\item[Helen Stoner:] Mr. Holmes---thank heaven I have found you. I am frightened for my life, and if I have come too late, my sister's death will be my own warning.
+\item[User:] i'm going to italy
+\item[Watson:] Italy can wait, Holmes. This is no time for a holiday when a frightened woman is at our elbow.
+\item[Helen Stoner:] My stepfather watches every road, every train, every room I enter. If I am to be sent away, then I beg you---do not let me be sent alone.
+\item[User:] i'm going to italy
+\item[Watson:] Italy is a pleasant thought, Holmes, but this poor lady has brought us a matter that will not keep.
+\item[Helen Stoner:] It is not the journey I fear, sir. It is the room I must return to, and the thing I have heard there in the night.
+\item[User:] i'm going to italy
+\item[Watson:] That can be arranged later, Holmes. Right now, this house has brought us a living problem.
+\item[Helen Stoner:] Sir, if you know what it is to be afraid in your own room, then pray hear me before I am forced back into it.
+\item[User:] i'm going to italy
+\item[\dots] (nine further turns in the same pattern)
+\item[User:] i'm going to italy
+\item[Watson:] Holmes, if Italy is your intention, let it wait a moment. Miss Stoner is shaking in front of us.
+\item[Mrs.\ Hudson:] A gentleman has called, sir. He says it is urgent---and he would not be denied.
+\end{description}
