@@ -9,7 +9,7 @@
 
 \begin{itemize}
 \item \textbf{Story 1 -- ``Retelling of Frozen''} (5 narrative beats): once under \textbf{baseline} (Olaf responds directly to the user, with no structural guardrails), once under \textbf{director} (a beat-based director agent steers every turn toward the next story beat while trying to accommodate the user).
-\item \textbf{Story 2 -- ``Retelling of Cinderella''} (9 narrative beats): once under the same \textbf{director} condition, once under \textbf{time-constrained director} -- identical director logic, but additionally paced against a fixed 5-minute target, instructed to compress or fold together lower-importance beats as time runs out.
+\item \textbf{Story 2 -- ``Retelling of Cinderella''} (9 narrative beats): once under the same \textbf{director} condition, once under \textbf{time-constrained director} -- identical director logic, but additionally paced against a fixed 3-minute target, instructed to compress or fold together lower-importance beats as time runs out.
 \end{itemize}
 
 Condition order was randomized independently per participant and per story, so order is not confounded with condition. 14 participants  completed all four rounds and the closing questionnaire; all analyses below that require a within-subject pairing use these 14 completers, since they are the only participants who rated every condition. The welcome screen explicitly asked participants to try to derail the conversation (``go off-topic, ask him something random, bring up a different subject''), so every measure of derailment resistance below reflects deliberately provoked interruption, not incidental drift.
@@ -135,7 +135,7 @@ See Appendix~\ref{app:beats-cinderella} for the beats list of this story.
 
 
 
-Story 2 holds the director logic constant and isolates the effect of adding a hard 5-minute pacing target, across 9 narrative beats. All results use the 14 completers unless noted.
+Story 2 holds the director logic constant and isolates the effect of adding a hard 3-minute pacing target, across 9 narrative beats. All results use the 14 completers unless noted.
 
 \begin{table}[htbp]
 \centering
@@ -163,7 +163,7 @@ Resisted derailment (Q6-resist) & 4.25 $\pm$ 0.62 & 3.75 $\pm$ 1.22 & 12 & 0.40 
 
 None of the five core measures differ significantly (all $p \ge 0.40$). Adding a hard time budget on top of the director does not measurably hurt coherence, character consistency, engagement, overall rating, or derailment resistance.
 
-The story of Cinderella with 9 beats was specifically chosen since its length does not allow completion of the story in 5 minutes under non-time-constrained conditions.
+The story of Cinderella with 9 beats was specifically chosen since its length does not allow completion of the story in 3 minutes under non-time-constrained conditions.
 
 \subsection{Pacing and ending quality}
 
@@ -200,7 +200,7 @@ Ending satisfaction: \pval{0.016} (Wilcoxon, $n$=14). Naturalness: \pval{0.27}, 
 \label{fig:ending}
 \end{figure}
 
-The unconstrained director round almost never reaches an ending (86\% ``cut short''), while the time-constrained round mostly does (71\% ``well-paced''), and participants rated that ending as \emph{more} satisfying (3.14 vs.\ 2.07, \pval{0.016}).  Without a time budget, the round simply stops when the session's 5-minute cap hits, with no mechanism to wrap up nor a mechanism to help the pacing; the time-constrained director's closing logic as well as pacing modes exists specifically to avoid that.
+The unconstrained director round almost never reaches an ending (86\% ``cut short''), while the time-constrained round mostly does (71\% ``well-paced''), and participants rated that ending as \emph{more} satisfying (3.14 vs.\ 2.07, \pval{0.016}).  Without a time budget, the round simply stops when the session's 3-minute cap hits, with no mechanism to wrap up nor a mechanism to help the pacing; the time-constrained director's closing logic as well as pacing modes exists specifically to avoid that.
 
 \begin{quote}
 \small
@@ -218,7 +218,7 @@ Every time-constrained transcript was read turn-by-turn against its pacing state
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/12_beat_compression_time_constrained.png}
-\caption{Which Cinderella beats were compressed or skipped under the 5-minute limit, across all 16 time-constrained transcripts.}
+\caption{Which Cinderella beats were compressed or skipped under the 3-minute limit, across all 16 time-constrained transcripts.}
 \label{fig:compression}
 \end{figure}
 
@@ -466,7 +466,7 @@ Taken together, this is evidence that the director's advantage over baseline is 
 \section{Why Beats}
 \label{sec:llm-beats-ablation}
 
-Throughout this thesis, the target narrative is represented internally as a short ordered list of \emph{beats} : named units with a one-sentence goal each (e.g.\ \texttt{forest\_entry}: ``Red meets the wolf and reveals where she is going'')  rather than as a pre-written block of prose. The director tracks a \texttt{beat\_index} and a set of \texttt{completed\_beats}, and both the director and the actor are told only the current, previous, and next beat goal on any given turn, never the full text of what should eventually be said. This section tests that design choice directly, rather than asserting it.
+Throughout this thesis, the target narrative is represented internally as a short ordered list of \emph{beats} : named units with a one-sentence goal each (e.g.\ \texttt{forest\_entry}: ``Red meets the wolf and reveals where she is going'')  rather than as a pre-written block of prose. The director tracks a \texttt{beat\_index} and a set of \texttt{completed\_beats}, and the director sees the list of beat names and goals together with the previous, current, and next beat, and the actor sees only the current beat goal and the name of the next beat, but neither is ever given the full text of what should eventually be said. This section tests that design choice directly, rather than asserting it.
 
 We built a full-text variant of the director that is otherwise identical: the same decision-type taxonomy (\texttt{progress\_story}, \texttt{gently\_redirect}, \texttt{close\_story}, etc.), the same priority ordering, the same interruption-handling, anti-stall, and anti-repetition rules, the same actor style constraints. The only change is the representation of the story and how progress through it is tracked: the beat list and \texttt{beat\_index} are replaced with the complete prose text of the story and a self-reported ``turns since last advancement'' signal, and instead of the harness incrementing a counter when a beat is marked complete, the model must decide for itself, every turn, whether it has advanced through the text and when the story has genuinely ended.
 
@@ -699,11 +699,11 @@ One can draw similar conclusions from both results. Under sustained derailment, 
 
 \subsection{Cinderella}
 
-The live study's time-constrained condition used a 5-minute budget, so the automated time-constrained director is run with the same 5-minute budget and compared against the unconstrained director below.
+The live study's time-constrained condition used a 3-minute budget. The automated runs use budgets of 0.5, 2, 5 and 10 minutes, so we compare the unconstrained director against the closest one, 5 minutes.
 
 \begin{table}[htbp]
 \centering
-\caption{Cinderella (\texttt{olaf\_retells\_cinderella\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, mean of 5 runs per condition. 5 min matches the live study's time-constrained condition.}
+\caption{Cinderella (\texttt{olaf\_retells\_cinderella\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, mean of 5 runs per condition. 5 min is the automated budget closest to the live study's 3-minute time-constrained condition.}
 \label{tab:llm-cinderella-case}
 \begin{tabular}{lcc}
 \toprule
