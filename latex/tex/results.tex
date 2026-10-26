@@ -296,7 +296,7 @@ To test the system at a scale no live study can reach, we also ran an automated 
 
 The judge is used in two modes. In \textbf{pairwise} mode it reads Story A and Story B side by side and picks a winner per dimension, or calls it a tie. In \textbf{single-story} mode it scores one transcript alone, 0 to 10 per dimension. Most comparisons in this section use both: pairwise for head-to-head verdicts, single-story for the underlying scores those verdicts summarize.
 
-LLM judges are known to favor whichever story happens to be shown first \citep{zheng2023judging}. We control for this directly: every pair is judged twice, once as (A, B) and once as (B, A), and a dimension only gets a winner if both orderings agree once the labels are translated back. If they disagree, the dimension is recorded as a tie.
+LLM judges are known to favor whichever story happens to be shown first \cite{zheng2023judging}. We control for this directly: every pair is judged twice, once as (A, B) and once as (B, A), and a dimension only gets a winner if both orderings agree once the labels are translated back. If they disagree, the dimension is recorded as a tie.
 
 The judge scores stories against a shared rubric. The core 8 dimensions are used for every comparison in this chapter; the additional dimensions listed below were defined for a comparison against CoDi and for a time-budget ablation.
 

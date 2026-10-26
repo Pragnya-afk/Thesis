@@ -7,9 +7,9 @@ Controllable narrative generation is increasingly central to interactive media. 
 
 \section{Symbolic and Goal-Driven Narrative Planning}
 
-Early narrative systems relied on symbolic planning, treating story generation as a search problem through logical states and actions \citep{Meehan1977}. Systems like IPOCL and SABRE formalized narrative planning as hierarchical task decomposition with character goals and believability constraints. These approaches guaranteed logical coherence by construction, but they produced rigid, constrained narratives that lacked the fluidity interactive applications demanded.
+Early narrative systems relied on symbolic planning, treating story generation as a search problem through logical states and actions \cite{Meehan1977}. Systems like IPOCL and SABRE formalized narrative planning as hierarchical task decomposition with character goals and believability constraints. These approaches guaranteed logical coherence by construction, but they produced rigid, constrained narratives that lacked the fluidity interactive applications demanded.
 
-A foundational insight emerged from {Façade} \citep{mateas2003facade}, a landmark interactive drama system. Façade demonstrated something crucial: narrative control becomes more robust when you separate what should happen next (narrative deliberation) from how characters express it (performance and dialogue generation). The system's three-layer architecture operated with story planning on one level, character behavior on another, and performance at a third. This decoupling enabled interactive steering while preserving character believability. The principle remains influential today: separating narrative decisions from character-level execution lets systems respond to user input without losing coherence. Every hierarchical approach that has followed builds on this insight.
+A foundational insight emerged from {Façade} \cite{mateas2003facade}, a landmark interactive drama system. Façade demonstrated something crucial: narrative control becomes more robust when you separate what should happen next (narrative deliberation) from how characters express it (performance and dialogue generation). The system's three-layer architecture operated with story planning on one level, character behavior on another, and performance at a third. This decoupling enabled interactive steering while preserving character believability. The principle remains influential today: separating narrative decisions from character-level execution lets systems respond to user input without losing coherence. Every hierarchical approach that has followed builds on this insight.
 
 \section{LLM-based Storytelling}
 
@@ -17,7 +17,7 @@ The emergence of large language models revolutionized narrative generation by re
 
 
 Recent work has explored multi-agent frameworks in which specialized LLM agents coordinate narrative generation.
-CoDi \citep{zhang2024codi} exemplifies this approach. It uses a multi-agent framework with four specialized agents that work together:
+CoDi \cite{zhang2024codi} exemplifies this approach. It uses a multi-agent framework with four specialized agents that work together:
 
 \begin{itemize}
     \item Planner LLM: Sets up the story world, characters, and high-level narrative goals.
@@ -31,7 +31,7 @@ CoDi demonstrates that planning and performance separation improves story qualit
 
 \section{Beat-Based Narrative Representation}
 
-While CoDi uses continuous utility functions to represent narrative goals, an alternative approach represents stories as sequences of discrete narrative beats. Each beat is a distinct moment or scene with clear dramatic function. This abstraction is grounded in screenwriting theory \citep{mckee1997story} and provides a middle ground between rigid symbolic planning and unconstrained LLM generation.
+While CoDi uses continuous utility functions to represent narrative goals, an alternative approach represents stories as sequences of discrete narrative beats. Each beat is a distinct moment or scene with clear dramatic function. This abstraction is grounded in screenwriting theory \cite{mckee1997story} and provides a middle ground between rigid symbolic planning and unconstrained LLM generation.
 
 NarrativeGenie \cite{jansen2024narrativegenie} is the most directly relevant precedent in this space. It converts free-text story outlines into structured sequences of narrative beats, establishes causal dependencies between beats to form a partial order, and grounds characters and props in the world. Dialogue and actions are then generated within each beat. By constraining generation to a single beat at a time, the system maintains coherence throughout the story. It also enables principled interruption handling. User inputs are evaluated relative to the current beat's objective, and the system can recover to a narrative beat if the user derails.
 
@@ -41,13 +41,13 @@ This thesis adopts beat-based representation as its foundational abstraction. As
 
 \section{Interruption Handling }
 
-Several interactive narrative systems demonstrate approaches to handling unexpected user inputs. Whispers of the Star \citep{Guo2026}, a collaborative multiplayer game, employs a director-like architecture ("whisperer" to issue real-time steering directives during gameplay. AI Dungeon \citep{panickssery2024llm}, a text adventure game, generates story responses to user input in real-time, allowing players to interrupt and redirect the narrative dynamically. Character. AI's interactive book feature enables conversational storytelling where users engage with AI characters, make choices, and request narrative changes through dialogue.
+Several interactive narrative systems demonstrate approaches to handling unexpected user inputs. Whispers of the Star \cite{Guo2026}, a collaborative multiplayer game, employs a director-like architecture ("whisperer" to issue real-time steering directives during gameplay. AI Dungeon \cite{panickssery2024llm}, a text adventure game, generates story responses to user input in real-time, allowing players to interrupt and redirect the narrative dynamically. Character. AI's interactive book feature enables conversational storytelling where users engage with AI characters, make choices, and request narrative changes through dialogue.
 
 These systems maintain narrative control through context windows and character profiles that constrain generation. However , the challenge is not merely responding to interruptions, but doing so while maintaining long-term plot coherence and meeting temporal deadlines.
 
 \section{Time-Constrained Generation}
 
-A distinct but crucial challenge is narrative completion within fixed time budgets. Prior work on time-aware planning \citep{porteous2011controlling,CavazzaCharlesMead2001} has addressed temporal constraints in symbolic storytelling and embodied agents, but systematic treatment of pacing adaptation in LLM-based systems remains largely unexplored. Most LLM systems ignore time entirely, relying on implicit and unreliable length targets.Our work addresses this gap by introducing explicit temporal monitoring mechanisms.
+A distinct but crucial challenge is narrative completion within fixed time budgets. Prior work on time-aware planning \cite{porteous2011controlling,CavazzaCharlesMead2001} has addressed temporal constraints in symbolic storytelling and embodied agents, but systematic treatment of pacing adaptation in LLM-based systems remains largely unexplored. Most LLM systems ignore time entirely, relying on implicit and unreliable length targets.Our work addresses this gap by introducing explicit temporal monitoring mechanisms.
 
 \section{LLM-as-Judge}
 
