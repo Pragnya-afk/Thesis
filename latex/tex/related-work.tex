@@ -37,17 +37,17 @@ NarrativeGenie \cite{kumaran2024narrativegenie} is the most directly relevant pr
 
 Beats offer three key advantages over utility-function-based approaches. First, interpretability: beat objectives are expressed in natural language, making narrative logic transparent and debuggable, unlike the opaque numerical trade-offs of utility functions. Second, checkpointing: each beat represents a natural checkpoint where the system can verify whether the goal is satisfied, enabling principled decisions about recovery and pacing. Third, temporal reasoning: knowing N beats remain and t seconds remain means we can compute a pacing target directly, providing a clearer implementation path than utility functions allow.
 
-This thesis adopts beat-based representation as its foundational abstraction. As we will show, beats prove essential for addressing the real-time challenges of user interruption and time-constrained storytelling
+This thesis adopts beat-based representation as its foundational abstraction. As we will show, beats prove essential for addressing the real-time challenges of user interruption and time-constrained storytelling.
 
 \section{Interruption Handling }
 
 Several interactive narrative systems demonstrate approaches to handling unexpected user inputs. ``Bounded autonomy'' \cite{Guo2026} is a control approach for LLM-driven characters in a live multiplayer social game: a ``whisper'' channel lets players softly steer a character's next action without overriding its autonomy, while action grounding keeps behaviour within what the game can execute. AI Dungeon \cite{hua2020playing}, a text adventure game built on a language model, generates story responses to free-form player input in real time, allowing players to interrupt and redirect the narrative dynamically. Character.AI's interactive book feature \cite{characterai2026labs} enables conversational storytelling where users engage with AI characters, make choices, and request narrative changes through dialogue.
 
-These systems maintain narrative control through context windows and character profiles that constrain generation. However , the challenge is not merely responding to interruptions, but doing so while maintaining long-term plot coherence and meeting temporal deadlines.
+These systems maintain narrative control through context windows and character profiles that constrain generation. However, the challenge is not merely responding to interruptions, but doing so while maintaining long-term plot coherence and meeting temporal deadlines.
 
 \section{Time-Constrained Generation}
 
-A distinct but crucial challenge is narrative completion within fixed time budgets. Prior work on time-aware planning \cite{porteous2011controlling,CavazzaCharlesMead2001} has addressed temporal constraints in symbolic storytelling and embodied agents, but systematic treatment of pacing adaptation in LLM-based systems remains largely unexplored. Most LLM systems ignore time entirely, relying on implicit and unreliable length targets.Our work addresses this gap by introducing explicit temporal monitoring mechanisms.
+A distinct but crucial challenge is narrative completion within fixed time budgets. Prior work on time-aware planning \cite{porteous2011controlling,CavazzaCharlesMead2001} has addressed temporal constraints in symbolic storytelling and embodied agents, but systematic treatment of pacing adaptation in LLM-based systems remains largely unexplored. Most LLM systems ignore time entirely, relying on implicit and unreliable length targets. Our work addresses this gap by introducing explicit temporal monitoring mechanisms.
 
 \section{LLM-as-Judge}
 
