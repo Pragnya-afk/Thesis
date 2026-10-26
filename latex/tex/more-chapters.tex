@@ -24,7 +24,7 @@ A beat ends when the Director marks it as complete, when the character reports t
 
 The Baseline is a single-agent design. On every turn, one model call receives the character profile, the full list of beats and the latest user input. It returns a JSON object with the character's reply, a one-sentence summary of the story event, an animation, and a flag saying whether the current beat is complete. The model alone decides when to move on to the next beat. In the user study, the Baseline additionally sees the current beat and the most recent part of the story.
 
-The weakness of this design is that one call has to do everything at once. It must decide where the story goes, deal with the user's interruption, and perform the character. Under repeated interruptions this is a lot to handle in a single turn, and the model tends to follow the user and lose track of the story.
+The weakness of this design is that one call has to do everything at once. It must decide where the story goes, deal with the user's interruption, and perform the character. A language model has limited attention over its context, and it handles several tasks in one turn less reliably than a single one. Under repeated interruptions, the latest user message dominates the context, and the model tends to follow the user and lose track of the story.
 
 \section{Director}\label{sec:director}
 
