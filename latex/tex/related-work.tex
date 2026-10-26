@@ -53,9 +53,9 @@ A distinct but crucial challenge is narrative completion within fixed time budge
 
 Assessing narrative quality is inherently subjective. It spans coherence, character consistency, recovery from interruption, and pacing appropriateness. 
 
-Recent work has adopted LLM-as-Judge evaluation. Structured prompts elicit fine-grained scoring across multiple dimensions without requiring extensive manual annotation. This approach permits scaling to many samples and enables scoring of complex, subjective properties like how well the system recovers from user interruptions.
+Recent work has adopted LLM-as-Judge evaluation \cite{zheng2023judging}. Structured prompts elicit fine-grained scoring across multiple dimensions without requiring extensive manual annotation. This approach permits scaling to many samples and enables scoring of complex, subjective properties like how well the system recovers from user interruptions.
 
-However, LLM judges exhibit position bias, showing a tendency to favor certain positions over others, with most judges biased toward the first answer and only GPT-4 demonstrating consistency in more than 60\% of cases \cite{zheng2023judging}. 
+However, the study that introduced this approach (MT-Bench and Chatbot Arena) found that LLM judges exhibit position bias, a tendency to favor certain positions over others: most of the judges tested were biased toward the first answer, and only GPT-4 was consistent in more than 60\% of cases \cite{zheng2023judging}. 
 
 To mitigate this bias in our evaluation, we employ order-counterbalancing by evaluating systems in both AB and BA orderings. As well as employing a user study for human evaluation. 
 
