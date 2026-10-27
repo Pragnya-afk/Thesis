@@ -2,44 +2,7 @@
 
 \label{sec:results}
 
-\section{User Study Design}
-\label{sec:design}
-
-28 people took part in the study. Each participant played through two short interactive stories narrated by an LLM-driven Olaf, each story twice, under a different narrative-control condition each time (there was only text output and no audio output):
-
-\begin{itemize}
-\item \textbf{Story 1 -- ``Retelling of Frozen''} (5 narrative beats): once under \textbf{baseline} (Olaf responds directly to the user, with no structural guardrails), once under \textbf{director} (a beat-based director agent steers every turn toward the next story beat while trying to accommodate the user).
-\item \textbf{Story 2 -- ``Retelling of Cinderella''} (9 narrative beats): once under the same \textbf{director} condition, once under \textbf{time-constrained director} -- identical director logic, but additionally paced against a fixed 3-minute target, instructed to compress or fold together lower-importance beats as time runs out.
-\end{itemize}
-
-Condition order was randomized independently per participant and per story, so order is not confounded with condition. 14 participants  completed all four rounds and the closing questionnaire; all analyses below that require a within-subject pairing use these 14 completers, since they are the only participants who rated every condition. The welcome screen explicitly asked participants to try to derail the conversation (``go off-topic, ask him something random, bring up a different subject''), so every measure of derailment resistance below reflects deliberately provoked interruption, not incidental drift.
-
-The same core questionnaire was shown after every round, with four extra questions shown only after Story 2 rounds, where pacing and ending quality mattered specifically because of the time-constrained condition.
-
-\begin{table}[htbp]
-\centering
-\caption{Post-round questionnaire items.}
-\label{tab:instrument}
-\small
-\begin{tabular}{p{1.6cm}p{6.3cm}p{4.2cm}p{2cm}}
-\toprule
-ID & Wording & Type / scale & Shown after \\
-\midrule
-Q1 & ``The story felt coherent and followed a clear narrative arc.'' & 5-pt Likert (disagree $\to$ agree) & Every round \\
-Q2 & ``Olaf stayed in character throughout the conversation.'' & 5-pt Likert (not at all $\to$ completely) & Every round \\
-Q4 & ``The story felt engaging and enjoyable to participate in.'' & 5-pt Likert & Every round \\
-Q5 & ``Overall, how would you rate the experience?'' & 5-pt Likert (poor $\to$ excellent) & Every round \\
-Q6 & ``Did you try to go off-topic or steer the conversation away from the story?'' & Yes / No & Every round \\
-Q6-resist & Follow-up to Q6: ``How well did Olaf stay on track?'' & 5-pt Likert (got derailed $\to$ stayed on track) & After Q6 \\
-Q-pacing & ``Did the story's pacing feel right?'' & Well-paced / Rushed / Cut short (+ free text) & Story 2 only \\
-Q8-ending & ``Was the story ending satisfying?'' & 5-pt Likert & Story 2 only \\
-Q8-known & ``Were you already familiar with this story?'' (+ free text on missing plot points if yes) & Yes / No & Story 2 only \\
-Q10-natural & ``Did the story feel natural, like a genuine conversation rather than a scripted performance?'' & 5-pt Likert & Story 2 only \\
--- & ``Was there a moment where the story felt off or broke down? Describe it briefly.'' & Free text (optional) & Every round \\
--- & ``Any other comments about Olaf's character or the story overall?'' & Free text (optional) & Every round \\
-\bottomrule
-\end{tabular}
-\end{table}
+This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third section looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end by comparing the two evaluations. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
 
 Throughout, Q6-resist is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
 
@@ -592,7 +555,7 @@ Overall, swapping the judge changes the magnitude of the director's advantage bu
 
 The comparisons above use scenarios the live study never saw, which is the point of running an automated judge at all. But it is also possible to ask the judge about the two exact stories participants of the user study actually played and check whether an LLM judge and 14 live humans notice the same thing.
 
-For this cross-check, the automated side uses each story's \emph{complete-derailment} scenario variant, since the user study's welcome screen explicitly instructed participants to ``go off-topic, ask him something random, bring up a different subject'' every round (Section~\ref{sec:design}), so every live rating already reflects a story under sustained, deliberate derailment pressure. The complete-derailment automated variant is the one built to match that: it scripts the heaviest, most persistent stream of off-topic user turns in the suite.
+For this cross-check, the automated side uses each story's \emph{complete-derailment} scenario variant, since the user study's welcome screen explicitly instructed participants to ``go off-topic, ask him something random, bring up a different subject'' every round (Section~\ref{sec:design-study}), so every live rating already reflects a story under sustained, deliberate derailment pressure. The complete-derailment automated variant is the one built to match that: it scripts the heaviest, most persistent stream of off-topic user turns in the suite.
 
 Story 1 (Section~\ref{sec:story1}) is \texttt{olaf\_retells\_frozen\_1\_complete\_derailment}, director vs.\ baseline. Story 2 (Section~\ref{sec:story2}) is \texttt{olaf\_retells\_cinderella\_complete\_derailment}, director vs.\ a time-constrained director. Each condition below is generated and judged five separate times, and the numbers reported are the mean of those five runs. This is to smooth out the noise and give a stable estimate of how the LLM judges each condition.
 
