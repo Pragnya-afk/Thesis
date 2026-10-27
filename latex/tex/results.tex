@@ -4,7 +4,7 @@
 
 This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third section looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end by comparing the two evaluations. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
 
-Throughout, Q6-resist is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
+Throughout, Q6 is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
 
 \section{Story 1: Director vs. Baseline}
 \label{sec:story1}
@@ -22,9 +22,9 @@ Measure & Director & Baseline & $n$ pairs & $p$ \\
 \midrule
 Coherence (Q1)              & 3.93 $\pm$ 1.00 & 1.71 $\pm$ 1.07 & 14 & \textbf{0.001} \\
 Stayed in character (Q2)    & 4.29 $\pm$ 0.83 & 4.00 $\pm$ 0.88 & 14 & 0.40 \\
-Engaging (Q4)                & 3.64 $\pm$ 1.15 & 2.43 $\pm$ 1.16 & 14 & \textbf{0.036} \\
-Overall rating (Q5)          & 3.57 $\pm$ 0.94 & 2.93 $\pm$ 0.92 & 14 & 0.12 \\
-Resisted derailment (Q6-resist) & 4.36 $\pm$ 0.92 & 1.55 $\pm$ 1.21 & 11 & \textbf{0.002} \\
+Engaging (Q3)                & 3.64 $\pm$ 1.15 & 2.43 $\pm$ 1.16 & 14 & \textbf{0.036} \\
+Overall rating (Q4)          & 3.57 $\pm$ 0.94 & 2.93 $\pm$ 0.92 & 14 & 0.12 \\
+Resisted derailment (Q6) & 4.36 $\pm$ 0.92 & 1.55 $\pm$ 1.21 & 11 & \textbf{0.002} \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -46,7 +46,7 @@ The derailment-attempt rate was almost identical across conditions -- 12 of 14 b
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.62\linewidth]{plots/16_story1_derailment_paired.png}
-\caption{Resistance to derailment (Q6-resist), Story 1, one line per participant ($n$=11 paired completers). Baseline points cluster at the bottom; director points cluster at the top; every individual participant, not just the group average, rated director higher.}
+\caption{Resistance to derailment (Q6), Story 1, one line per participant ($n$=11 paired completers). Baseline points cluster at the bottom; director points cluster at the top; every individual participant, not just the group average, rated director higher.}
 \label{fig:story1-paired}
 \end{figure}
 
@@ -110,9 +110,9 @@ Measure & Director & Time-constrained & $n$ pairs & $p$ \\
 \midrule
 Coherence (Q1)              & 3.79 $\pm$ 0.80 & 3.71 $\pm$ 0.91 & 14 & 0.76 \\
 Stayed in character (Q2)    & 4.14 $\pm$ 0.66 & 4.14 $\pm$ 0.77 & 14 & 0.93 \\
-Engaging (Q4)                & 3.29 $\pm$ 0.83 & 3.36 $\pm$ 1.22 & 14 & 0.93 \\
-Overall rating (Q5)          & 3.36 $\pm$ 0.84 & 3.29 $\pm$ 1.20 & 14 & 0.67 \\
-Resisted derailment (Q6-resist) & 4.25 $\pm$ 0.62 & 3.75 $\pm$ 1.22 & 12 & 0.40 \\
+Engaging (Q3)                & 3.29 $\pm$ 0.83 & 3.36 $\pm$ 1.22 & 14 & 0.93 \\
+Overall rating (Q4)          & 3.36 $\pm$ 0.84 & 3.29 $\pm$ 1.20 & 14 & 0.67 \\
+Resisted derailment (Q6) & 4.25 $\pm$ 0.62 & 3.75 $\pm$ 1.22 & 12 & 0.40 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -141,8 +141,8 @@ The story of Cinderella with 9 beats was specifically chosen since its length do
 ``Well-paced''      & 1/14 (7\%)  & 10/14 (71\%) \\
 ``Rushed''           & 1/14 (7\%)  & 1/14 (7\%) \\
 ``Cut short''         & 12/14 (86\%) & 3/14 (21\%) \\
-Ending satisfying (Q8-ending)   & 2.07 $\pm$ 0.92 & 3.14 $\pm$ 0.77 \\
-Felt natural (Q10-natural)      & 2.93 $\pm$ 0.92 & 2.64 $\pm$ 1.01 \\
+Ending satisfying (Q8)   & 2.07 $\pm$ 0.92 & 3.14 $\pm$ 0.77 \\
+Felt natural (Q10)      & 2.93 $\pm$ 0.92 & 2.64 $\pm$ 1.01 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -205,7 +205,7 @@ The ranking is consistent across every measure: baseline lowest, director and ti
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\linewidth]{plots/09_derailment_story_comparison.png}
-\caption{Resistance to derailment (Q6-resist) by story and condition, completers only.}
+\caption{Resistance to derailment (Q6) by story and condition, completers only.}
 \label{fig:derail-by-story}
 \end{figure}
 
@@ -575,17 +575,17 @@ Question & Wording & Closest judge dimension(s) & Fit \\
 \midrule
 Q1 & Story felt coherent, clear narrative arc & Plot & Direct \\
 Q2 & Olaf stayed in character & Character Fidelity & Direct \\
-Q4 & Engaging / enjoyable & \emph{No direct match} (loosely: Language Use, Anthropomorphism) & Weak \\
-Q5 & Overall rating & Overall & Direct \\
-Q6-resist & Stayed on track despite derailment & Interruption Handling (primary), Narrative Control (secondary) & Direct, split \\
-Q8-ending & Ending satisfying (Story 2 only) & \emph{No core-rubric match}; closest is the time-ablation's Setup/Payoff Preservation & Weak \\
-Q10-natural & Felt natural, not scripted (Story 2 only) & Language Use, Anthropomorphism & Loose \\
-Q-pacing & Well-paced / rushed / cut short & \emph{No core-rubric match}; closest are the time-ablation's Three-Act Balance, Transition Quality & Loose \\
+Q3 & Engaging / enjoyable & \emph{No direct match} (loosely: Language Use, Anthropomorphism) & Weak \\
+Q4 & Overall rating & Overall & Direct \\
+Q6 & Stayed on track despite derailment & Interruption Handling (primary), Narrative Control (secondary) & Direct, split \\
+Q8 & Ending satisfying (Story 2 only) & \emph{No core-rubric match}; closest is the time-ablation's Setup/Payoff Preservation & Weak \\
+Q10 & Felt natural, not scripted (Story 2 only) & Language Use, Anthropomorphism & Loose \\
+Q7 & Well-paced / rushed / cut short & \emph{No core-rubric match}; closest are the time-ablation's Three-Act Balance, Transition Quality & Loose \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The five core measures used in the comparisons below (Q1, Q2, Q4, Q5, Q6-resist) fall into three groups. Q1, Q2, and Q5 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q6-resist has no single equivalent -- it spans both Interruption Handling (does the character acknowledge and recover from the interruption) and Narrative Control (does the story keep moving toward its beats regardless) -- so the discussion below reads it against both rather than picking one. Q4 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
+The five core measures used in the comparisons below (Q1, Q2, Q3, Q4, Q6) fall into three groups. Q1, Q2, and Q4 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q6 has no single equivalent -- it spans both Interruption Handling (does the character acknowledge and recover from the interruption) and Narrative Control (does the story keep moving toward its beats regardless) -- so the discussion below reads it against both rather than picking one. Q3 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
 
 \subsection{Frozen}
 
