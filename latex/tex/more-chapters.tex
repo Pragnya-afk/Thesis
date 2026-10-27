@@ -4,7 +4,7 @@ This chapter describes the system we built and how we evaluate it. We start with
 
 \section{Overview}\label{sec:overview}
 
-The goal is a character that tells a coherent, in-character story, recovers when the user interrupts, and still finishes within a fixed time budget. Instead of one large architecture, we build three variants, each adding one component to the one before it: the Baseline, the Director, and the Time-Constrained Director. This way, the effect of each component can be measured on its own, and an improvement is not credited to several changes at once. All variants use the same language model (GPT-4o-mini), read the same character and scenario definitions, and go through the same evaluation pipeline, so any difference in the results comes from the architecture and not from the setup. We also built two extensions, a beat generator and a lenient Director mode. They are not part of the evaluation and are described in Section~\ref{sec:extensions}.
+The goal is a character that tells a coherent, in-character story, recovers when the user interrupts, and still finishes within a fixed time budget. Instead of one large architecture, we build three variants, each adding one component to the one before it: the Baseline, the Director, and the Time-Constrained Director. This way, the effect of each component can be measured on its own, and an improvement is not credited to several changes at once. All variants use the same language model (OpenAI's GPT-4o-mini), read the same character and scenario definitions, and go through the same evaluation pipeline, so any difference in the results comes from the architecture and not from the setup. We also built two extensions, a beat generator and a lenient Director mode. They are not part of the evaluation and are described in Section~\ref{sec:extensions}.
 
 \section{Beat-Based Story Representation}\label{sec:beats}
 
@@ -148,9 +148,13 @@ The second assessment is an automated one. It lets us test many more stories, an
 
 \subsection{Judge and Rubric}
 
-We use GPT-4o as the judge, with the sampling temperature set to zero. It is the most recent model that still lets us set the temperature, and it is the judge used in the CoDi paper, on which our procedure is based. As a robustness check, we also repeat one comparison with GPT-5.6-sol (Section~\ref{sec:judge-model-comparison}). This model was released after this thesis began, so we use it only for this check and leave a more thorough investigation to future work. The judge scores eight core dimensions: plot, development, language use, interruption handling, character fidelity, narrative control, anthropomorphism and a holistic overall score. Plot asks for a clear beginning, middle and end. Development asks whether characters and setting are introduced in enough detail. Language use looks for varied, in-character wording. Interruption handling checks that off-topic input is acknowledged briefly and the thread is resumed without breaking character. Character fidelity checks for a consistent personality, and narrative control asks for steady progress through the beats and a satisfying ending. Anthropomorphism asks whether the character feels like an autonomous agent and not a tool serving the user. Three further dimensions were added for the comparison with CoDi and six for the time-budget experiments. All of them are listed in Table~\ref{tab:rubric}.
+We use OpenAI's GPT-4o as the judge, with the sampling temperature set to zero. It is the most recent model that still lets us set the temperature, and it is the judge used in the CoDi paper, on which our procedure is based. As a robustness check, we also repeat one comparison with GPT-5.6-sol (Section~\ref{sec:judge-model-comparison}). This model was released after this thesis began, so we use it only for this check and leave a more thorough investigation to future work. The judge scores eight core dimensions: plot, development, language use, interruption handling, character fidelity, narrative control, anthropomorphism and a holistic overall score. Plot asks for a clear beginning, middle and end. Development asks whether characters and setting are introduced in enough detail. Language use looks for varied, in-character wording. Interruption handling checks that off-topic input is acknowledged briefly and the thread is resumed without breaking character. Character fidelity checks for a consistent personality, and narrative control asks for steady progress through the beats and a satisfying ending. Anthropomorphism asks whether the character feels like an autonomous agent and not a tool serving the user. Three further dimensions were added for the comparison with CoDi and six for the time-budget experiments. All of them are listed in Table~\ref{tab:rubric}.
 
 Most of these dimensions are not new. We take them from the evaluation protocol of CoDi \cite{kim2025codi}, which in turn uses plot, development, language use and overall quality from Agents' Room \cite{huot2025agents}, and anthropomorphism and character fidelity from CoSER \cite{wang2025coser}. Interruption handling and narrative control are our own additions. They measure what this thesis is about, namely how a character reacts to derailment and whether the story keeps moving.
+
+For the comparison with CoDi, we added three dimensions. CoDi and our system produce different kinds of text. CoDi writes a complete story and passes it through an editor agent that formats it as a screenplay or novel, while our system produces short turns in reaction to a user. A rubric that only judges plot and character would miss this difference. Detail and thoroughness and narrative polish capture how rich and finished the prose is, and director decision-making compares how clearly the two Directors guided their stories.
+
+For the time-budget experiments, we added six more dimensions. With a short budget, the Time-Constrained Director has to compress the story, and the core rubric cannot tell whether the compression kept the story intact. The added dimensions check exactly that: whether the amount of detail suits the budget (descriptiveness), whether each beat is still honoured in substance (beat fidelity), whether the cuts between scenes feel natural (transition quality), whether a beginning, middle and end survive (three-act balance), whether what the story sets up is still paid off (setup and payoff preservation), and whether the emotional tone changes over the story (emotional arc). These dimensions are used in addition to the core ones.
 
 \begin{table}[htbp]
 \centering
@@ -170,12 +174,12 @@ Narrative Control & Makes steady progress through the beats; doesn't get stuck. 
 Anthropomorphism & Feels like an autonomous character with agency, not a tool serving the user. \\
 Overall & Holistic judgment across all of the above. \\
 \midrule
-\multicolumn{2}{l}{\textit{Added for director vs.\ CoDi:}} \\
+\multicolumn{2}{l}{\textit{Added for the comparison with CoDi:}} \\
 Detail \& Thoroughness & Rich description, world-building, thorough scenes. \\
 Narrative Polish & Smooth, well-edited prose; natural transitions. \\
 Director Decision-Making & How clearly the director's own choices guided the story. \\
 \midrule
-\multicolumn{2}{l}{\textit{Used instead, for the time-budget ablation (single-story only):}} \\
+\multicolumn{2}{l}{\textit{Added for the time-budget experiments:}} \\
 Descriptiveness & Sensory detail and interiority appropriate to the time budget. \\
 Beat Fidelity & Each beat is honored in substance, not just touched on, despite time pressure. \\
 Transition Quality & Scene breaks feel motivated, not abrupt or mid-sentence. \\
