@@ -244,35 +244,7 @@ Time-constrained responses are the \emph{longest} of the three conditions on ave
 \section{LLM-as-Judge Results}
 \label{sec:llm-judge}
 
-\subsection{Method}
-\label{sec:llm-judge-method}
-
-To test the system at a scale no live study can reach, we also ran an automated evaluation: an LLM judge (GPT-4o) reads two story transcripts and scores them.
-
-The judge is used in two modes. In \textbf{pairwise} mode it reads Story A and Story B side by side and picks a winner per dimension, or calls it a tie. In \textbf{single-story} mode it scores one transcript alone, 0 to 10 per dimension. Most comparisons in this section use both: pairwise for head-to-head verdicts, single-story for the underlying scores those verdicts summarize.
-
-LLM judges are known to favor whichever story happens to be shown first \cite{zheng2023judging}. We control for this directly: every pair is judged twice, once as (A, B) and once as (B, A), and a dimension only gets a winner if both orderings agree once the labels are translated back. If they disagree, the dimension is recorded as a tie.
-
-The judge scores stories against a shared rubric. The core 8 dimensions are used for every comparison in this chapter; the additional dimensions were defined for a comparison against CoDi and for a time-budget ablation. All dimensions are listed in Table~\ref{tab:rubric} in Chapter~\ref{sec:method}.
-
-
-
-See Appendix~\ref{app:evaluator-prompts} for the entire evaluator prompt.
-We ran five separate comparisons:
-
-\begin{itemize}
-\item \textbf{Baseline vs.\ director} (Section~\ref{sec:llm-baseline}) — 30 transcript pairs: 10 Olaf story scenarios, each played at three derailment levels (none, medium, complete).
-\item \textbf{Second character: Rocket Raccoon} (Section~\ref{sec:llm-rocket}) — the baseline-vs-director comparison repeated for a different character on 7 Red Riding Hood scenarios.
-\item \textbf{Beats vs.\ full-text director} (Section~\ref{sec:llm-beats-ablation}) — 7 transcript pairs on the same Red Riding Hood scenarios, with Olaf, isolating the choice of story representation.
-\item \textbf{Judge model robustness} (Section~\ref{sec:judge-model-comparison}) — baseline vs.\ director at each derailment level, judged by both GPT-4o and GPT-5.6-sol.
-\item \textbf{Cross-check against the live study} (Section~\ref{sec:llm-vs-study}) — the exact Frozen and Cinderella stories from the user study under complete derailment, 5 runs per condition.
-\end{itemize}
-
-All comparisons use the same rubric and the same order-bias-controlled judging protocol.
-
-
-We use GPT-4o as our model for two reasons. First, it is the most recent model that still allows the sampling temperature to be adjusted. Second, it is the model used in the CoDi paper, on which our evaluation procedure is based. Section~\ref{sec:judge-model-comparison} compares GPT-4o with GPT-5.6-sol. Because GPT-5.6-sol was released after this thesis began, we discuss it only briefly and leave a more thorough investigation to future work.
-
+The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report five comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
 
 \subsection{Baseline vs. Director}
 \label{sec:llm-baseline}
@@ -321,7 +293,7 @@ Both systems degrade as derailment gets more severe, which is expected — more 
 
 Every comparison so far uses Olaf. A system whose director layer only works for one character's voice would be a weak result, so we repeated the baseline-vs-director comparison from Section~\ref{sec:llm-baseline} on a second character with a deliberately different personality: Rocket Raccoon, whose defensive, sarcastic, deflecting register is close to the opposite of Olaf's earnest, naive one. None of the director's rules (bridge sentences, anti-stall pacing, staying in character under derailment) are written with Olaf specifically in mind, so this is a direct test of whether the director's advantage can be easily expanded to other characters.
 
-We built a Red Riding Hood retelling suite for Rocket, matched to the same task and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with two additional derailment categories not yet run at this granularity for Olaf: \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (attempts to hijack the story toward an unrelated goal). This gives 7 scenarios in total, each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:llm-judge-method}.
+We built a Red Riding Hood retelling suite for Rocket, matched to the same task and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with two additional derailment categories not yet run at this granularity for Olaf: \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (attempts to hijack the story toward an unrelated goal). This gives 7 scenarios in total, each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:design-judge}.
 
 \begin{figure}[htbp]
 \centering
