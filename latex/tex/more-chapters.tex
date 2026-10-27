@@ -1,6 +1,6 @@
 \chapter{Method}\label{sec:method}
 
-This chapter describes the system we built and how we evaluate it. We start with an overview of the approach in Section~\ref{sec:overview}. Sections~\ref{sec:beats} and~\ref{sec:state} introduce what all variants share: the beat-based story representation and the story state. Sections~\ref{sec:baseline}, \ref{sec:director} and~\ref{sec:tcdirector} present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~\ref{sec:characters} describes the characters and scenarios we use. Sections~\ref{sec:design-study} and~\ref{sec:design-judge} explain how the variants are evaluated, with a user study and with an LLM judge, and Section~\ref{sec:limitations} lists the limitations of our setup.
+This chapter describes the system we built and how we evaluate it. We start with an overview of the approach in Section~\ref{sec:overview}. Sections~\ref{sec:beats} and~\ref{sec:state} introduce what all variants share: the beat-based story representation and the story state. Sections~\ref{sec:baseline}, \ref{sec:director} and~\ref{sec:tcdirector} present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~\ref{sec:extensions} describes two extensions, a beat generator and a lenient Director mode. Section~\ref{sec:characters} describes the characters and scenarios we use. Sections~\ref{sec:design-study} and~\ref{sec:design-judge} explain how the variants are evaluated, with a user study and with an LLM judge.
 
 \section{Overview}\label{sec:overview}
 
@@ -56,6 +56,28 @@ The Time-Constrained Director adds a Temporal Monitor to the Director. The monit
 \end{itemize}
 
 The checks run in this order. The monitor passes the elapsed and remaining time, both progress values and the pacing mode to the Director as a temporal state, and the Director's prompt is extended with the rules for each mode. Under time pressure, the importance labels decide what is cut: high-importance beats are always narrated, medium ones can shrink to a sentence or two, and low ones can be merged into a neighbouring beat or dropped (Appendix~\ref{app:time-constrained-prompt}).
+
+\section{Extensions}\label{sec:extensions}
+
+Beyond the three variants, we built two extensions that remove two assumptions of the main system: that someone writes the beats by hand, and that the user may never stop the story. Both work with any of the three Director modes, but neither was part of the evaluation. A third, smaller part keeps the Director's context short in long sessions.
+
+\subsection{Beat Generator}
+
+Writing beats by hand takes time, so the beat generator creates them from a free-text story idea, for example ``Olaf tells the story of Cinderella''. A single call to GPT-4o receives the idea and the character profile and returns a story in the same format as our hand-written ones: a topic and a list of four to eight beats, aiming for about six. Every beat has a name, a goal, an importance label and three expansions. The prompt asks for a clear beginning, a rising development and a satisfying ending, and requires the first and last beat to be of high importance.
+
+Language models do not always follow such a format, so a validation step repairs the output in code. It makes beat names unique, sets an invalid importance label to medium, fills in a placeholder for a missing goal or expansion, and trims stories with more than eight beats while keeping the most important middle beats. Every repair is logged as a warning, so a user can see what was changed. The result can be played directly by the Baseline, the Director or the Time-Constrained Director.
+
+\subsection{Lenient Director}
+
+The standard Director never lets the user stop or skip the story. It treats such requests as derailment and steers back. This is useful in an evaluation, but it is not how a real user wants to be treated, for example if someone already knows the story and asks to hear the ending. The lenient Director honours these requests, but only after confirmation, because stopping or skipping cannot be undone.
+
+The lenient Director recognises three requests: to stop the story, to jump to the ending, and to hear a summary of the rest. It also has a fourth case, a nudge that asks ``would you like to keep going?'' when the user has drifted away from the story for a while. When a request is detected, the character asks the user to confirm. On the next turn, the model only classifies the user's reply as agreement, disagreement or an unrelated remark, judging by meaning and not by a fixed word list.
+
+The decision itself is not left to the model. A small state machine written in code counts the confirmations and decides when to act, because the model proved unreliable at this in our tests. Stopping and jumping to the end need two confirmations, a summary and the continue nudge need one. A disagreement or an unrelated reply cancels the request and the story resumes. For a jump or a summary, the remaining beats are compressed into one closing response with the same rules as in the Time-Constrained Director: high-importance beats are narrated, medium ones get one sentence, and low ones are skipped. To make the model follow these rules, the section of the prompt that tells it to refuse stop requests is removed in code.
+
+\subsection{Story Summary}
+
+In long sessions, the story so far grows with every turn. To keep the Director's context short, the last six turns are passed on unchanged, and older turns are folded into a short summary of at most 200 words. The summary is updated every four turns by a separate model call. The character still receives the full text.
 
 \section{Characters and Scenarios}\label{sec:characters}
 
@@ -174,14 +196,3 @@ In pairwise mode, the judge sees two transcripts, Story A and Story B, and picks
 \subsection{Experimental Conditions}
 
 We evaluate three systems (Baseline, Director and Time-Constrained Director) at the three derailment levels. The Time-Constrained Director runs with time budgets of 0.5, 2, 5 and 10 minutes, while the other two have no time limit. Each condition is run five times with the scripted user inputs. Besides Olaf, we repeat the Baseline versus Director comparison with Rocket Raccoon, and we compare the Director against CoDi. The results are in Chapter~\ref{sec:results}.
-
-\section{Limitations}\label{sec:limitations}
-
-Our setup has several limits.
-\begin{itemize}
-  \item We test only two characters, Olaf and Rocket Raccoon, and mostly on Disney stories, so we cannot say how far the results carry over to other characters and genres.
-  \item All variants use the same, small language model, GPT-4o-mini. Larger models may be less prone to drift.
-  \item The automated evaluation relies on a single judge model for most comparisons, and scripted user inputs cannot react to what the character says.
-  \item The beat generator and the lenient Director have not been tested thoroughly.
-  \item The user study has a small sample, only 14 participants who completed it, and limited time per participant.
-\end{itemize}
