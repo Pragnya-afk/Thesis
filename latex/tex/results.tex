@@ -2,11 +2,13 @@
 
 \label{sec:results}
 
-This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third section looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end by comparing the two evaluations. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
+This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third part looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end by comparing the two evaluations. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
 
 Throughout, Q6 is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
 
-\section{Story 1: Director vs. Baseline}
+\section{User Study Results}\label{sec:user-study-results}
+
+\subsection{Story 1: Director vs. Baseline}
 \label{sec:story1}
 See Appendix~\ref{app:beats-frozen} for the beats list of this story.
 
@@ -86,7 +88,7 @@ Under \textbf{director}, roughly 8 in 10 comments describe the opposite failure 
 
 Taken together: baseline trades coherence for responsiveness, director trades some responsiveness for coherence, and neither fully solves both. The failure mode under director is qualitatively better for the story (it still gets told) but noticeably worse for the feeling of being acknowledged for the user.
 
-\section{Story 2: Director vs.\ Time-Constrained Director}
+\subsection{Story 2: Director vs.\ Time-Constrained Director}
 \label{sec:story2}
 
 See Appendix~\ref{app:beats-cinderella} for the beats list of this story.
@@ -191,7 +193,7 @@ The unconstrained director round almost never reaches an ending (86\% ``cut shor
 The pattern tracks story position closely. The opening beat is fully developed in all 16 transcripts. From there, compression builds beat by beat; from the fourth beat onward, most transcripts show compressed or skipped treatment, and the final two beats are never once given a dedicated turn in any of the 14 transcripts that reach them. They are folded into a single closing message instead. This makes sense since depending on how long the user takes to respond or how much he derails, the pacing is adjusted accordingly. So if the user is constantly trying to derail, the story will get more and more compressed towards the end. The final turn always compresses the medium and high priority beats left.
 
 
-\section{Comparing All Three Conditions}
+\subsection{Comparing All Three Conditions}
 \label{sec:combined}
 
 Pooling every completer's director-condition response across both stories (director is seen twice per completer, once per story) gives director the largest sample ($n$=28) against $n$=14 each for baseline and time-constrained.
@@ -239,7 +241,7 @@ Time-constrained    & 8.80 $\pm$ 2.08 ($n$=15)  & 80.0 $\pm$ 17.1  & $\sim$704 \
 \end{table}
 Time-constrained responses are the \emph{longest} of the three conditions on average, consistent with the beat-compression mechanism above. Since it needs to compress multiple beats into one turn, it ends up having longer responses than the baseline and director. Since the director needs to acknowledge the user as well as steer back to the story, its responses end up longer than baseline's. Multiplying turns by response length, time-constrained's total output per round ($\sim$704 words) is essentially equal to director's ($\sim$710) and well above baseline's ($\sim$530). Fewer turns under a time budget reflects denser turns, not a shorter story.
 
-\section{Summary}
+\subsection{Summary}
 \label{sec:summary}
 
 \begin{itemize}
@@ -252,7 +254,7 @@ Time-constrained responses are the \emph{longest} of the three conditions on ave
 \item Character consistency is solved across all three conditions (4.00--4.29) -- what varies is narrative progress and how interruptions are handled, not whether Olaf stays Olaf.
 \end{itemize}
 
-\section{LLM-as-Judge Evaluation}
+\section{LLM-as-Judge Results}
 \label{sec:llm-judge}
 
 \subsection{Method}
