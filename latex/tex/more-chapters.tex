@@ -205,8 +205,8 @@ We evaluate three systems (Baseline, Director and Time-Constrained Director) at 
 \item \textbf{Baseline vs.\ director} (Section~\ref{sec:llm-baseline}) — 30 transcript pairs: 10 Olaf story scenarios, each played at three derailment levels (none, medium, complete).
 \item \textbf{Director vs.\ CoDi} (Section~\ref{sec:llm-codi}) — the same 30 Olaf transcript pairs, comparing our Director with CoDi \cite{kim2025codi}, judged with the core rubric and the three dimensions added for this comparison.
 \item \textbf{Time-budget ablation} (Section~\ref{sec:llm-timebudget}) — the Time-Constrained Director at budgets of 0.5, 2, 5 and 10 minutes against the unconstrained Director, 30 scenarios per budget, judged with the time-budget dimensions.
-\item \textbf{Second character: Rocket Raccoon} (Section~\ref{sec:llm-rocket}) — the baseline-vs-director comparison repeated for a different character on 7 Red Riding Hood scenarios.
-\item \textbf{Beats vs.\ full-text director} (Section~\ref{sec:llm-beats-ablation}) — 7 transcript pairs on the same Red Riding Hood scenarios, with Olaf, isolating the choice of story representation.
+\item \textbf{Second character: Rocket Raccoon} (Section~\ref{sec:llm-rocket}) — the baseline-vs-director comparison repeated for a different character on 7 scenarios. A scenario here is one story, Red Riding Hood, played with a different scripted set of derailment inputs, so the 7 scenarios share the story and differ only in how the user derails it.
+\item \textbf{Beats vs.\ full-text director} (Section~\ref{sec:llm-beats-ablation}) — 7 transcript pairs on the same 7 Red Riding Hood scenarios (one story, 7 different derailment inputs), with Olaf, isolating the choice of story representation.
 \item \textbf{Judge model robustness} (Section~\ref{sec:judge-model-comparison}) — baseline vs.\ director at each derailment level, judged by both GPT-4o and GPT-5.6-sol.
 \item \textbf{Cross-check against the live study} (Section~\ref{sec:llm-vs-study}) — the exact Frozen and Cinderella stories from the user study under complete derailment, 5 runs per condition.
 \end{itemize}
