@@ -244,7 +244,7 @@ Time-constrained responses are the \emph{longest} of the three conditions on ave
 \section{LLM-as-Judge Results}
 \label{sec:llm-judge}
 
-The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report five comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
+The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report seven comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), the time-budget ablation (Section~\ref{sec:llm-timebudget}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
 
 \subsection{Baseline vs. Director}
 \label{sec:llm-baseline}
@@ -287,6 +287,52 @@ The pairwise verdicts (Figure~\ref{fig:llm-base-wins}) tell a stricter version o
 Both systems degrade as derailment gets more severe, which is expected — more off-topic pressure is genuinely harder to handle. But director's lead over baseline shrinks as it goes: 1.60 points at no derailment, 0.91 at medium, down to 0.22 at complete. Under the heaviest pressure, the gap nearly closes. This lines up with the automated track's overall picture: director is a clear improvement, but it is not immune to derailment, only more resistant to it.
 
 
+
+\subsection{Director vs.\ CoDi}
+\label{sec:llm-codi}
+
+We also compare our Director with CoDi \cite{kim2025codi}, the closest existing director-based system, on the same 30 Olaf transcripts (10 scenarios at three derailment levels). Besides the core rubric, the judge scores the three dimensions added for this comparison (Table~\ref{tab:rubric}).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/04_director_vs_codi_scores_by_metric.png}
+\caption{Single-story judge scores, director vs.\ CoDi, averaged over all 30 transcripts.}
+\label{fig:llm-codi-metric}
+\end{figure}
+
+In single-story mode (Figure~\ref{fig:llm-codi-metric}), the Director scores higher than CoDi on every dimension, with an Overall score of 6.3 against 4.5. The largest gaps are on Character Fidelity (8.8 vs.\ 5.8) and Interruption Handling (6.5 vs.\ 3.6), and the smallest on Detail \& Thoroughness (5.9 vs.\ 5.1).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/05_director_vs_codi_pairwise_wins.png}
+\caption{Pairwise verdicts, director vs.\ CoDi, order-bias controlled ($n$=30).}
+\label{fig:llm-codi-wins}
+\end{figure}
+
+The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on most dimensions. When the judge sees both transcripts side by side, CoDi wins more often on Overall (15 vs.\ 7, with 8 ties) and on nine of the eleven dimensions, most clearly on Detail \& Thoroughness (19 vs.\ 2) and Narrative Polish (16 vs.\ 4). The Director wins clearly only on Interruption Handling (12 vs.\ 1) and Character Fidelity (9 vs.\ 3), the two dimensions most directly tied to reacting to the user in character. The two scoring modes therefore disagree. One possible reason is the difference in output described in Section~\ref{sec:design-judge}: CoDi produces complete, edited prose, which may look stronger in a direct comparison, while our system produces short turns in reaction to the user. We therefore read this comparison as showing that the Director handles interruptions and character better than CoDi, but not that it produces better stories overall.
+
+\subsection{Time-Budget Ablation}
+\label{sec:llm-timebudget}
+
+To see how the Time-Constrained Director behaves under different budgets, we ran it with budgets of 0.5, 2, 5 and 10 minutes and compared it with the unconstrained Director, on 30 scenarios per budget.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/06_time_constrained_coverage_and_length.png}
+\caption{Time-budget ablation: share of beats reached (left) and mean number of words per transcript (right), by time budget, compared with the unconstrained director ($n$=30 scenarios per budget).}
+\label{fig:llm-tb-coverage}
+\end{figure}
+
+Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the story is told. The share of beats reached rises from 0.12 at 0.5 minutes to 0.53 at 2 minutes and 0.74 at 5 minutes, and stays at 0.71 at 10 minutes. The unconstrained Director reaches only 0.23 of the beats, although its transcripts are about as long as those at 5 and 10 minutes (890 words, compared with 804 and 875). Without a budget, the Director spends its output on fewer beats; with one, it compresses and moves on.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.6\linewidth]{plots/07_time_constrained_qualitative_overall.png}
+\caption{Time-budget ablation: mean Overall score from the single-story rubric for the time-budget experiments, by time budget, compared with the unconstrained director.}
+\label{fig:llm-tb-overall}
+\end{figure}
+
+The judged quality changes little with the budget (Figure~\ref{fig:llm-tb-overall}). At 2, 5 and 10 minutes the Overall score lies between 2.74 and 2.80, slightly above the unconstrained Director (2.65). The 0.5-minute budget scores highest (3.33), even though its transcripts are only 48 words long on average, so this score should be read with care.
 
 \section{Rocket Raccoon}
 \label{sec:llm-rocket}
