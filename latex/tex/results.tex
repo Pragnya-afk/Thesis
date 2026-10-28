@@ -309,7 +309,7 @@ In single-story mode (Figure~\ref{fig:llm-codi-metric}), the Director scores hig
 \label{fig:llm-codi-wins}
 \end{figure}
 
-The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on most dimensions. When the judge sees both transcripts side by side, CoDi wins more often on Overall (15 vs.\ 7, with 8 ties) and on nine of the eleven dimensions, most clearly on Detail \& Thoroughness (19 vs.\ 2) and Narrative Polish (16 vs.\ 4). The Director wins clearly only on Interruption Handling (12 vs.\ 1) and Character Fidelity (9 vs.\ 3), the two dimensions most directly tied to reacting to the user in character. The two scoring modes therefore disagree. One possible reason is the difference in output described in Section~\ref{sec:design-judge}: CoDi produces complete, edited prose, which may look stronger in a direct comparison, while our system produces short turns in reaction to the user. We therefore read this comparison as showing that the Director handles interruptions and character better than CoDi, but not that it produces better stories overall.
+The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on most dimensions. When the judge sees both transcripts side by side, CoDi wins more often on Overall (15 vs.\ 7, with 8 ties) and on nine of the eleven dimensions, most clearly on Detail \& Thoroughness (19 vs.\ 2) and Narrative Polish (16 vs.\ 4). The Director wins clearly only on Interruption Handling (12 vs.\ 1) and Character Fidelity (9 vs.\ 3), the two dimensions most directly tied to reacting to the user in character. The two scoring modes therefore disagree. One possible reason is the difference in output described in Section~\ref{sec:design-judge}: CoDi produces complete, edited prose, which may look stronger in a direct comparison, while our system produces short turns in reaction to the user. We therefore read this comparison as showing that the Director handles interruptions and character better than CoDi, but not that it produces better stories overall. \todo{Double-check why single-story and pairwise verdicts disagree for CoDi and whether this explanation holds.}
 
 \subsection{Time-Budget Ablation}
 \label{sec:llm-timebudget}
@@ -323,6 +323,8 @@ To see how the Time-Constrained Director behaves under different budgets, we ran
 \label{fig:llm-tb-coverage}
 \end{figure}
 
+\todo{Double-check Figure~\ref{fig:llm-tb-coverage}: the y-axis says ``beats reached / 9'' with 30 scenarios per budget. Do all scenarios have 9 beats?}
+
 Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the story is told. The share of beats reached rises from 0.12 at 0.5 minutes to 0.53 at 2 minutes and 0.74 at 5 minutes, and stays at 0.71 at 10 minutes. The unconstrained Director reaches only 0.23 of the beats, although its transcripts are about as long as those at 5 and 10 minutes (890 words, compared with 804 and 875). Without a budget, the Director spends its output on fewer beats; with one, it compresses and moves on.
 
 \begin{figure}[htbp]
@@ -331,6 +333,8 @@ Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the 
 \caption{Time-budget ablation: mean Overall score from the single-story rubric for the time-budget experiments, by time budget, compared with the unconstrained director.}
 \label{fig:llm-tb-overall}
 \end{figure}
+
+\todo{Double-check Figure~\ref{fig:llm-tb-overall}: the y-axis label says 0--10 but the axis only goes to 5. Also, the six time-budget dimensions described in Section~\ref{sec:design-judge} are not shown; add per-dimension results if available.}
 
 The judged quality changes little with the budget (Figure~\ref{fig:llm-tb-overall}). At 2, 5 and 10 minutes the Overall score lies between 2.74 and 2.80, slightly above the unconstrained Director (2.65). The 0.5-minute budget scores highest (3.33), even though its transcripts are only 48 words long on average, so this score should be read with care.
 
