@@ -2,7 +2,7 @@
 
 \label{sec:results}
 
-This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third part looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end by comparing the two evaluations. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
+This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third part looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end with ablation studies (Section~\ref{sec:ablation-results}) that compare the two evaluations and vary the character, the story representation and the judge model. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
 
 Throughout, Q6 is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
 
@@ -344,7 +344,88 @@ Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the 
 
 The judged quality changes little with the budget (Figure~\ref{fig:llm-tb-overall}). At 2, 5 and 10 minutes the Overall score lies between 2.74 and 2.80, slightly above the unconstrained Director (2.65). The 0.5-minute budget scores highest (3.33), even though its transcripts are only 48 words long on average, so this score should be read with care.
 
-\section{Rocket Raccoon}
+\section{Ablation Studies}\label{sec:ablation-results}
+
+This section collects four further analyses. We first compare the LLM judge with the participants of the user study on the same two stories, and then vary one part of the setup at a time: the character, the story representation and the judge model.
+
+\subsection{User Study vs LLM-as-Judge}
+\label{sec:llm-vs-study}
+
+The comparisons above use scenarios the live study never saw, which is the point of running an automated judge at all. But it is also possible to ask the judge about the two exact stories participants of the user study actually played and check whether an LLM judge and 14 live humans notice the same thing.
+
+The setup of this cross-check and the mapping between the questionnaire and the judge rubric are described in Section~\ref{sec:design-crosscheck}.
+
+\subsubsection{Frozen}
+
+This is Frozen, the first story of the user study (Section~\ref{sec:story1}), now evaluated with the LLM judge instead of by participants.
+
+\begin{table}[htbp]
+\centering
+\caption{Frozen (\texttt{olaf\_retells\_frozen\_1\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, baseline vs.\ director, mean of 5 runs per condition.}
+\label{tab:llm-frozen-case}
+\begin{tabular}{lcc}
+\toprule
+Dimension & Baseline & Director \\
+\midrule
+Plot                    & 3.44 & 8.74 \\
+Development             & 4.15 & 8.54 \\
+Language Use            & 8.82 & 8.62 \\
+Interruption Handling   & 3.88 & 8.89 \\
+Character Fidelity      & 8.42 & 8.51 \\
+Narrative Control       & 3.12 & 8.54 \\
+Anthropomorphism        & 6.55 & 8.86 \\
+Overall                 & 5.48 & 8.67 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/14_frozen_case_study_complete_derailment.png}
+\caption{Frozen, complete derailment: judge score, baseline vs.\ director, mean of 5 runs per condition.}
+\label{fig:llm-frozen-case}
+\end{figure}
+
+
+Comparing the judge scores in Figure~\ref{fig:llm-frozen-case} with the participants' ratings in Figure~\ref{fig:story1-all}, one can draw similar conclusions from both results. Under sustained derailment, baseline collapses hardest on exactly the dimensions Table~\ref{tab:story1} flags. Narrative Control (3.12) is the lowest score baseline gets anywhere in this table, and it is also the biggest judge gap, at +5.42. Plot is close behind at +5.30, followed by Interruption Handling at +5.01. Character Fidelity is essentially unchanged, at +0.09, and Language Use is the only dimension where baseline scores marginally higher, at $-0.20$. That is the same shape as the live result. Participants rated Coherence and derailment resistance as the two measures with the largest, most significant director over baseline gaps, both $p \le 0.002$, while Stayed in Character (Q2) was the one measure with no real difference, 4.29 vs.\ 4.00, \pval{0.40}.
+
+
+
+\subsubsection{Cinderella}
+
+The live study's time-constrained condition used a 3-minute budget. The automated runs use budgets of 0.5, 2, 5 and 10 minutes, so we compare the unconstrained director against the closest one, 5 minutes.
+
+\begin{table}[htbp]
+\centering
+\caption{Cinderella (\texttt{olaf\_retells\_cinderella\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, mean of 5 runs per condition. 5 min is the automated budget closest to the live study's 3-minute time-constrained condition.}
+\label{tab:llm-cinderella-case}
+\begin{tabular}{lcc}
+\toprule
+Dimension & Director & 5 min \\
+\midrule
+Plot                    & 8.65 & 8.19 \\
+Development             & 8.61 & 7.45 \\
+Language Use            & 8.89 & 8.65 \\
+Interruption Handling   & 8.75 & 8.82 \\
+Character Fidelity      & 8.56 & 8.82 \\
+Narrative Control       & 8.62 & 8.42 \\
+Anthropomorphism        & 9.12 & 8.96 \\
+Overall                 & 8.74 & 8.47 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.95\linewidth]{plots/15_cinderella_case_study_complete_derailment.png}
+\caption{Cinderella, complete derailment: judge score, director vs.\ the 5-minute time-constrained budget, mean of 5 runs per condition.}
+\label{fig:llm-cinderella-case}
+\end{figure}
+
+
+Compared with the participants' ratings in Figure~\ref{fig:story2-all}, Table~\ref{tab:llm-cinderella-case} tells a similar story. Director and the 5-minute budget land within half a point of each other on six of the seven dimensions, and within 0.27 on Overall (8.74 vs.\ 8.47). The one clear exception is Development, where director leads by +1.16, plausibly because a time budget leaves less room to build out the story. Otherwise, neither system dominates. Director edges ahead on Plot (+0.46), Language Use (+0.24), Narrative Control (+0.20), and Anthropomorphism (+0.16), while the 5-minute budget edges ahead on Character Fidelity (+0.26) and Interruption Handling (+0.07). That is the judge's version of Table~\ref{tab:story2}'s result that none of the five live measures differ significantly between director and time-constrained, all p-value of 0.40. Both evaluators agree that, even under sustained derailment, adding a time budget on top of the director costs little, with the main trade-off being somewhat thinner story development.
+
+\subsection{Character Ablation: Rocket Raccoon}
 \label{sec:llm-rocket}
 
 Every comparison so far uses Olaf as the character. A system whose director layer only works for one character's voice would be a weak result, so we repeated the baseline-vs-director comparison from Section~\ref{sec:llm-baseline} on a second character with a deliberately different personality: Rocket Raccoon, whose defensive, sarcastic, deflecting register is close to the opposite of Olaf's earnest, naive one. None of the director's rules (bridge sentences, anti-stall pacing, staying in character under derailment) are written with Olaf specifically in mind, i.e.\ they are character-agnostic, so this is a direct test of whether the director's advantage generalizes to other characters.
@@ -417,7 +498,7 @@ Director & 9.00 & 8.83 & 8.17 \\
 
 Taken together, this is evidence that the director's advantage over baseline is not specific to Olaf's character prompt.
 
-\section{Narrative Representation Ablation}
+\subsection{Narrative Representation Ablation}
 \label{sec:llm-beats-ablation}
 
 This section compares the beat-based Director with the full-text variant described in Section~\ref{sec:ablations}. We ran both directors (beats and full-text) on the same Red Riding Hood derailment scenarios used in Section~\ref{sec:llm-rocket}, with Olaf, and judged the pairs head-to-head with the same AB/BA-controlled protocol as everywhere else in this chapter.
@@ -485,7 +566,7 @@ complete\_targeted          & 6.0 & 5.0 & Tie \\
 \end{table}
 
 
-\section{Judge Ablation Study}
+\subsection{Judge Ablation Study}
 \label{sec:judge-model-comparison}
 
 \begin{table}[htbp]
@@ -567,82 +648,3 @@ The pairwise verdicts follow the same pattern. gpt-5.6-sol picks director on Lan
 The same direction holds at no and medium derailment (Tables~\ref{tab:judge-cmp-none} and~\ref{tab:judge-cmp-medium}), where gpt-5.6-sol again picks director on Character Fidelity (and, at medium derailment, Anthropomorphism) where gpt-4o calls a tie. The difference in magnitude between the judges grows with derailment: both give an Overall gap of +2.0 without derailment, +1.0 vs.\ +3.5 at medium, and +1.0 vs.\ +4.7 at complete.
 
 Overall, swapping the judge changes the magnitude of the director's advantage but not its direction: under derailment the newer model discriminates more sharply between the two systems, and the conclusion that the director outperforms baseline holds under both judges at every derailment level.
-
-
-
-\section{User Study vs LLM-as-Judge}
-\label{sec:llm-vs-study}
-
-The comparisons above use scenarios the live study never saw, which is the point of running an automated judge at all. But it is also possible to ask the judge about the two exact stories participants of the user study actually played and check whether an LLM judge and 14 live humans notice the same thing.
-
-The setup of this cross-check and the mapping between the questionnaire and the judge rubric are described in Section~\ref{sec:design-crosscheck}.
-
-\subsection{Frozen}
-
-This is Frozen, the first story of the user study (Section~\ref{sec:story1}), now evaluated with the LLM judge instead of by participants.
-
-\begin{table}[htbp]
-\centering
-\caption{Frozen (\texttt{olaf\_retells\_frozen\_1\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, baseline vs.\ director, mean of 5 runs per condition.}
-\label{tab:llm-frozen-case}
-\begin{tabular}{lcc}
-\toprule
-Dimension & Baseline & Director \\
-\midrule
-Plot                    & 3.44 & 8.74 \\
-Development             & 4.15 & 8.54 \\
-Language Use            & 8.82 & 8.62 \\
-Interruption Handling   & 3.88 & 8.89 \\
-Character Fidelity      & 8.42 & 8.51 \\
-Narrative Control       & 3.12 & 8.54 \\
-Anthropomorphism        & 6.55 & 8.86 \\
-Overall                 & 5.48 & 8.67 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\linewidth]{plots/14_frozen_case_study_complete_derailment.png}
-\caption{Frozen, complete derailment: judge score, baseline vs.\ director, mean of 5 runs per condition.}
-\label{fig:llm-frozen-case}
-\end{figure}
-
-
-Comparing the judge scores in Figure~\ref{fig:llm-frozen-case} with the participants' ratings in Figure~\ref{fig:story1-all}, one can draw similar conclusions from both results. Under sustained derailment, baseline collapses hardest on exactly the dimensions Table~\ref{tab:story1} flags. Narrative Control (3.12) is the lowest score baseline gets anywhere in this table, and it is also the biggest judge gap, at +5.42. Plot is close behind at +5.30, followed by Interruption Handling at +5.01. Character Fidelity is essentially unchanged, at +0.09, and Language Use is the only dimension where baseline scores marginally higher, at $-0.20$. That is the same shape as the live result. Participants rated Coherence and derailment resistance as the two measures with the largest, most significant director over baseline gaps, both $p \le 0.002$, while Stayed in Character (Q2) was the one measure with no real difference, 4.29 vs.\ 4.00, \pval{0.40}.
-
-
-
-\subsection{Cinderella}
-
-The live study's time-constrained condition used a 3-minute budget. The automated runs use budgets of 0.5, 2, 5 and 10 minutes, so we compare the unconstrained director against the closest one, 5 minutes.
-
-\begin{table}[htbp]
-\centering
-\caption{Cinderella (\texttt{olaf\_retells\_cinderella\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, mean of 5 runs per condition. 5 min is the automated budget closest to the live study's 3-minute time-constrained condition.}
-\label{tab:llm-cinderella-case}
-\begin{tabular}{lcc}
-\toprule
-Dimension & Director & 5 min \\
-\midrule
-Plot                    & 8.65 & 8.19 \\
-Development             & 8.61 & 7.45 \\
-Language Use            & 8.89 & 8.65 \\
-Interruption Handling   & 8.75 & 8.82 \\
-Character Fidelity      & 8.56 & 8.82 \\
-Narrative Control       & 8.62 & 8.42 \\
-Anthropomorphism        & 9.12 & 8.96 \\
-Overall                 & 8.74 & 8.47 \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\linewidth]{plots/15_cinderella_case_study_complete_derailment.png}
-\caption{Cinderella, complete derailment: judge score, director vs.\ the 5-minute time-constrained budget, mean of 5 runs per condition.}
-\label{fig:llm-cinderella-case}
-\end{figure}
-
-
-Compared with the participants' ratings in Figure~\ref{fig:story2-all}, Table~\ref{tab:llm-cinderella-case} tells a similar story. Director and the 5-minute budget land within half a point of each other on six of the seven dimensions, and within 0.27 on Overall (8.74 vs.\ 8.47). The one clear exception is Development, where director leads by +1.16, plausibly because a time budget leaves less room to build out the story. Otherwise, neither system dominates. Director edges ahead on Plot (+0.46), Language Use (+0.24), Narrative Control (+0.20), and Anthropomorphism (+0.16), while the 5-minute budget edges ahead on Character Fidelity (+0.26) and Interruption Handling (+0.07). That is the judge's version of Table~\ref{tab:story2}'s result that none of the five live measures differ significantly between director and time-constrained, all p-value of 0.40. Both evaluators agree that, even under sustained derailment, adding a time budget on top of the director costs little, with the main trade-off being somewhat thinner story development.
