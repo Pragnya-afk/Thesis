@@ -30,16 +30,15 @@ The weakness of this design is that one call has to do everything at once. It mu
 
 The Director variant separates deciding from performing. Each turn now consists of two model calls, made one after the other.
 
-The first call is the \textbf{Director}, which decides what should happen next but does not speak as the character. It sees the following:
+The first call is the \textbf{Director}, which decides what should happen next. It has no contact with the user and as input gets  the following:
 \begin{itemize}
   \item the character profile,
   \item the entire beats list,
   \item the previous, current and next beat,
-  \item the beats already completed,
   \item the story so far,
   \item the user's input.
 \end{itemize}
-The Director does not just see the current and next beat; it also decides when the story moves on. Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
+The Director is responsible to keep track of the beats. It also keeps track of the beats.Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
 
 The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the following:
 \begin{itemize}
