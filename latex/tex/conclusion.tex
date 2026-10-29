@@ -1,14 +1,6 @@
-\chapter{Conclusion}\label{sec:conclusion}
+\chapter{Discussion}\label{sec:discussion}
 
-\begin{itemize}
-  \item separation through Director-Actor architecture provides robust, computationally tractable mechanism for maintaining narrative control under user interruption
-  \item External temporal monitoring, implemented outside LLM, provides  approach to time-budget enforcement
-  \item Pairwise AB/BA evaluation with order-bias correction reveals Director Agent significantly outperforms single-agent Baseline on Narrative Control and Interruption Handling 
-  
-\end{itemize}
- 
- 
-
+This chapter discusses what the results mean for the two research questions and where the limits of our setup lie.
 
 \section{Summary of Results}\label{sec:summary}
 
@@ -39,6 +31,15 @@ Our setup has several limits.
   \item The automated evaluation relies on a single judge model for most comparisons, and scripted user inputs cannot react to what the character says.
   \item The beat generator and the lenient Director have not been tested thoroughly.
   \item The user study has a small sample, only 14 participants who completed it, and limited time per participant.
+\end{itemize}
+
+\chapter{Conclusion and Future Work}\label{sec:conclusion}
+
+\begin{itemize}
+  \item separation through Director-Actor architecture provides robust, computationally tractable mechanism for maintaining narrative control under user interruption
+  \item External temporal monitoring, implemented outside LLM, provides  approach to time-budget enforcement
+  \item Pairwise AB/BA evaluation with order-bias correction reveals Director Agent significantly outperforms single-agent Baseline on Narrative Control and Interruption Handling 
+  
 \end{itemize}
 
 \section{Future Work}
