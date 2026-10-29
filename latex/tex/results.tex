@@ -45,13 +45,13 @@ Looking more closely at interruption handling in Story 1, the derailment-attempt
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.62\linewidth]{plots/16_story1_derailment_paired.png}
-\caption{Resistance to derailment (Q6), Story 1, one line per participant ($n$=11 paired completers). Baseline points cluster at the bottom; director points cluster at the top; every individual participant, not just the group average, rated director higher.}
+\caption{Resistance to derailment (Q6), Story 1, one line per participant ($n$=11 paired completers). Baseline points cluster at the bottom; director points cluster at the top; all but one participant rated director higher, and the remaining one gave both conditions the maximum score.}
 \label{fig:story1-paired}
 \end{figure}
 
-\todo{Regenerate Figure~\ref{fig:story1-paired} (\texttt{16\_story1\_derailment\_paired}): its means (4.30 and 1.20) imply 10 participants, but the caption and text say 11 (table means 4.36 and 1.55 for the paired 11). Check that all 11 paired participants are plotted.}
+\todo{Plot regenerated: means now 4.36 and 1.55 for $n$=11, matching the paired data. Double-check. Note that one participant now rates both conditions 5, so the text was changed from ``11 of 11'' to ``10 of 11''.}
 
-Figure~\ref{fig:story1-paired} makes the individual-level pattern behind Table~\ref{tab:story1} visible: 11 of the 11 paired participants personally rated director above baseline on resisting derailment.
+Figure~\ref{fig:story1-paired} makes the individual-level pattern behind Table~\ref{tab:story1} visible: 10 of the 11 paired participants personally rated director above baseline on resisting derailment, and the remaining one gave both conditions the maximum score of 5.
 
 
 \textbf{What handling an interruption looks like.} The free-text comments show what lies behind these ratings. Reading the free-text breakdowns, a clear pattern emerges on each side. Under \textbf{baseline}, about 8 in 10 comments describe the story stalling outright the moment the user goes off-topic -- not recovering, just stopping:
@@ -188,13 +188,13 @@ The unconstrained director round almost never reaches an ending (86\% ``cut shor
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/12_beat_compression_time_constrained.png}
-\caption{Which Cinderella beats were compressed or skipped under the 3-minute limit, across all 16 time-constrained transcripts.}
+\caption{Which Cinderella beats were compressed or skipped under the 3-minute limit, across all 14 time-constrained transcripts.}
 \label{fig:compression}
 \end{figure}
 
-\todo{Regenerate Figure~\ref{fig:compression} (\texttt{12\_beat\_compression\_time\_constrained}): the title says ``5-minute time limit'', but the user study used 3 minutes for Cinderella.}
+\todo{Plot regenerated: it now shows 14 transcripts (previously 16) and separates ``skipped ahead mid-story'' from ``folded into closing turn''; the caption and text were updated to 14. Double-check why it is 14 now. The title still says ``5-minute time limit'', but the study used 3 minutes for Cinderella --- fix the title.}
 
-The pattern tracks story position closely. The opening beat is fully developed in all 16 transcripts. From there, compression builds beat by beat; from the fourth beat onward, most transcripts show compressed or skipped treatment, and the final two beats are never once given a dedicated turn in any of the 14 transcripts that reach them. They are folded into a single closing message instead. This makes sense since depending on how long the user takes to respond or how much he derails, the pacing is adjusted accordingly. So if the user is constantly trying to derail, the story will get more and more compressed towards the end. The final turn always compresses the medium and high priority beats left.
+The pattern tracks story position closely. The opening beat is fully developed in all 14 transcripts. From there, compression builds beat by beat; from the fourth beat onward, most transcripts show compressed or skipped treatment, and the final two beats are never once given a dedicated turn in any of the 14 transcripts. They are folded into a single closing message instead. This makes sense since depending on how long the user takes to respond or how much he derails, the pacing is adjusted accordingly. So if the user is constantly trying to derail, the story will get more and more compressed towards the end. The final turn always compresses the medium and high priority beats left.
 
 
 \subsection{Comparing All Three Conditions}
@@ -218,7 +218,7 @@ The ranking is consistent across every measure: baseline lowest, director and ti
 \label{fig:derail-by-story}
 \end{figure}
 
-\todo{Regenerate Figure~\ref{fig:derail-by-story} (\texttt{09\_derailment\_story\_comparison}). Supervisor comment 53: move the ``4.42'' label so that it does not cut into the top line of the figure.}
+\todo{Plot regenerated: labels no longer cut into the top line (comment 53) and the values match Tables~\ref{tab:story1} and~\ref{tab:story2}. Double-check.}
 
 Figure~\ref{fig:derail-by-story} splits the headline derailment result by story: in Story 1, director's advantage over baseline is large (4.42 vs.\ 1.58, \pval{0.002}); in Story 2, director's advantage over time-constrained is small and not significant (4.07 vs.\ 3.75, \pval{0.40}). The interruption-handling benefit of the director comes entirely from replacing baseline, not from removing the time limit.
 
@@ -342,7 +342,7 @@ Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the 
 \label{fig:llm-tb-overall}
 \end{figure}
 
-\todo{Double-check Figure~\ref{fig:llm-tb-overall}: the y-axis label says 0--10 but the axis only goes to 5. Also, the six time-budget dimensions described in Section~\ref{sec:design-judge} are not shown; add per-dimension results if available.}
+\todo{Plot regenerated: the y-axis is now labelled 1--5. Double-check, and note that Section~\ref{sec:design-judge} says the judge scores each dimension out of ten; explain there that this time-budget rubric uses a 1--5 scale, if that is the case. Also, the six time-budget dimensions described in Section~\ref{sec:design-judge} are not shown; add per-dimension results if available.}
 
 The judged quality changes little with the budget (Figure~\ref{fig:llm-tb-overall}). At 2, 5 and 10 minutes the Overall score lies between 2.74 and 2.80, slightly above the unconstrained Director (2.65). The 0.5-minute budget scores highest (3.33), even though its transcripts are only 48 words long on average, so this score should be read with care.
 
@@ -443,7 +443,7 @@ To make the setup concrete, a \emph{scenario} is one run of the Red Riding Hood 
 \label{fig:llm-rocket-metric}
 \end{figure}
 
-\todo{Regenerate Figure~\ref{fig:llm-rocket-metric} (\texttt{08\_rocket\_scores\_by\_metric}). Supervisor comment 71: the ``9.9'' label cuts into the top line of the figure; move it so it does not. Supervisor comment 72: the title mentions the judge (GPT-4o), which the other figures do not; make the titles consistent.}
+\todo{Plot regenerated: the labels fit (comment 71) and the title no longer names the judge (comment 72). The full-suite baseline values changed compared with the old figure; Table~\ref{tab:llm-rocket-metric} was updated to the new figure values, but only to one decimal. Fill in the exact values, and check whether the matched-set column, the derailment-level table and the note about the excluded score are still correct.}
 
 \begin{table}[htbp]
 \centering
@@ -454,19 +454,19 @@ To make the setup concrete, a \emph{scenario} is one run of the Red Riding Hood 
  & \multicolumn{2}{c}{Matched (n=3)} & \multicolumn{2}{c}{Full suite (n=7)} \\
 Dimension & Baseline & Director & Baseline & Director \\
 \midrule
-Plot                   & 5.33 & 9.00  & 5.17 & 8.14 \\
-Development             & 6.33 & 9.00  & 6.17 & 7.71 \\
-Language Use            & 8.33 & 10.00 & 7.83 & 9.43 \\
-Interruption Handling   & 5.67 & 9.00  & 5.17 & 9.00 \\
-Character Fidelity      & 9.00 & 10.00 & 8.83 & 9.86 \\
-Narrative Control       & 4.67 & 9.00  & 4.33 & 8.14 \\
-Anthropomorphism        & 7.67 & 10.00 & 7.33 & 9.29 \\
-Overall                  & 6.67 & 9.00  & 6.33 & 8.57 \\
+Plot                   & 5.33 & 9.00  & 4.9 & 8.14 \\
+Development             & 6.33 & 9.00  & 6.0 & 7.71 \\
+Language Use            & 8.33 & 10.00 & 7.7 & 9.43 \\
+Interruption Handling   & 5.67 & 9.00  & 4.7 & 9.00 \\
+Character Fidelity      & 9.00 & 10.00 & 8.7 & 9.86 \\
+Narrative Control       & 4.67 & 9.00  & 4.1 & 8.14 \\
+Anthropomorphism        & 7.67 & 10.00 & 6.9 & 9.29 \\
+Overall                  & 6.67 & 9.00  & 6.0 & 8.57 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show that the pattern from Olaf replicates, and more sharply: director outscores baseline on every single dimension for Rocket, both on the matched set and on the full suite. The Overall gap is 2.33 points on the matched set and 2.24 on the full suite. \todo{Full-suite baseline values were corrected to match Figure~\ref{fig:llm-rocket-metric}: the old table seemed to count the unparseable baseline score as 0 (old value $\times 7 / 6$ = figure value). Double-check against the data, and check whether the unparseable score falls in the matched set.} The pairwise verdicts (Figure~\ref{fig:llm-rocket-wins}) are close to unanimous: across the matched 3 scenarios, director wins outright on 20 of 24 dimension judgments, with the only ties on Character Fidelity and one Anthropomorphism tie; on the full 7-scenario suite director wins outright on nearly every single dimension.
+Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show that the pattern from Olaf replicates, and more sharply: director outscores baseline on every single dimension for Rocket, both on the matched set and on the full suite. The Overall gap is 2.33 points on the matched set and about 2.6 on the full suite.  The pairwise verdicts (Figure~\ref{fig:llm-rocket-wins}) are close to unanimous: across the matched 3 scenarios, director wins outright on 20 of 24 dimension judgments, with the only ties on Character Fidelity and one Anthropomorphism tie; on the full 7-scenario suite director wins outright on nearly every single dimension.
 
 \begin{figure}[htbp]
 \centering
