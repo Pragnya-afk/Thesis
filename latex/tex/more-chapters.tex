@@ -1,6 +1,6 @@
 \chapter{Method}\label{sec:method}
 
-This chapter describes the system we built and how we evaluate it. We start with an overview of the approach in Section~\ref{sec:overview}. Sections~\ref{sec:beats} and~\ref{sec:state} introduce what all variants share: the beat-based story representation and the story state. Sections~\ref{sec:baseline}, \ref{sec:director} and~\ref{sec:tcdirector} present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~\ref{sec:extensions} describes two extensions, a beat generator and a lenient Director mode. Section~\ref{sec:characters} describes the characters and scenarios we use. Sections~\ref{sec:design-study} and~\ref{sec:design-judge} explain how the variants are evaluated, with a user study and with an LLM judge.
+This chapter describes the system we built and how we evaluate it. We start with an overview of the approach in Section~\ref{sec:overview}. Sections~\ref{sec:beats} and~\ref{sec:state} introduce what all variants share: the beat-based story representation and the story state. Sections~\ref{sec:baseline}, \ref{sec:director} and~\ref{sec:tcdirector} present the three variants in turn: the Baseline, the Director, and the Time-Constrained Director. Section~\ref{sec:extensions} describes two extensions, a beat generator and a lenient Director mode. Section~\ref{sec:ablations} describes a full-text variant of the Director that we use to test the beat representation. Section~\ref{sec:characters} describes the characters and scenarios we use. Sections~\ref{sec:design-study} and~\ref{sec:design-judge} explain how the variants are evaluated, with a user study and with an LLM judge.
 
 \section{Overview}\label{sec:overview}
 
@@ -78,6 +78,12 @@ The decision itself is not left to the model. A small state machine written in c
 \subsection{Story Summary}
 
 In long sessions, the story so far grows with every turn. To keep the Director's context short, the last six turns are passed on unchanged, and older turns are folded into a short summary of at most 200 words. The summary is updated every four turns by a separate model call. The character still receives the full text.
+
+\section{Ablations}\label{sec:ablations}
+
+Throughout this thesis, the target narrative is represented internally as a short ordered list of \emph{beats} : named units with a one-sentence goal each (e.g.\ \texttt{forest\_entry}: ``Red meets the wolf and reveals where she is going'')  rather than as a pre-written block of prose. The director tracks a \texttt{beat\_index} and a set of \texttt{completed\_beats}, and the director sees the list of beat names and goals together with the previous, current, and next beat, and the actor sees only the current beat goal and the name of the next beat, but neither is ever given the full text of what should eventually be said. We test this design choice directly, rather than asserting it.
+
+We built a full-text variant of the director that is otherwise identical: the same decision-type taxonomy (\texttt{progress\_story}, \texttt{gently\_redirect}, \texttt{close\_story}, etc.), the same priority ordering, the same interruption-handling, anti-stall, and anti-repetition rules, the same actor style constraints. The only change is the representation of the story and how progress through it is tracked: the beat list and \texttt{beat\_index} are replaced with the complete prose text of the story and a self-reported ``turns since last advancement'' signal, and instead of the harness incrementing a counter when a beat is marked complete, the model must decide for itself, every turn, whether it has advanced through the text and when the story has genuinely ended.
 
 \section{Characters and Scenarios}\label{sec:characters}
 

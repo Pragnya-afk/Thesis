@@ -420,11 +420,7 @@ Taken together, this is evidence that the director's advantage over baseline is 
 \section{Narrative Representation Ablation}
 \label{sec:llm-beats-ablation}
 
-Throughout this thesis, the target narrative is represented internally as a short ordered list of \emph{beats} : named units with a one-sentence goal each (e.g.\ \texttt{forest\_entry}: ``Red meets the wolf and reveals where she is going'')  rather than as a pre-written block of prose. The director tracks a \texttt{beat\_index} and a set of \texttt{completed\_beats}, and the director sees the list of beat names and goals together with the previous, current, and next beat, and the actor sees only the current beat goal and the name of the next beat, but neither is ever given the full text of what should eventually be said. This section tests that design choice directly, rather than asserting it.
-
-We built a full-text variant of the director that is otherwise identical: the same decision-type taxonomy (\texttt{progress\_story}, \texttt{gently\_redirect}, \texttt{close\_story}, etc.), the same priority ordering, the same interruption-handling, anti-stall, and anti-repetition rules, the same actor style constraints. The only change is the representation of the story and how progress through it is tracked: the beat list and \texttt{beat\_index} are replaced with the complete prose text of the story and a self-reported ``turns since last advancement'' signal, and instead of the harness incrementing a counter when a beat is marked complete, the model must decide for itself, every turn, whether it has advanced through the text and when the story has genuinely ended.
-
-We ran both directors (beats and full-text) on the same Red Riding Hood derailment scenarios used in Section~\ref{sec:llm-rocket}, with Olaf, and judged the pairs head-to-head with the same AB/BA-controlled protocol as everywhere else in this chapter.
+This section compares the beat-based Director with the full-text variant described in Section~\ref{sec:ablations}. We ran both directors (beats and full-text) on the same Red Riding Hood derailment scenarios used in Section~\ref{sec:llm-rocket}, with Olaf, and judged the pairs head-to-head with the same AB/BA-controlled protocol as everywhere else in this chapter.
 
 \begin{figure}[htbp]
 \centering
