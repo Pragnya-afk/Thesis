@@ -33,7 +33,6 @@ The Director variant separates deciding from performing. Each turn now consists 
 The first call is the \textbf{Director}, which decides what should happen next but does not speak as the character. It sees the following:
 \begin{itemize}
   \item the character profile,
-  \item the story topic,
   \item the whole story arc,
   \item the previous, current and next beat,
   \item the beats already completed,
@@ -45,7 +44,6 @@ It returns a JSON object containing a decision type, whether the user interrupte
 The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the following:
 \begin{itemize}
   \item the character profile,
-  \item the story topic,
   \item the current and next beat,
   \item the beats already completed,
   \item the story so far,
