@@ -30,9 +30,29 @@ The weakness of this design is that one call has to do everything at once. It mu
 
 The Director variant separates deciding from performing. Each turn now consists of two model calls, made one after the other.
 
-The first call is the \textbf{Director}, which decides what should happen next but does not speak as the character. It sees the character profile, the whole story arc, the previous, current and next beat, the beats already completed, the story so far and the user's input. It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
+The first call is the \textbf{Director}, which decides what should happen next but does not speak as the character. It sees the following:
+\begin{itemize}
+  \item the character profile,
+  \item the story topic,
+  \item the whole story arc,
+  \item the previous, current and next beat,
+  \item the beats already completed,
+  \item the story so far,
+  \item the user's input.
+\end{itemize}
+It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
 
-The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the character profile, the story topic, the current and next beat, the beats already completed, the story so far, the user's input and the Director's decision. Unlike the Director, it does not see the whole story arc: it knows where the story is now and where it goes next, and its job is to perform the instruction rather than to decide what happens.
+The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the following:
+\begin{itemize}
+  \item the character profile,
+  \item the story topic,
+  \item the current and next beat,
+  \item the beats already completed,
+  \item the story so far,
+  \item the user's input,
+  \item the Director's decision.
+\end{itemize}
+Unlike the Director, it does not see the whole story arc: it knows where the story is now and where it goes next, and its job is to perform the instruction rather than to decide what happens.
 
 The Director chooses one of six decision types:
 
