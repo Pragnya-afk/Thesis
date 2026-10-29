@@ -52,6 +52,16 @@ The second call is the \textbf{Character} (the actor), which carries out the Dir
 \end{itemize}
 Unlike the Director, it does not see the entire beats list: it knows where the story is now and where it goes next, and its job is to perform the instruction rather than to decide what happens.
 
+A single turn therefore runs as follows:
+\begin{enumerate}
+  \item The user sends a message.
+  \item The Director is called with the user's message and the story state. The story so far contains all earlier user messages, Director instructions and character replies, but not yet the reply to the current message.
+  \item The Director returns its decision, including the instruction for the character and whether the current beat should end.
+  \item The Character is called with the user's message, the Director's decision and its part of the story state, and replies in character.
+  \item The system appends the user's message, the Director's instruction and the character's reply to the story so far, and then checks whether the current beat has ended (Section~\ref{sec:state}). If so, it moves on to the next beat.
+\end{enumerate}
+The Director thus decides whether a beat should end before the character speaks, from the user's message and the story so far, while the beat itself only changes after the character has replied.
+
 The Director chooses one of six decision types:
 
 \begin{itemize}
