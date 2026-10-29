@@ -33,13 +33,13 @@ The Director variant separates deciding from performing. Each turn now consists 
 The first call is the \textbf{Director}, which decides what should happen next but does not speak as the character. It sees the following:
 \begin{itemize}
   \item the character profile,
-  \item the whole story arc,
+  \item the entire beats list,
   \item the previous, current and next beat,
   \item the beats already completed,
   \item the story so far,
   \item the user's input.
 \end{itemize}
-It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
+The Director does not just see the current and next beat; it also decides when the story moves on. Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
 
 The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the following:
 \begin{itemize}
@@ -50,7 +50,7 @@ The second call is the \textbf{Character} (the actor), which carries out the Dir
   \item the user's input,
   \item the Director's decision.
 \end{itemize}
-Unlike the Director, it does not see the whole story arc: it knows where the story is now and where it goes next, and its job is to perform the instruction rather than to decide what happens.
+Unlike the Director, it does not see the entire beats list: it knows where the story is now and where it goes next, and its job is to perform the instruction rather than to decide what happens.
 
 The Director chooses one of six decision types:
 
