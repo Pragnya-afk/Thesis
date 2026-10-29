@@ -37,7 +37,7 @@ NarrativeGenie \cite{kumaran2024narrativegenie} is the most directly relevant pr
 
 Beats offer three key advantages over utility-function-based approaches. First, interpretability: beat objectives are expressed in natural language, making narrative logic transparent and debuggable, unlike the opaque numerical trade-offs of utility functions. Second, checkpointing: each beat represents a natural checkpoint where the system can verify whether the goal is satisfied, enabling principled decisions about recovery and pacing. Third, temporal reasoning: knowing N beats remain and t seconds remain means we can compute a pacing target directly, providing a clearer implementation path than utility functions allow.
 
-This thesis adopts beat-based representation as its foundational abstraction. As we will show, beats prove essential for addressing the real-time challenges of user interruption and time-constrained storytelling.
+This thesis builds on beats as its core story representation and relies on two of these advantages in particular: beats give the Director a clear checkpoint to steer back to after an interruption and a count of remaining beats to pace the story against a time limit. In Section~\ref{sec:llm-beats-ablation}, we test whether this representation actually helps by comparing it with a Director that is given the full story text instead.
 
 \section{Interruption Handling }
 
