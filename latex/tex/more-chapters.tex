@@ -28,7 +28,13 @@ The weakness of this design is that one call has to do everything at once. It mu
 
 \section{Director}\label{sec:director}
 
-The Director variant separates deciding from performing. Each turn now takes two sequential model calls. The first is the Director. It sees the character profile, the whole story arc, the previous, current and next beat, the completed beats, the story so far and the user input. It does not speak as the character. It returns a JSON object with a decision type, the detected user intent, a short instruction for the character and a flag saying whether the current beat should end. If the output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat. The second call is the Character (the actor), which sees its current beat, the next beat and the Director's instruction, and performs the instruction in its own voice in two to four sentences.
+The Director variant separates deciding from performing. Each turn now consists of two model calls, made one after the other.
+
+The first call is the \textbf{Director}, which decides what should happen next but does not speak as the character. It sees the character profile, the whole story arc, the previous, current and next beat, the beats already completed, the story so far and the user's input. It returns a JSON object with four fields: a decision type, the user's detected intent, a short instruction for the character, and a flag saying whether the current beat should end. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
+
+The second call is the \textbf{Character} (the actor), which performs the Director's decision. It sees its current beat, the next beat and the Director's instruction, and carries out the instruction in its own voice in two to four sentences.
+
+\todo{Check against the code what the Character sees. The live actor prompt in Appendix~\ref{app:live-actor-prompts} also contains the character profile, the story topic, the completed beats and the story so far, and the Character receives the user's message directly in the conversation. Update this sentence (and the similar one in Section~\ref{sec:ablations}) if that is what the system does.}
 
 The Director chooses one of six decision types:
 
