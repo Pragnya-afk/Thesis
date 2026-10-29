@@ -49,6 +49,8 @@ Looking more closely at interruption handling in Story 1, the derailment-attempt
 \label{fig:story1-paired}
 \end{figure}
 
+\todo{Regenerate Figure~\ref{fig:story1-paired} (\texttt{16\_story1\_derailment\_paired}): its means (4.30 and 1.20) imply 10 participants, but the caption and text say 11 (table means 4.36 and 1.55 for the paired 11). Check that all 11 paired participants are plotted.}
+
 Figure~\ref{fig:story1-paired} makes the individual-level pattern behind Table~\ref{tab:story1} visible: 11 of the 11 paired participants personally rated director above baseline on resisting derailment.
 
 
@@ -190,6 +192,8 @@ The unconstrained director round almost never reaches an ending (86\% ``cut shor
 \label{fig:compression}
 \end{figure}
 
+\todo{Regenerate Figure~\ref{fig:compression} (\texttt{12\_beat\_compression\_time\_constrained}): the title says ``5-minute time limit'', but the user study used 3 minutes for Cinderella.}
+
 The pattern tracks story position closely. The opening beat is fully developed in all 16 transcripts. From there, compression builds beat by beat; from the fourth beat onward, most transcripts show compressed or skipped treatment, and the final two beats are never once given a dedicated turn in any of the 14 transcripts that reach them. They are folded into a single closing message instead. This makes sense since depending on how long the user takes to respond or how much he derails, the pacing is adjusted accordingly. So if the user is constantly trying to derail, the story will get more and more compressed towards the end. The final turn always compresses the medium and high priority beats left.
 
 
@@ -213,6 +217,8 @@ The ranking is consistent across every measure: baseline lowest, director and ti
 \caption{Resistance to derailment (Q6) by story and condition, completers only. The question is only asked when a participant reports trying to derail, so $n$ is below 14 for some conditions; the $n$ above each bar is the number who answered. Bars show the mean; whiskers show $\pm$1 standard deviation.}
 \label{fig:derail-by-story}
 \end{figure}
+
+\todo{Regenerate Figure~\ref{fig:derail-by-story} (\texttt{09\_derailment\_story\_comparison}). Supervisor comment 53: move the ``4.42'' label so that it does not cut into the top line of the figure.}
 
 Figure~\ref{fig:derail-by-story} splits the headline derailment result by story: in Story 1, director's advantage over baseline is large (4.42 vs.\ 1.58, \pval{0.002}); in Story 2, director's advantage over time-constrained is small and not significant (4.07 vs.\ 3.75, \pval{0.40}). The interruption-handling benefit of the director comes entirely from replacing baseline, not from removing the time limit.
 
@@ -411,7 +417,7 @@ Director & 9.00 & 8.83 & 8.17 \\
 
 Taken together, this is evidence that the director's advantage over baseline is not specific to Olaf's character prompt.
 
-\section{Why Beats}
+\section{Narrative Representation Ablation}
 \label{sec:llm-beats-ablation}
 
 Throughout this thesis, the target narrative is represented internally as a short ordered list of \emph{beats} : named units with a one-sentence goal each (e.g.\ \texttt{forest\_entry}: ``Red meets the wolf and reveals where she is going'')  rather than as a pre-written block of prose. The director tracks a \texttt{beat\_index} and a set of \texttt{completed\_beats}, and the director sees the list of beat names and goals together with the previous, current, and next beat, and the actor sees only the current beat goal and the name of the next beat, but neither is ever given the full text of what should eventually be said. This section tests that design choice directly, rather than asserting it.
