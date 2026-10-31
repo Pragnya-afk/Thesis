@@ -2,7 +2,7 @@
 
 \label{sec:results}
 
-This chapter reports the results of our two evaluations. We start with the user study, our primary assessment. Section~\ref{sec:story1} compares the Baseline with the Director, and Section~\ref{sec:story2} compares the Director with the Time-Constrained Director. A third part looks at all three conditions together. We then turn to the LLM-as-Judge evaluation, which tests the system on many more stories and with controlled derailment, and we end with ablation studies (Section~\ref{sec:ablation-results}) that compare the two evaluations and vary the character, the story representation and the judge model. The design of the study and the judge setup are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}. The questionnaire items are listed in Table~\ref{tab:instrument}.
+This chapter reports the user study, which is our primary assessment, then the LLM-as-Judge evaluation, and finally ablations that compare the two and vary the character, the story representation, the time budget and the judge model. The designs are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}, and the questionnaire items are listed in Table~\ref{tab:instrument}.
 
 Throughout, Q5a is the main measure of derailment handling. It is only asked of participants who confirm that they tried to derail the story, and it separates the conditions more strongly than any other measure.
 
@@ -333,7 +333,7 @@ Seen this way, the results are consistent. When the judge reads one transcript a
 
 \section{Ablation Studies}\label{sec:ablation-results}
 
-This section collects five further analyses. We first compare the LLM judge with the participants of the user study on the same two stories, and then vary one part of the setup at a time: the character, the story representation, the time budget and the judge model.
+This section compares the LLM judge with the user study and then varies one part of the setup at a time.
 
 \subsection{User Study vs LLM-as-Judge}
 \label{sec:llm-vs-study}
