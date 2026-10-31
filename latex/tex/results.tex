@@ -248,7 +248,7 @@ Time-constrained responses are the \emph{longest} of the three conditions on ave
 \section{LLM-as-Judge Results}
 \label{sec:llm-judge}
 
-The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report seven comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), the time-budget ablation (Section~\ref{sec:llm-timebudget}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
+The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report six comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
 
 \subsection{Baseline vs. Director}
 \label{sec:llm-baseline}
@@ -343,23 +343,6 @@ In single-story mode (Figure~\ref{fig:llm-codi-metric}), the Director scores hig
 \end{figure}
 
 The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on most dimensions. When the judge sees both transcripts side by side, CoDi wins more often on Overall (15 vs.\ 7, with 8 ties) and on nine of the eleven dimensions, most clearly on Detail \& Thoroughness (19 vs.\ 2) and Narrative Polish (16 vs.\ 4). The Director wins clearly  on Interruption Handling (12 vs.\ 1) and Character Fidelity (9 vs.\ 3), the two dimensions most directly tied to reacting to the user in character. The two scoring modes therefore disagree. One possible reason is the difference in output described in Section~\ref{sec:design-judge}: CoDi produces complete, edited prose, which may look stronger in a direct comparison, while our system produces short turns in reaction to the user. We therefore read this comparison as showing that the Director handles interruptions and character better than CoDi, but not that it produces better stories overall.
-
-\subsection{Time-Budget Ablation}
-\label{sec:llm-timebudget}
-
-
-To see how the Time-Constrained Director behaves under different budgets, we ran it with budgets of 0.5, 2, 5 and 10 minutes and compared it with the unconstrained Director, on 30 scenarios per budget.
-
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.95\linewidth]{plots/06_time_constrained_coverage_and_length.png}
-\caption{Time-budget ablation: share of beats reached (left) and mean number of words per transcript (right), by time budget, compared with the unconstrained director ($n$=30 scenarios per budget).}
-\label{fig:llm-tb-coverage}
-\end{figure}
-
-
-
-Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the story is told. The share of beats reached rises from 0.12 at 0.5 minutes to 0.53 at 2 minutes and 0.74 at 5 minutes, and stays at 0.71 at 10 minutes. The unconstrained Director reaches only 0.23 of the beats, although its transcripts are about as long as those at 5 and 10 minutes (890 words, compared with 804 and 875). Without a budget, the Director spends its output on fewer beats; with one, it compresses and moves on.
 
 \section{Ablation Studies}\label{sec:ablation-results}
 
