@@ -256,7 +256,7 @@ The setup of the automated evaluation is described in Section~\ref{sec:design-ju
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/01_baseline_vs_director_scores_by_metric.png}
-\caption{Single-story judge scores, baseline vs.\ director, averaged over all 30 transcript pairs.}
+\caption{Single-story judge scores, baseline vs.\ director, averaged over all 33 transcript pairs.}
 \label{fig:llm-base-metric}
 \end{figure}
 
@@ -269,7 +269,7 @@ Director scores higher on every single dimension. The gap is largest on Narrativ
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/02_baseline_vs_director_pairwise_wins.png}
-\caption{Pairwise verdicts, baseline vs.\ director, order-bias controlled (n=30).}
+\caption{Pairwise verdicts, baseline vs.\ director, order-bias controlled ($n$=33).}
 \label{fig:llm-base-wins}
 \end{figure}
 
@@ -290,7 +290,7 @@ The pairwise verdicts (Figure~\ref{fig:llm-base-wins}) tell a stricter version o
 
 Figure~\ref{fig:llm-base-derail} shows how well each system handles interruptions as the derailment gets more severe. As the figure shows, the baseline performs worse the more often the user derails: its Interruption Handling score falls from 6.18 with no derailment to 5.27 at medium and 5.18 at complete derailment. The director does not degrade: its score rises from 8.09 to 8.82 and 9.27, so its lead over the baseline grows from 1.91 to 3.55 and 4.09 points. With no derailment there is little to handle, while repeated derailment is exactly the situation the director is built for and the one in which the baseline struggles most. The Overall score behaves differently: there, the director's lead narrows from 1.60 points at no derailment to 0.91 at medium and 0.22 at complete, so the director is a clear improvement in handling interruptions, but heavy derailment still lowers the quality of the story as a whole.
 
-\todo{Double-check the new figure: its axis says ``$n$=11 stories per level'', while the text elsewhere says 10 Olaf story scenarios (30 transcript pairs). Also, the ``9.27'' label overlaps the legend, and the axis label says 1--10 while the judge scale is 0--10 elsewhere.}
+\todo{Double-check the new figure: the text now says 11 Olaf stories (33 transcript pairs) to match this figure, but Figures~\ref{fig:llm-base-metric} and~\ref{fig:llm-base-wins} still show 30 comparisons: regenerate them with all 11 stories, or tell me which count is right. Also, the ``9.27'' label overlaps the legend, and the axis label says 1--10 while the judge scale is 0--10 elsewhere.}
 
 
 
@@ -324,7 +324,7 @@ Cinderella & complete targeted    & 4.0 & 8.5 & 7 / 0 / 1 \\
 \subsection{Director vs.\ CoDi}
 \label{sec:llm-codi}
 
-We also compare our Director with CoDi \cite{kim2025codi}, the closest existing director-based system, on the same 30 Olaf transcripts (10 scenarios at three derailment levels). Besides the core rubric, the judge scores the three dimensions added for this comparison (Table~\ref{tab:rubric}).
+We also compare our Director with CoDi \cite{kim2025codi}, the closest existing director-based system, on 30 Olaf transcripts (10 of the stories at three derailment levels). Besides the core rubric, the judge scores the three dimensions added for this comparison (Table~\ref{tab:rubric}).
 
 \begin{figure}[htbp]
 \centering
@@ -473,7 +473,7 @@ Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show th
 \label{fig:llm-rocket-wins}
 \end{figure}
 
-Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows a pattern worth flagging honestly rather than smoothing over: for Olaf, director's advantage \emph{shrinks} as derailment intensifies (on the Overall score, 1.60 points at none, down to 0.22 at complete; Section~\ref{sec:llm-baseline}); for Rocket it does not shrink, staying at 2.5--2.7 points from medium through complete derailment. We do not read this as director being more robust for Rocket than for Olaf -- the ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). The result is a real, checkable data point in Rocket's favor, but it rests on far fewer scenarios per cell than Olaf's 10-story-topic aggregate, and should be read as directional rather than conclusive without more scenarios per character.
+Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows a pattern worth flagging honestly rather than smoothing over: for Olaf, director's advantage \emph{shrinks} as derailment intensifies (on the Overall score, 1.60 points at none, down to 0.22 at complete; Section~\ref{sec:llm-baseline}); for Rocket it does not shrink, staying at 2.5--2.7 points from medium through complete derailment. We do not read this as director being more robust for Rocket than for Olaf -- the ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). The result is a real, checkable data point in Rocket's favor, but it rests on far fewer scenarios per cell than Olaf's 11-story aggregate, and should be read as directional rather than conclusive without more scenarios per character.
 
 \begin{figure}[htbp]
 \centering
