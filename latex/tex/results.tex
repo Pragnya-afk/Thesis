@@ -279,26 +279,26 @@ The pairwise verdicts (Figure~\ref{fig:llm-base-wins}) tell a stricter version o
 
 Figure~\ref{fig:llm-base-derail} shows how well each system handles interruptions as the derailment gets more severe. As the figure shows, the baseline performs worse the more often the user derails: its Interruption Handling score falls from 6.18 with no derailment to 5.27 at medium and 5.18 at complete derailment. The director does not degrade: its score rises from 8.09 to 8.82 and 9.27, so its lead over the baseline grows from 1.91 to 3.55 and 4.09 points. With no derailment there is little to handle, while repeated derailment is exactly the situation the director is built for and the one in which the baseline struggles most. Averaged over all three derailment levels, the Overall score shows the same picture (5.4 vs.\ 8.5, Figure~\ref{fig:llm-base-metric}).
 
-\textbf{Adversarial and targeted derailment.} For Frozen and Cinderella, we also compared the two systems under the two harder derailment categories described in Section~\ref{sec:characters}. Table~\ref{tab:llm-olaf-advtgt} shows the result. The Director scores higher than the baseline in every scenario, and in the pairwise verdicts the baseline does not win a single dimension. Targeted derailment, where every input tries to end the story, hurts the baseline most (Overall 4.0 to 5.0), while the Director stays between 8.5 and 9.0. Each of these eight scenarios was generated and judged once, so the numbers are less stable than the averaged results above.
+\textbf{Adversarial and targeted derailment.} For Frozen and Cinderella, we also compared the two systems under the two harder derailment categories described in Section~\ref{sec:characters}. Table~\ref{tab:llm-olaf-advtgt} shows the result. The Director scores higher than the baseline in every scenario, and in the pairwise verdicts the baseline does not win a single dimension. Targeted derailment, where every input tries to end the story, hurts the baseline most , while the Director stays between 8.5 and 9.0.
 
 \begin{table}[htbp]
 \centering
-\caption{Baseline vs.\ director for Olaf under adversarial and targeted derailment: single-story Overall score (0--10) and the number of the eight dimensions won by the director (D) and the baseline (B), or tied, in the order-bias-controlled pairwise comparison. Each scenario was generated and judged once.}
+\caption{Baseline vs.\ director for Olaf under adversarial and targeted derailment: single-story Overall score (0--10) and the number of the eight dimensions won by the director (D) and the baseline (B), or tied, in the order-bias-controlled pairwise comparison. 
 \label{tab:llm-olaf-advtgt}
 \begin{tabular}{llccc}
 \toprule
 Story & Variant & Baseline & Director & Pairwise wins \\
  & & & & (D / B / tie) \\
 \midrule
-Frozen     & medium adversarial   & 6.5 & 9.0 & 8 / 0 / 0 \\
-Frozen     & complete adversarial & 7.0 & 9.0 & 8 / 0 / 0 \\
-Frozen     & medium targeted      & 5.0 & 9.0 & 7 / 0 / 1 \\
-Frozen     & complete targeted    & 4.0 & 9.0 & 7 / 0 / 1 \\
+Frozen     & medium adversarial   & 6.2 & 8.8 & 8 / 0 / 0 \\
+Frozen     & complete adversarial & 6.4 & 8.7 & 8 / 0 / 0 \\
+Frozen     & medium targeted      & 5.2 & 8.8 & 7 / 0 / 1 \\
+Frozen     & complete targeted    & 4.4 & 8.6& 7 / 0 / 1 \\
 \midrule
-Cinderella & medium adversarial   & 6.0 & 9.0 & 8 / 0 / 0 \\
-Cinderella & complete adversarial & 5.0 & 8.5 & 6 / 0 / 2 \\
-Cinderella & medium targeted      & 5.0 & 9.0 & 8 / 0 / 0 \\
-Cinderella & complete targeted    & 4.0 & 8.5 & 7 / 0 / 1 \\
+Cinderella & medium adversarial   & 5.9 & 8.8 & 8 / 0 / 0 \\
+Cinderella & complete adversarial & 5.4 & 8.5 & 6 / 0 / 2 \\
+Cinderella & medium targeted      & 5.2 & 8.7 & 8 / 0 / 0 \\
+Cinderella & complete targeted    & 4.5 & 8.4 & 7 / 0 / 1 \\
 \bottomrule
 \end{tabular}
 
