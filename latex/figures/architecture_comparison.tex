@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+  font=\sffamily\small,
+  state/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=6pt, text width=7.6cm, minimum height=1.25cm},
+  key/.style={draw=black, very thick, fill=white, rounded corners=1.5pt, align=center, inner sep=6pt, text width=5.8cm},
+  arr/.style={-{Latex[length=2.2mm]}, thick},
+  lab/.style={font=\sffamily\scriptsize\color{black!60}},
+]
+% ---------- Baseline ----------
+\node[font=\sffamily\bfseries] (t1) at (0,0.95) {Baseline: one model per turn};
+\node[state] (in1) at (0,0) {{\normalsize\bfseries User turn + story state}};
+\node[key, minimum height=2.9cm] (llm) at (0,-3.2) {{\normalsize\bfseries Story LLM}\\[5pt]responds in character\\chooses an animation\\decides if the beat is complete};
+\node[state] (out1) at (0,-6.4) {{\normalsize\bfseries Character response + animation}\\[2pt]story event, beat completed};
+\draw[arr] (in1) -- (llm);
+\draw[arr] (llm) -- (out1);
+\draw[arr] (out1.west) -- ++(-0.55,0) |- node[pos=0.25, left, lab, align=right] {next turn} (in1.west);
+% divider
+\draw[black!25, dashed] (5.2,1.3) -- (5.2,-7.3);
+% ---------- Director ----------
+\node[font=\sffamily\bfseries] (t2) at (10.4,0.95) {Director: deciding and performing split};
+\node[state] (in2) at (10.4,0) {{\normalsize\bfseries User turn + story state}};
+\node[key, minimum height=1.6cm] (dir) at (10.4,-2.2) {{\normalsize\bfseries Director LLM}\\[4pt]classifies the input,\\plans the next step};
+\node[key, minimum height=1.6cm] (act) at (10.4,-4.5) {{\normalsize\bfseries Character LLM}\\[4pt]performs the instruction\\in character};
+\node[state] (out2) at (10.4,-6.4) {{\normalsize\bfseries Character response + animation}\\[2pt]story event, beat completed};
+\draw[arr] (in2) -- (dir);
+\draw[arr] (dir) -- node[right, lab] {decision and instruction} (act);
+\draw[arr] (act) -- (out2);
+\draw[arr] (out2.east) -- ++(0.55,0) |- node[pos=0.25, right, lab, align=left] {next turn} (in2.east);
+\end{tikzpicture}

@@ -28,7 +28,14 @@ The weakness of this design is that one call has to do everything at once. It mu
 
 \section{Director}\label{sec:director}
 
-The Director variant separates deciding from performing. Each turn now consists of two model calls, made one after the other.
+The Director variant separates deciding from performing. Each turn now consists of two model calls, made one after the other. Figure~\ref{fig:architecture} compares the two designs.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{\input{figures/architecture_comparison.tex}}
+\caption{Baseline and Director compared, for one turn. In the Baseline, a single model responds in character, chooses an animation and decides whether the beat is complete. In the Director variant, a Director model first decides what should happen next, and a separate character model then performs this instruction in character. Both produce the same output and loop back with the updated story state for the next turn.}
+\label{fig:architecture}
+\end{figure}
 
 The first call is the \textbf{Director}, which decides what should happen next. It has no contact with the user and receives the following input:
 \begin{itemize}
