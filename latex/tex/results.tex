@@ -550,12 +550,12 @@ Interruption Handling   & 8.14 & 7.57 \\
 Character Fidelity      & 9.57 & 9.43 \\
 Narrative Control       & 8.00 & 7.71 \\
 Anthropomorphism        & 8.71 & 8.00 \\
-Overall                  & 8.36 & 7.93 \\
+Overall                  & 8.66 & 8.23 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Beats score higher on every dimension (Figure~\ref{fig:llm-beats-metric}, Table~\ref{tab:llm-beats-metric}), though the margins are smaller than against the baseline. The Overall score is 8.36 for beats and 7.93 for full text. The largest gaps are on Anthropomorphism (8.71 vs.\ 8.00), Language Use (9.14 vs.\ 8.57) and Interruption Handling (8.14 vs.\ 7.57), while Plot and Character Fidelity differ by only 0.14 points. Both conditions have a full director layer doing the interruption-handling work, so this ablation isolates the story-representation choice specifically. The pairwise verdicts (Figure~\ref{fig:llm-beats-wins}) make the direction unambiguous even though the margins are modest: beats wins or ties every pairwise verdict. Per-scenario Overall (Figure~\ref{fig:llm-beats-scenario}, Table~\ref{tab:llm-beats-scenario}) shows the same pattern: in the pairwise verdicts, beats wins outright on 2 of 7 scenarios and ties the other 5. On single-story scores, full text scores higher on only one scenario (\texttt{complete\_adversarial}, 9.0 vs.\ 8.0).
+Beats score higher on every dimension (Figure~\ref{fig:llm-beats-metric}, Table~\ref{tab:llm-beats-metric}), though the margins are smaller than against the baseline. The Overall score is 8.66 for beats and 8.23 for full text. The largest gaps are on Anthropomorphism (8.71 vs.\ 8.00), Language Use (9.14 vs.\ 8.57) and Interruption Handling (8.14 vs.\ 7.57), while Plot and Character Fidelity differ by only 0.14 points. Both conditions have a full director layer doing the interruption-handling work, so this ablation isolates the story-representation choice specifically. The pairwise verdicts (Figure~\ref{fig:llm-beats-wins}) make the direction unambiguous even though the margins are modest: beats wins or ties every pairwise verdict. Per-scenario Overall (Figure~\ref{fig:llm-beats-scenario}, Table~\ref{tab:llm-beats-scenario}) shows the same pattern: in the pairwise verdicts, beats wins outright on 2 of 7 scenarios and ties the other 5. On single-story scores, full text scores higher on two scenarios (\texttt{medium\_adversarial}, 9.4 vs.\ 9.2, and \texttt{complete\_adversarial}, 9.2 vs.\ 8.8).
 
 \begin{figure}[htbp]
 \centering
@@ -573,19 +573,19 @@ Beats score higher on every dimension (Figure~\ref{fig:llm-beats-metric}, Table~
 
 \begin{table}[htbp]
 \centering
-\caption{Overall score per scenario, beats vs.\ full-text director.}
+\caption{Overall score per scenario, beats vs.\ full-text director, mean of 5 runs per condition.}
 \label{tab:llm-beats-scenario}
 \begin{tabular}{lccc}
 \toprule
 Scenario & Beats & Full text & AB/BA winner \\
 \midrule
-no\_derailment              & 9.0 & 8.5 & Tie \\
-medium\_derailment          & 8.5 & 8.0 & Tie \\
-medium\_adversarial         & 9.0 & 9.0 & Tie \\
-medium\_targeted            & 9.0 & 7.0 & Beats \\
-complete\_derailment        & 9.0 & 9.0 & Beats \\
-complete\_adversarial       & 8.0 & 9.0 & Tie \\
-complete\_targeted          & 6.0 & 5.0 & Tie \\
+no\_derailment              & 9.1 & 8.4 & Tie \\
+medium\_derailment          & 8.4 & 8.1 & Tie \\
+medium\_adversarial         & 9.2 & 9.4 & Tie \\
+medium\_targeted            & 9.1 & 7.4 & Beats \\
+complete\_derailment        & 9.5 & 9.2 & Beats \\
+complete\_adversarial       & 8.8 & 9.2 & Tie \\
+complete\_targeted          & 6.5 & 5.9 & Tie \\
 \bottomrule
 \end{tabular}
 \end{table}
