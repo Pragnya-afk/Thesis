@@ -400,24 +400,25 @@ The two evaluations disagree on the overall rating. Participants rated the Direc
 
 \subsubsection{Cinderella}
 
-Director versus the 5-minute time-constrained Director on the Cinderella story of Section~\ref{sec:story2}.
+Director versus the 5-minute time-constrained Director on the Cinderella story of Section~\ref{sec:story2}. As for Frozen, we use the complete-derailment variant, because participants were asked to derail the story constantly. We also ran the baseline on this story, which the user study did not include for Cinderella.
 
 \begin{table}[htbp]
 \centering
 \caption{Cinderella (\texttt{olaf\_retells\_cinderella\_complete\_derailment}), the exact story served in the live study under sustained derailment: judge score, mean of 5 runs per condition. 5 min is the same budget as in the live study's time-constrained condition.}
 \label{tab:llm-cinderella-case}
-\begin{tabular}{lcc}
+\begin{tabular}{lccc}
 \toprule
-Dimension &  & 5 min \\
+Dimension & Baseline & Director & 5 min \\
 \midrule
-Plot                    & 8.65 & 8.19 \\
-Development             & 8.61 & 7.45 \\
-Language Use            & 8.89 & 8.65 \\
-Interruption Handling   & 8.75 & 8.82 \\
-Character Fidelity      & 8.56 & 8.82 \\
-Narrative Control       & 8.62 & 8.42 \\
-Anthropomorphism        & 9.12 & 8.96 \\
-Overall                 & 8.74 & 8.47 \\
+Plot                    & 4.8 & 9.0  & 8.8 \\
+Development             & 5.8 & 8.4  & 8.6 \\
+Language Use            & 7.6 & 9.2  & 9.4 \\
+Interruption Handling   & 5.6 & 9.8  & 9.4 \\
+Character Fidelity      & 8.6 & 10.0 & 10.0 \\
+Narrative Control       & 4.4 & 9.0  & 8.8 \\
+Anthropomorphism        & 7.4 & 9.2  & 9.6 \\
+\midrule
+Overall                 & 6.2 & 9.1  & 9.1 \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -425,7 +426,7 @@ Overall                 & 8.74 & 8.47 \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/15_cinderella_case_study_complete_derailment.png}
-\caption{Cinderella, complete derailment: judge score, director vs.\ the 5-minute time-constrained budget, mean of 5 runs per condition.}
+\caption{Cinderella, complete derailment: judge score, baseline, director and the 5-minute time-constrained director, mean of 5 runs per condition.}
 \label{fig:llm-cinderella-case}
 \end{figure}
 
@@ -442,17 +443,17 @@ Table~\ref{tab:cinderella-side} again puts the two evaluations side by side.
 \cmidrule(lr){3-4} \cmidrule(lr){5-6}
 Question & Judge dimension & Director & TC & Director & TC \\
 \midrule
-Q1 Coherence    & Plot                  & 3.79 & 3.71 & 8.65 & 8.19 \\
-Q2 Character    & Character Fidelity    & 4.14 & 4.14 & 8.56 & 8.82 \\
-Q4 Overall      & Overall               & 3.36 & 3.29 & 8.74 & 8.47 \\
-Q5a Derailment  & Interruption Handling & 4.07 & 3.75 & 8.75 & 8.82 \\
-                & Narrative Control     & 4.07 & 3.75 & 8.62 & 8.42 \\
+Q1 Coherence    & Plot                  & 3.79 & 3.71 & 9.0 & 8.8 \\
+Q2 Character    & Character Fidelity    & 4.14 & 4.14 & 10.0 & 10.0 \\
+Q4 Overall      & Overall               & 3.36 & 3.29 & 9.1 & 9.1 \\
+Q5a Derailment  & Interruption Handling & 4.07 & 3.75 & 9.8 & 9.4 \\
+                & Narrative Control     & 4.07 & 3.75 & 9.0 & 8.8 \\
 Q7 Ending       & no match              & 2.07 & 3.14 & --   & --   \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-On the core questions, both evaluations find the two conditions close. Participants rated them within 0.32 points on every question, and none of the differences is significant (all $p \ge 0.40$). The judge places them within half a point on six of the seven dimensions and within 0.27 on Overall (8.74 vs.\ 8.47). The one larger judge gap is Development, where the Director leads by +1.16, likely because a time budget leaves less room to develop the story. The judge sees no such cost on Plot (8.65 vs.\ 8.19), and participants saw none on coherence (3.79 vs.\ 3.71).
+On the core questions, both evaluations find the two conditions close. Participants rated them within 0.32 points on every question, and none of the differences is significant (all $p \ge 0.40$). The judge places them within 0.4 points on every dimension and gives both the same Overall score (9.1). Both stay fully in character (10.0 on Character Fidelity), and the largest differences are small: the Director is ahead on Interruption Handling (9.8 vs.\ 9.4) and the time-constrained Director on Anthropomorphism (9.6 vs.\ 9.2). The baseline, which only the judge evaluated on this story, falls far behind both (Overall 6.2), with the same weaknesses as on Frozen: low scores on Narrative Control (4.4), Plot (4.8) and Interruption Handling (5.6), but a high score on Character Fidelity (8.6).
 
 The two evaluations differ on the ending. In the user study, the Director without a time budget was cut short in 86\% of the rounds and its ending was rated less satisfying than that of the time-constrained Director (2.07 vs.\ 3.14, \pval{0.016}). The judge cannot see this difference, because the automated runs of the Director have no 5-minute cap and can finish the story. The judge therefore confirms that adding a time budget costs little in quality, but the benefit of the time budget, reaching an ending in time, only shows in the user study.
 
