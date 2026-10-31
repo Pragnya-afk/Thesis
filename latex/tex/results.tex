@@ -412,7 +412,7 @@ Compared with the participants' ratings in Figure~\ref{fig:story2-all}, Table~\r
 
 Every comparison so far uses Olaf as the character. A system whose director layer only works for one character's voice would be a weak result, so we repeated the baseline-vs-director comparison from Section~\ref{sec:llm-baseline} on a second character with a deliberately different personality: Rocket Raccoon, whose defensive, sarcastic, deflecting register is close to the opposite of Olaf's earnest, naive one. None of the director's rules (bridge sentences, anti-stall pacing, staying in character under derailment) are written with Olaf specifically in mind, i.e.\ they are character-agnostic, so this is a direct test of whether the director's advantage generalizes to other characters.
 
-We built a Red Riding Hood suite for Rocket with the same seven variants as for Olaf (Section~\ref{sec:characters}), judged with the same rubric and order-bias-controlled protocol (Section~\ref{sec:design-judge}). The \emph{matched} set is the three scenarios with no, medium and complete random off-topic derailment, which allows a like-for-like comparison with Olaf. The \emph{full suite} is all 7 scenarios, including the adversarial and targeted ones.
+We built a Red Riding Hood suite for Rocket with the same seven variants as for Olaf (Section~\ref{sec:characters}), judged with the same rubric and order-bias-controlled protocol (Section~\ref{sec:design-judge}). All results below cover the 7 scenarios, including the adversarial and targeted ones.
 
 \begin{figure}[htbp]
 \centering
@@ -423,26 +423,26 @@ We built a Red Riding Hood suite for Rocket with the same seven variants as for 
 
 \begin{table}[htbp]
 \centering
-\caption{Single-story judge scores, baseline vs.\ director for Rocket, on the matched set (the 3 canonical scenarios) and the full suite (all 7 scenarios).}
+\caption{Single-story judge scores, baseline vs.\ director for Rocket, averaged over all 7 scenarios.}
 \label{tab:llm-rocket-metric}
-\begin{tabular}{lcc|cc}
+\begin{tabular}{lcc}
 \toprule
- & \multicolumn{2}{c}{Matched (n=3)} & \multicolumn{2}{c}{Full suite (n=7)} \\
-Dimension & Baseline & Director & Baseline & Director \\
+Dimension & Baseline & Director \\
 \midrule
-Plot                   & 5.2 & 9.00  & 4.9 & 8.14 \\
-Development             & 6.33 & 9.00  & 6.0 & 7.71 \\
-Language Use            & 8.33 & 10.00 & 7.7 & 9.43 \\
-Interruption Handling   & 5.67 & 9.00  & 4.7 & 9.00 \\
-Character Fidelity      & 9.00 & 10.00 & 8.7 & 9.86 \\
-Narrative Control       & 4.67 & 9.00  & 4.1 & 8.14 \\
-Anthropomorphism        & 7.67 & 10.00 & 6.9 & 9.29 \\
-Overall                  & 6.67 & 9.00  & 6.0 & 8.57 \\
+Plot                  & 4.9 & 8.2 \\
+Development           & 6.1 & 7.8 \\
+Language Use          & 7.7 & 9.4 \\
+Interruption Handling & 4.6 & 8.9 \\
+Character Fidelity    & 8.7 & 9.8 \\
+Narrative Control     & 4.2 & 8.2 \\
+Anthropomorphism      & 6.8 & 9.3 \\
+\midrule
+Overall               & 6.1 & 8.8 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show that the pattern from Olaf holds for Rocket, and more strongly. The director scores higher than the baseline on every dimension, both on the matched set and on the full suite. The Overall gap is 2.33 points on the matched set and about 2.6 on the full suite.  The pairwise verdicts (Figure~\ref{fig:llm-rocket-wins}) are almost unanimous: across the matched 3 scenarios, director wins outright on 20 of 24 dimension judgments, with the only ties on Character Fidelity and one Anthropomorphism tie; on the full 7-scenario suite director wins on nearly every dimension.
+Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show that the pattern from Olaf holds for Rocket, and more strongly. The director scores higher than the baseline on every dimension, with an Overall score of 8.8 against 6.1. The largest gaps are on Interruption Handling (8.9 vs.\ 4.6) and Narrative Control (8.2 vs.\ 4.2), followed by Plot (8.2 vs.\ 4.9). The smallest gap is on Character Fidelity (9.8 vs.\ 8.7), where the baseline already stays close to Rocket's voice. The pairwise verdicts (Figure~\ref{fig:llm-rocket-wins}) are almost unanimous, with the director winning on nearly every dimension.
 
 \begin{figure}[htbp]
 \centering
@@ -451,7 +451,7 @@ Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show th
 \label{fig:llm-rocket-wins}
 \end{figure}
 
-Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows that the director's advantage for Rocket does not shrink under heavier derailment: it stays at 2.5 to 2.7 points from medium through complete derailment, in line with the growing lead in Interruption Handling for Olaf (Figure~\ref{fig:llm-base-derail}). The ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). This rests on far fewer scenarios per cell than the Olaf results, so it should be read as directional, not conclusive.
+Breaking the results down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows that the director's advantage for Rocket does not shrink under heavier derailment: it stays at 2.5 to 2.7 points from medium through complete derailment, in line with the growing lead in Interruption Handling for Olaf (Figure~\ref{fig:llm-base-derail}). The ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). This rests on far fewer scenarios per cell than the Olaf results, so it should be read as directional, not conclusive.
 
 \begin{figure}[htbp]
 \centering
