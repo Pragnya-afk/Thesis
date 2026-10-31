@@ -30,7 +30,7 @@ The weakness of this design is that one call has to do everything at once. It mu
 
 The Director variant separates deciding from performing. Each turn now consists of two model calls, made one after the other.
 
-The first call is the \textbf{Director}, which decides what should happen next. It has no contact with the user and as input gets  the following:
+The first call is the \textbf{Director}, which decides what should happen next. It has no contact with the user and receives the following input:
 \begin{itemize}
   \item the character profile,
   \item the entire beats list,
@@ -38,7 +38,7 @@ The first call is the \textbf{Director}, which decides what should happen next. 
   \item the story so far,
   \item the user's input.
 \end{itemize}
-The Director is responsible to keep track of the beats. It also keeps track of the beats.Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
+The Director is responsible for keeping track of the beats. It also keeps track of the beats.Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
 
 The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the following:
 \begin{itemize}
@@ -90,7 +90,7 @@ The checks run in this order. The monitor passes the elapsed and remaining time,
 
 \section{Extensions}\label{sec:extensions}
 
-Beyond the three variants, we built two extensions that remove two assumptions of the main system: that someone writes the beats by hand, and that the user may never stop the story. Both work with any of the three Director modes, but neither was part of the evaluation. A third, smaller part keeps the Director's context short in long sessions.
+Beyond the three variants, we built two extensions that remove two assumptions of the main system: that someone writes the beats by hand, and that the user may never stop the story. Both work with any of the three Director modes, but neither was part of the evaluation.
 
 \subsection{Beat Generator}
 
