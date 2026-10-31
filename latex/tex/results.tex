@@ -4,8 +4,6 @@
 
 This chapter reports the user study, which is our primary assessment, then the LLM-as-Judge evaluation, and finally ablations that compare the two and vary the character, the story representation, the time budget and the judge model. The designs are described in Sections~\ref{sec:design-study} and~\ref{sec:design-judge}, and the questionnaire items are listed in Table~\ref{tab:instrument}.
 
-Throughout, Q5a is the main measure of derailment handling. It is only asked of participants who confirm that they tried to derail the story, and it separates the conditions more strongly than any other measure.
-
 \section{User Study Results}\label{sec:user-study-results}
 
 \subsection{Story 1: Director vs. Baseline}
@@ -34,11 +32,11 @@ Resisted derailment (Q5a) & 4.42 $\pm$ 0.90 & 1.58 $\pm$ 1.16 & 12 & \textbf{0.0
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/13_story1_all_measures.png}
-\caption{Story 1 (Frozen) questionnaire outcomes, director vs.\ baseline, completers only ($n$=14). Resistance to derailment is only asked when a participant reports trying to derail, so it has $n$=12 per condition. Bars show the mean; error bars show $\pm$1 standard deviation.}
+\caption{Story 1 (Frozen) questionnaire outcomes, director vs.\ baseline, completers only ($n$=14). Resistance to derailment has $n$=12 per condition. Bars show the mean; error bars show $\pm$1 standard deviation.}
 \label{fig:story1-all}
 \end{figure}
 
-Coherence and derailment resistance show the two clearest effects. Both are significant ($p \le 0.002$), and the gaps are large on a five-point scale: about 2.2 points for coherence (3.93 vs.\ 1.71) and about 2.8 points for derailment resistance (4.42 vs.\ 1.58). Derailment resistance (Q5a) is only asked when a participant reports trying to derail. 12 of the 14 participants tried to derail and answered the question, so the means and the paired test are over these 12. Engagement points in the same direction but with a weaker effect (\pval{0.036}). The overall rating is also higher for the director (3.57 vs.\ 2.93) but does not reach significance at $n$=14 (\pval{0.12}). Staying in character is the only measure without a clear difference (4.29 vs.\ 4.00, \pval{0.40}), since Olaf keeps his voice under the baseline as well. What the baseline loses is the plot, not the persona.
+Coherence and derailment resistance show the two clearest effects. Both are significant ($p \le 0.002$), and the gaps are large on a five-point scale: about 2.2 points for coherence (3.93 vs.\ 1.71) and about 2.8 points for derailment resistance (4.42 vs.\ 1.58). Q5a is only asked of participants who tried to derail, which was 12 of the 14, so its means and paired test use these 12. Engagement points in the same direction but with a weaker effect (\pval{0.036}). The overall rating is also higher for the director (3.57 vs.\ 2.93) but does not reach significance at $n$=14 (\pval{0.12}). Staying in character is the only measure without a clear difference (4.29 vs.\ 4.00, \pval{0.40}), since Olaf keeps his voice under the baseline as well. What the baseline loses is the plot, not the persona.
 
 Looking more closely at interruption handling in Story 1, the derailment-attempt rate was almost identical across conditions: 12 of 14 baseline rounds and 12 of 14 director rounds recorded ``yes, I tried to derail''. The gap below therefore reflects how Olaf responded. Participants were encouraged to derail the story but not forced to (Figure~\ref{fig:study-welcome}), which is why not every round includes an attempt.
 
@@ -118,7 +116,7 @@ Resisted derailment (Q5a) & 4.07 $\pm$ 0.83 & 3.75 $\pm$ 1.22 & 12 & 0.40 \\
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.95\linewidth]{plots/15_story2_all_measures.png}
-\caption{Story 2 (Cinderella) questionnaire outcomes, director vs.\ time-constrained, completers only ($n$=14). Resistance to derailment is only asked when a participant reports trying to derail, so the comparison uses the $n$=12 participants who tried to derail in both conditions (12 pairs). Bars show the mean; error bars show $\pm$1 standard deviation.}
+\caption{Story 2 (Cinderella) questionnaire outcomes, director vs.\ time-constrained, completers only ($n$=14). Resistance to derailment uses the 12 participants who answered in both conditions. Bars show the mean; error bars show $\pm$1 standard deviation.}
 \label{fig:story2-all}
 \end{figure}
 
@@ -210,7 +208,7 @@ The ranking is consistent across every measure: baseline lowest, director and ti
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\linewidth]{plots/09_derailment_story_comparison.png}
-\caption{Resistance to derailment (Q5a) by story and condition, completers only. The question is only asked when a participant reports trying to derail, so $n$ is below 14 for some conditions; the $n$ above each bar is the number who answered. Bars show the mean; error bars show $\pm$1 standard deviation.}
+\caption{Resistance to derailment (Q5a) by story and condition, completers only. The $n$ above each bar is the number who answered. Bars show the mean; error bars show $\pm$1 standard deviation.}
 \label{fig:derail-by-story}
 \end{figure}
 
