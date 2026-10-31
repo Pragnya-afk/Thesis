@@ -212,7 +212,7 @@ The ranking is consistent across every measure: baseline lowest, director and ti
 \label{fig:derail-by-story}
 \end{figure}
 
-Figure~\ref{fig:derail-by-story} splits the derailment result by story: in Story 1, director's advantage over baseline is large (4.42 vs.\ 1.58, \pval{0.002}); in Story 2, director's advantage over time-constrained is small and not significant (4.07 vs.\ 3.75, \pval{0.40}). The interruption-handling benefit of the director comes entirely from replacing baseline, not from removing the time limit.
+Figure~\ref{fig:derail-by-story} splits the derailment result by story: in Story 1, director's advantage over baseline is large (4.42 vs.\ 1.58, \pval{0.002}); in Story 2, director's advantage over time-constrained is small and not significant (4.07 vs.\ 3.75, \pval{0.40}). The director's advantage in derailment handling therefore shows up against the baseline, not against the time-constrained variant.
 
 \begin{figure}[htbp]
 \centering
@@ -235,6 +235,7 @@ Time-constrained    & 8.80 $\pm$ 2.08 ($n$=15)  & 80.0 $\pm$ 17.1  & $\sim$704 \
 \bottomrule
 \end{tabular}
 \end{table}
+
 Time-constrained responses are the \emph{longest} of the three conditions on average, consistent with the beat-compression mechanism above. Because it often compresses several beats into one turn, its responses are longer than those of the baseline and the director. The director's responses are in turn longer than the baseline's, because it acknowledges the user and also steers back to the story. Multiplying turns by response length, the total output per round of the time-constrained director ($\sim$704 words) is about equal to the director's ($\sim$710) and well above the baseline's ($\sim$530). The time budget therefore leads to fewer but denser turns, not to a shorter story.
 
 \section{LLM-as-Judge Results}
@@ -252,7 +253,7 @@ The setup of the automated evaluation is described in Section~\ref{sec:design-ju
 \label{fig:llm-base-metric}
 \end{figure}
 
-Director scores higher on every single dimension. The gap is largest on Narrative Control and Plot. This is where a director layer should help most, because it steers the story toward its beats. Character Fidelity is already high under baseline and only edges up slightly.
+In single-story mode (Figure~\ref{fig:llm-base-metric}), the Director scores higher than the baseline on every dimension. The gap is largest on Narrative Control and Plot. This is where a director layer should help most, because it steers the story toward its beats. Character Fidelity is already high under baseline and only edges up slightly.
 
 \begin{figure}[htbp]
 \centering
@@ -450,7 +451,7 @@ Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show th
 \label{fig:llm-rocket-wins}
 \end{figure}
 
-Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows that the director's advantage for Rocket does not shrink under heavier derailment: it stays at 2.5 to 2.7 points from medium through complete derailment, in line with the growing lead in Interruption Handling for Olaf (Figure~\ref{fig:llm-base-derail}). The ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). The result is a real, checkable data point in Rocket's favor, but it rests on far fewer scenarios per cell than the Olaf results, and should be read as directional rather than conclusive without more scenarios per character.
+Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows that the director's advantage for Rocket does not shrink under heavier derailment: it stays at 2.5 to 2.7 points from medium through complete derailment, in line with the growing lead in Interruption Handling for Olaf (Figure~\ref{fig:llm-base-derail}). The ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). This rests on far fewer scenarios per cell than the Olaf results, so it should be read as directional, not conclusive.
 
 \begin{figure}[htbp]
 \centering
@@ -473,7 +474,7 @@ Director & 9.00 & 8.83 & 8.17 \\
 \end{tabular}
 \end{table}
 
-Taken together, this is evidence that the director's advantage over baseline is not specific to Olaf's character prompt.
+Taken together, this suggests that the director's advantage over baseline is not specific to Olaf's character prompt.
 
 \subsection{Narrative Representation Ablation}
 \label{sec:llm-beats-ablation}
