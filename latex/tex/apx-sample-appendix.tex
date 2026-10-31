@@ -766,8 +766,8 @@ The function-calling schema exposed to the Realtime model. Calling it mid-turn
 triggers a server-side call into the director prompt above
 (Section~\ref{app:director-prompt}, plus Section~\ref{app:time-constrained-prompt}
 when timed). The tool result, which is the director's JSON decision, is what
-the actor prompt's \texttt{\{director\_instruction\}} placeholder is filled
-with.
+the placeholder
+\texttt{\{director\_instruction\}} in the actor prompt is filled with.
 
 \begin{lstlisting}
 {
@@ -852,8 +852,7 @@ Important:
 - If the user interrupts, acknowledge briefly and use the interruption to enrich the current beat when the story is ahead of schedule.
 \end{lstlisting}
 
-Note how this maps directly onto the beat-compression plot (Figure~12,
-\texttt{beat\-\_com\-pression\-\_time\-\_constrained.png}): the
+Note how this maps directly onto the beat-compression plot (Figure~\ref{fig:compression}): the
 \texttt{final} pacing mode is exactly the mechanism that produces the
 "folded into closing turn" category, and the high/medium/low importance
 labels are the priority subtitles shown under each beat in that figure.

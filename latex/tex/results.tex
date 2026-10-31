@@ -272,11 +272,11 @@ The pairwise verdicts (Figure~\ref{fig:llm-base-wins}) tell a stricter version o
 \begin{figure}[htbp]
 \centering
 \includegraphics[width=0.6\linewidth]{plots/03_baseline_vs_director_interruption_by_derailment_level.png}
-\caption{Interruption Handling score vs.\ derailment severity, baseline vs.\ director, averaged over 11 Olaf stories at each derailment level.}
+\caption{Interruption Handling score vs.\ derailment severity, baseline vs.\ director, averaged over 10 Olaf stories at each derailment level.}
 \label{fig:llm-base-derail}
 \end{figure}
 
-Figure~\ref{fig:llm-base-derail} shows how well each system handles interruptions as the derailment gets more severe, averaged over 11 Olaf stories at each level. The baseline performs worse the more often the user derails: its Interruption Handling score falls from 6.18 with no derailment to 5.27 at medium and 5.18 at complete derailment. The director does not degrade: its score rises from 8.09 to 8.82 and 9.27, so its lead over the baseline grows from 1.91 to 3.55 and 4.09 points. With no derailment there is little to handle, while repeated derailment is exactly the situation the director is built for and the one in which the baseline struggles most. Averaged over all three derailment levels, the Overall score shows the same picture (5.4 vs.\ 8.5, Figure~\ref{fig:llm-base-metric}).
+Figure~\ref{fig:llm-base-derail} shows how well each system handles interruptions as the derailment gets more severe, averaged over 10 Olaf stories at each level. The baseline performs worse once the user derails: its Interruption Handling score drops from 6.2 with no derailment to 5.2 at medium and 5.3 at complete derailment. The director does not degrade: its score rises from 8.0 to 9.0 and 9.7, so its lead over the baseline grows from 1.8 to 3.8 and 4.4 points. With no derailment there is little to handle, while repeated derailment is exactly the situation the director is built for and the one in which the baseline struggles most. Averaged over all three derailment levels, the Overall score shows the same picture (5.4 vs.\ 8.5, Figure~\ref{fig:llm-base-metric}).
 
 \textbf{Adversarial and targeted derailment.} For Frozen and Cinderella, we also compared the two systems under the two harder derailment categories described in Section~\ref{sec:characters}. Table~\ref{tab:llm-olaf-advtgt} shows the result. The Director scores higher than the baseline in every scenario, and in the pairwise verdicts the baseline does not win a single dimension. Targeted derailment, where every input tries to end the story, hurts the baseline most (Overall 4.4 to 5.2), while the Director stays between 8.4 and 8.8.
 
