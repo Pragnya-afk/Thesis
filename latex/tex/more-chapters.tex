@@ -45,7 +45,7 @@ The first call is the \textbf{Director}, which decides what should happen next. 
   \item the story so far,
   \item the user's input.
 \end{itemize}
-The Director is responsible for keeping track of the beats. It also keeps track of the beats.Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
+The Director is responsible for keeping track of the beats. Its decision says whether the current beat should end, and the system then updates the current beat and the list of completed beats in the story state (Section~\ref{sec:state}). It returns a JSON object containing a decision type, whether the user interrupted, the user's detected intent, a short instruction for the character, whether the current beat should progress or end, and a brief reason for the decision. If this output cannot be parsed, the system falls back to a safe default: acknowledge the user briefly and add one new event to the current beat.
 
 The second call is the \textbf{Character} (the actor), which carries out the Director's decision in its own voice, in two to four sentences. It sees the following:
 \begin{itemize}
