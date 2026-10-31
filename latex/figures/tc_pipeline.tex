@@ -1,0 +1,40 @@
+% Time-Constrained Director diagram
+\begin{tikzpicture}[
+  font=\sffamily\small,
+  box/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=6pt, minimum height=1.9cm},
+  key/.style={draw=black, very thick, fill=white, rounded corners=1.5pt, align=center, inner sep=6pt, minimum height=1.9cm},
+  mode/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=5pt, text width=2.9cm, minimum height=1.3cm},
+  arr/.style={-{Latex[length=2.2mm]}, thick},
+]
+\newcommand{\tg}[1]{{\scriptsize\color{black!55}#1}}
+\newcommand{\cd}[1]{{\ttfamily\scriptsize\color{black!55}#1}}
+% Row 1
+\node[box, align=left, text width=3.6cm] (budget) at (0,0) {\tg{BUDGET}\\[1pt]{\normalsize\bfseries Time budget}\\[3pt]{\ttfamily\scriptsize target duration}\\{\ttfamily\scriptsize elapsed, remaining}};
+\node[key, text width=6.2cm] (mon) at (6.9,0) {\tg{MONITOR}\\[1pt]{\normalsize\bfseries Temporal Monitor}\\[3pt]expected = elapsed / target\\actual = beats done / total beats\\[3pt]\cd{time\_control.py}};
+\node[key, text width=4.4cm] (sel) at (14.3,0) {\tg{SELECTOR}\\[1pt]{\normalsize\bfseries Pacing mode}\\[3pt]compare expected and\\actual progress, pick mode};
+% Row 2: modes
+\foreach \name/\lab/\desc [count=\i] in {tf/too\_fast/stretch the beat, no/normal/continue, hu/hurry/finish the beat, cr/critical/compress beats, fi/final/close the story} {
+  \node[mode] (\name) at ({(\i-3)*3.5+7.0},-2.75) {{\ttfamily\bfseries \lab}\\[2pt]\desc};
+}
+\node[anchor=north west, inner sep=2pt] at (tf.south west |- 0,-3.65) {\tg{AHEAD OF SCHEDULE}};
+\node[anchor=north east, inner sep=2pt] at (fi.south east |- 0,-3.65) {\tg{OUT OF TIME}};
+% Row 3
+\node[box, text width=3.0cm] (state) at (-0.3,-5.6) {\tg{STATE IN}\\[1pt]{\normalsize\bfseries User input +}\\{\normalsize\bfseries story state}};
+\node[key, text width=4.6cm] (dir) at (4.6,-5.6) {\tg{PLAN (TIME-AWARE)}\\[1pt]{\normalsize\bfseries Director}\\[3pt]\cd{get\_time\_director\_decision}};
+\node[key, text width=3.6cm] (act) at (9.75,-5.6) {\tg{PERFORM}\\[1pt]{\normalsize\bfseries Character}\\[3pt]\cd{call\_actor\_agent}};
+\node[key, text width=3.6cm] (trk) at (14.3,-5.6) {\tg{TRACK}\\[1pt]{\normalsize\bfseries Beat tracker}\\[3pt]advance beat\\or close story};
+% Arrows row 1
+\draw[arr] (budget) -- (mon);
+\draw[arr] (mon) -- node[above, font=\ttfamily\scriptsize, align=center] {temporal\\state} (sel);
+\draw[arr] (sel.south) -- (sel.south |- cr.north);
+% Bar under the modes and arrow to the Director
+\draw[thick, black!55] (tf.south west |- 0,-3.65) -- (fi.south east |- 0,-3.65);
+\draw[arr, dashed] (dir.north |- 0,-3.65) -- node[right, font=\ttfamily\scriptsize] {pacing mode} (dir.north);
+% Arrows row 3
+\draw[arr] (state) -- (dir);
+\draw[arr] (dir) -- (act);
+\draw[arr] (act) -- (trk);
+\draw[arr] (trk.south) -- ++(0,-0.45) -| node[pos=0.25, below, font=\ttfamily\scriptsize] {next turn, updated state} (state.south);
+% Beat progress feeds the monitor
+\draw[arr, dotted] (trk.east) -- ++(0.7,0) coordinate (c1) -- (c1 |- 0,1.55) -- node[above, font=\ttfamily\scriptsize] {beats done} (mon.north |- 0,1.55) -- (mon.north);
+\end{tikzpicture}
