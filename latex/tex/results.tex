@@ -361,17 +361,6 @@ To see how the Time-Constrained Director behaves under different budgets, we ran
 
 Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the story is told. The share of beats reached rises from 0.12 at 0.5 minutes to 0.53 at 2 minutes and 0.74 at 5 minutes, and stays at 0.71 at 10 minutes. The unconstrained Director reaches only 0.23 of the beats, although its transcripts are about as long as those at 5 and 10 minutes (890 words, compared with 804 and 875). Without a budget, the Director spends its output on fewer beats; with one, it compresses and moves on.
 
-\begin{figure}[htbp]
-\centering
-\includegraphics[width=0.6\linewidth]{plots/07_time_constrained_qualitative_overall.png}
-\caption{Time-budget ablation: mean Overall score from the single-story rubric for the time-budget experiments, by time budget, compared with the unconstrained director.}
-\label{fig:llm-tb-overall}
-\end{figure}
-
-
-
-The judged quality changes little with the budget (Figure~\ref{fig:llm-tb-overall}). At 2, 5 and 10 minutes the Overall score lies between 2.74 and 2.80, slightly above the unconstrained Director (2.65). The 0.5-minute budget scores highest (3.33), even though its transcripts are only 48 words long on average, so this score should be read with care.
-
 \section{Ablation Studies}\label{sec:ablation-results}
 
 This section collects four further analyses. We first compare the LLM judge with the participants of the user study on the same two stories, and then vary one part of the setup at a time: the character, the story representation and the judge model.
