@@ -1,0 +1,51 @@
+% Evaluation pipeline diagram (LLM-as-Judge)
+\begin{tikzpicture}[
+  font=\sffamily\small,
+  box/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=6pt},
+  key/.style={draw=black, very thick, fill=white, rounded corners=1.5pt, align=center, inner sep=6pt},
+  tag/.style={font=\sffamily\scriptsize\color{black!55}},
+  code/.style={font=\ttfamily\scriptsize},
+  arr/.style={-{Latex[length=2.2mm]}, thick},
+  node distance=6mm and 7mm
+]
+% Benchmark
+\node[box, align=left, text width=3.7cm] (suite) {%
+  {\scriptsize\color{black!55}BENCHMARK}\\[1pt]
+  {\normalsize\bfseries Derailment suite}\\[3pt]
+  {\ttfamily\scriptsize off-topic}\\
+  {\ttfamily\scriptsize jailbreak}\\
+  {\ttfamily\scriptsize targeted sabotage}\\
+  {\ttfamily\scriptsize $\times$ none / medium / complete}};
+% Transcripts
+\node[box, text width=2.6cm, right=of suite.north east, anchor=north west, yshift=2mm] (ta) {{\bfseries Transcript A}\\[1pt]baseline};
+\node[box, text width=2.6cm, right=of suite.south east, anchor=south west, yshift=-2mm] (tb) {{\bfseries Transcript B}\\[1pt]director};
+% Normalise
+\node[key, text width=3.6cm, right=of ta.south east, anchor=north west, xshift=0mm, yshift=1.5mm] (norm) {%
+  {\scriptsize\color{black!55}PREP}\\[1pt]
+  {\normalsize\bfseries Normalise}\\[2pt]
+  to text, one line per turn\\[3pt]
+  {\ttfamily\scriptsize\color{black!55}transcript\_to\_story}};
+% Evaluate
+\node[key, text width=5.2cm, right=of norm] (eval) {%
+  {\scriptsize\color{black!55}LLM JUDGE}\\[1pt]
+  {\normalsize\bfseries Evaluate}\\[3pt]
+  single story $\rightarrow$ scores (0--10)\\
+  A/B + B/A $\rightarrow$ winners\\[3pt]
+  {\ttfamily\scriptsize\color{black!55}evaluation\_core.py}};
+% Tables
+\node[box, align=left, text width=4.0cm, right=of eval] (tab) {%
+  {\scriptsize\color{black!55}AGGREGATE}\\[1pt]
+  {\normalsize\bfseries Tables}\\[3pt]
+  {\ttfamily\scriptsize scores\_by\_metric}\\
+  {\ttfamily\scriptsize pairwise\_wins}\\
+  {\ttfamily\scriptsize derailment\_robustness}};
+% Note
+\node[tag, below=3mm of eval, text width=5cm, align=center] {8 core rubric dimensions (Table~\ref{tab:rubric})};
+% Arrows
+\draw[arr] (suite.east |- ta.west) -- (ta.west);
+\draw[arr] (suite.east |- tb.west) -- (tb.west);
+\draw[arr] (ta.east) -- ++(4mm,0) |- ([yshift=2mm]norm.west);
+\draw[arr] (tb.east) -- ++(4mm,0) |- ([yshift=-2mm]norm.west);
+\draw[arr] (norm) -- (eval);
+\draw[arr] (eval) -- (tab);
+\end{tikzpicture}

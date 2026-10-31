@@ -231,7 +231,14 @@ In the results, Q5a is the headline derailment-handling measure: it is only aske
 
 \section{LLM-as-Judge Evaluation Design}\label{sec:design-judge}
 
-The second assessment is an automated one. It lets us test many more stories, and with controlled derailment, than a live study can cover. An LLM judge reads transcripts and scores them, in two modes.
+The second assessment is an automated one. It lets us test many more stories, and with controlled derailment, than a live study can cover. An LLM judge reads transcripts and scores them, in two modes. Figure~\ref{fig:eval-pipeline} gives an overview of the pipeline.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{\input{figures/eval_pipeline.tex}}
+\caption{The automated evaluation pipeline. For each scenario of the derailment suite, the baseline and the Director each produce a transcript. Both are converted to plain text, one line per turn, and scored by the LLM judge, once per story on a scale of 0 to 10 and once in a pairwise comparison in both orders (A/B and B/A). The results are aggregated into the tables and figures in Chapter~\ref{sec:results}.}
+\label{fig:eval-pipeline}
+\end{figure}
 
 \subsection{Judge and Rubric}
 
