@@ -237,7 +237,7 @@ Time-constrained responses are the \emph{longest} of the three conditions on ave
 \section{LLM-as-Judge Results}
 \label{sec:llm-judge}
 
-The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report six comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
+The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report seven comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), different time budgets (Section~\ref{sec:llm-timebudget}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
 
 \subsection{Baseline vs. Director}
 \label{sec:llm-baseline}
@@ -324,7 +324,7 @@ The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on mo
 
 \section{Ablation Studies}\label{sec:ablation-results}
 
-This section collects four further analyses. We first compare the LLM judge with the participants of the user study on the same two stories, and then vary one part of the setup at a time: the character, the story representation and the judge model.
+This section collects five further analyses. We first compare the LLM judge with the participants of the user study on the same two stories, and then vary one part of the setup at a time: the character, the story representation, the time budget and the judge model.
 
 \subsection{User Study vs LLM-as-Judge}
 \label{sec:llm-vs-study}
@@ -536,6 +536,39 @@ complete\_targeted          & 6.0 & 5.0 & Tie \\
 \bottomrule
 \end{tabular}
 \end{table}
+
+\subsection{Time-Budget Ablation}
+\label{sec:llm-timebudget}
+
+To see how the time budget affects the story, we ran the Time-Constrained Director with limits of 0.5, 2, 5 and 10 minutes and compared it with the Director without a time limit, at all three derailment levels. Table~\ref{tab:llm-timebudget} and Figure~\ref{fig:llm-timebudget} show the Overall judge score.
+
+\begin{table}[htbp]
+\centering
+\caption{Time-budget ablation: Overall judge score (0--10) by time limit and derailment level, with the approximate number of turns the story lasts.}
+\label{tab:llm-timebudget}
+\begin{tabular}{lcccc}
+\toprule
+Time limit & Approx.\ turns & No derailment & Medium & Complete \\
+\midrule
+0.5 min       & 1--2   & 4.60 & 4.40 & 4.10 \\
+2 min         & 5--6   & 7.30 & 6.90 & 6.50 \\
+5 min         & 12--14 & 8.80 & 8.70 & 8.50 \\
+10 min        & 20     & 8.70 & 8.60 & 8.60 \\
+No time limit & 8      & 9.00 & 9.00 & 9.10 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[htbp]
+\centering
+\input{figures/time_ablation.tex}
+\caption{Time-budget ablation: Overall judge score by time limit, for the three derailment levels. ``No limit'' is the Director without a time budget.}
+\label{fig:llm-timebudget}
+\end{figure}
+
+The score rises steeply with the budget. With 0.5 minutes, the story lasts only one or two turns and scores between 4.1 and 4.6. With 2 minutes it reaches 6.5 to 7.3, and with 5 or 10 minutes it lies between 8.5 and 8.8, close to the Director without a limit (9.0 to 9.1). A very short budget therefore costs quality, while a budget of five minutes or more costs almost nothing.
+
+Derailment matters most when time is short. With 0.5 minutes, complete derailment lowers the score by 0.5 points compared with no derailment, and with 2 minutes by 0.8 points. With 5 or 10 minutes, the difference shrinks to 0.3 and 0.1 points, and without a time limit it disappears. When time is short, every turn spent on an interruption is a turn missing from the story.
 
 \subsection{Judge Ablation Study}
 \label{sec:judge-model-comparison}
