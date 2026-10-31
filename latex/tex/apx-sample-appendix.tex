@@ -15,10 +15,10 @@
 
 This appendix reproduces the exact beat definitions and system prompts used
 in the user study, plus the LLM-judge prompts used in the automated
-evaluation. All text below is copied verbatim from the implementation --
-the scenario suite, the director agent modules, the study server, and the
-evaluation prompt module -- with the Python string syntax stripped away so
-only the prompt content itself is shown. Curly braces like
+evaluation. All text below is copied verbatim from the implementation,
+that is, from the scenario suite, the director agent modules, the study server
+and the evaluation prompt module. Only the Python string syntax has been
+removed, so that just the prompt content is shown. Curly braces like
 \texttt{\{story\_topic\}} mark where a value is substituted in at runtime.
 \subsection{Cover Image}
 \label{app:cover}
@@ -50,11 +50,11 @@ skipped; medium beats can be compressed to a sentence or two; low beats can
 be merged into a neighbouring beat or dropped entirely under time pressure.
 \item[\texttt{goal}] A single sentence describing what must narratively
 happen for this beat to count as complete. This is the only thing the actor
-is told it \emph{must} achieve this turn -- it is a target, not a script.
+is told it \emph{must} achieve this turn. It is a target, not a script.
 \item[\texttt{expansions}] A short list of optional flavour details (a
 sensory description, a character beat, a piece of business) the actor can
 draw on to enrich the telling when time and turns allow. These are
-suggestions, not requirements -- unlike \texttt{goal}, nothing breaks if an
+suggestions, not requirements. Unlike with \texttt{goal}, nothing breaks if an
 expansion is left unused.
 \end{description}
 
@@ -123,7 +123,7 @@ betrayal, and Anna's act of true love.
 ]
 \end{lstlisting}
 
-Note: every beat in the Frozen scenario is importance \texttt{high} -- with
+Note: every beat in the Frozen scenario has importance \texttt{high}. With
 only 5 beats, each covering a major, non-negotiable plot event, there was no
 low-priority material to compress.
 
@@ -358,7 +358,7 @@ The following screenshots show further parts of the demo described in Section~\r
 \label{app:director-prompt}
 
 The director is a separate model call made \emph{before} every actor
-response. It does not speak as the character -- it only decides how the
+response. It does not speak as the character. It only decides how the
 upcoming turn should be handled (progress the story, redirect a derailment,
 elaborate on a detail, advance or close the story) and writes a concrete
 instruction for the actor to realize. The same director instructions are
@@ -644,9 +644,9 @@ This guidance should escalate pressure, it does not remove your judgment.
 \subsection{Live Actor Prompts (User Study Server)}
 \label{app:live-actor-prompts}
 
-The prompts above are what the \emph{director} sees. What the character
-actually speaks with -- the actor prompt sent to OpenAI's Realtime voice API
-during the live study -- is defined separately in the study server and
+The prompts above are what the \emph{director} sees. The prompt the character
+actually speaks with is the actor prompt sent to OpenAI's Realtime voice API
+during the live study. It is defined separately in the study server and
 differs slightly by condition.
 
 \subsubsection{Baseline condition}
@@ -729,7 +729,7 @@ Story so far:
 The function-calling schema exposed to the Realtime model. Calling it mid-turn
 triggers a server-side call into the director prompt above
 (Section~\ref{app:director-prompt}, plus Section~\ref{app:time-constrained-prompt}
-when timed), and the tool result -- the director's JSON decision -- is what
+when timed). The tool result, which is the director's JSON decision, is what
 the actor prompt's \texttt{\{director\_instruction\}} placeholder is filled
 with.
 
@@ -1050,9 +1050,9 @@ Rules:
 \label{app:evaluator-prompts}
 
 Used by the automated evaluation pipeline (not the live user study) to score
-and compare generated transcripts. The judge is called twice per comparison
--- once as (A, B) and once as (B, A) -- and a dimension only counts as a win
-if both orderings agree once translated back; this order-bias control is
+and compare generated transcripts. The judge is called twice per comparison,
+once as (A, B) and once as (B, A), and a dimension only counts as a win
+if both orderings agree once translated back. This order-bias control is
 implemented in the calling code, not in the prompt text itself.
 
 \subsubsection{Rubric dimensions}

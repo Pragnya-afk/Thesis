@@ -40,7 +40,7 @@ Resisted derailment (Q6) & 4.42 $\pm$ 0.90 & 1.58 $\pm$ 1.16 & 11 & \textbf{0.00
 
 Coherence and derailment resistance are the two effects that hold up cleanly: both $p \le 0.002$, both roughly a two-point gap on a five-point scale. Derailment resistance (Q6) is only asked when a participant reports trying to derail. 12 of the 14 did so in each condition, and the means are over these 12. The paired test needs an answer in both rounds, which 11 participants gave, so it uses $n$=11. Engagement moves the same way but more weakly (\pval{0.036}); overall rating trends the same direction (3.57 vs.\ 2.93) but does not reach significance at $n$=14 (\pval{0.12}). Staying in character is the one measure that looks the same either way (4.29 vs.\ 4.00, \pval{0.40}). Olaf keeps his voice under baseline too. What baseline loses is the plot, not the persona.
 
-Looking more closely at interruption handling in Story 1, the derailment-attempt rate was almost identical across conditions -- 12 of 14 baseline rounds and 12 of 14 director rounds recorded ``yes, I tried to derail'' -- the gap below reflects how Olaf responded. Participants were encouraged to derail the story but not forced to (Figure~\ref{fig:study-welcome}), which is why not every round includes an attempt.
+Looking more closely at interruption handling in Story 1, the derailment-attempt rate was almost identical across conditions: 12 of 14 baseline rounds and 12 of 14 director rounds recorded ``yes, I tried to derail''. The gap below therefore reflects how Olaf responded. Participants were encouraged to derail the story but not forced to (Figure~\ref{fig:study-welcome}), which is why not every round includes an attempt.
 
 \begin{figure}[htbp]
 \centering
@@ -175,11 +175,11 @@ The unconstrained director round almost never reaches an ending (86\% ``cut shor
 
 \begin{quote}
 \small
-``No plot points were missing'' -- time-constrained
+``No plot points were missing'' (time-constrained)
 
-``The way from the room to the castle [felt rushed] ... where the other princesses cut off their toes [was missing].'' -- time-constrained
+``The way from the room to the castle [felt rushed] ... where the other princesses cut off their toes [was missing].'' (time-constrained)
 
-``Olaf didn't have time to finish his story ... most of the plot points were missing.'' -- director
+``Olaf didn't have time to finish his story ... most of the plot points were missing.'' (director)
 \end{quote}
 
 \textbf{Beat-level compression under the time limit.} Every time-constrained transcript was read turn-by-turn against its pacing state and each of Cinderella's 9 beats classified as developed, hurried, compressed, skipped or folded into a closing turn.
@@ -264,7 +264,7 @@ The setup of the automated evaluation is described in Section~\ref{sec:design-ju
 
 
 
-Director scores higher on every single dimension. The gap is largest on Narrative Control and Plot — exactly where a director layer should help, since its whole job is steering the story toward its beats. Character Fidelity is already high under baseline and only edges up slightly.
+Director scores higher on every single dimension. The gap is largest on Narrative Control and Plot. This is exactly where a director layer should help, since its whole job is steering the story toward its beats. Character Fidelity is already high under baseline and only edges up slightly.
 
 \begin{figure}[htbp]
 \centering
@@ -473,7 +473,7 @@ Figure~\ref{fig:llm-rocket-metric} and Table~\ref{tab:llm-rocket-metric} show th
 \label{fig:llm-rocket-wins}
 \end{figure}
 
-Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows a pattern worth flagging honestly rather than smoothing over: for Olaf, director's advantage \emph{shrinks} as derailment intensifies (on the Overall score, 1.60 points at none, down to 0.22 at complete; Section~\ref{sec:llm-baseline}); for Rocket it does not shrink, staying at 2.5--2.7 points from medium through complete derailment. We do not read this as director being more robust for Rocket than for Olaf -- the ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). The result is a real, checkable data point in Rocket's favor, but it rests on far fewer scenarios per cell than Olaf's 10-story aggregate, and should be read as directional rather than conclusive without more scenarios per character.
+Breaking the full suite down by derailment level (Figure~\ref{fig:llm-rocket-derail} and Table~\ref{tab:llm-rocket-derail}) shows a pattern worth flagging honestly rather than smoothing over: for Olaf, director's advantage \emph{shrinks} as derailment intensifies (on the Overall score, 1.60 points at none, down to 0.22 at complete; Section~\ref{sec:llm-baseline}); for Rocket it does not shrink, staying at 2.5--2.7 points from medium through complete derailment. We do not read this as director being more robust for Rocket than for Olaf. The ``none'' cell here is a single scenario, not an average, and one baseline single-story score at the complete level failed to parse and was excluded from that cell's mean (n=2 instead of 3). The result is a real, checkable data point in Rocket's favor, but it rests on far fewer scenarios per cell than Olaf's 10-story aggregate, and should be read as directional rather than conclusive without more scenarios per character.
 
 \begin{figure}[htbp]
 \centering
@@ -639,7 +639,7 @@ Overall                  & 5.0 & 6.0 & B    & 3.0 & 7.7 & B \\
 \end{tabular}
 \end{table}
 
-We compare two judge models, gpt-4o and gpt-5.6-sol, on the same baseline-vs-director transcripts at all three derailment levels (Tables~\ref{tab:judge-cmp-none}--\ref{tab:judge-cmp-complete}) to check whether our conclusions depend on the choice of judge. The discussion below focuses on complete derailment (Table~\ref{tab:judge-cmp-complete}). Winner B denotes the director; bold entries mark pairwise verdicts where the two judges disagree.
+We compare two judge models, gpt-4o and gpt-5.6-sol, on the same baseline-vs-director transcripts at all three derailment levels (Tables~\ref{tab:judge-cmp-none} to~\ref{tab:judge-cmp-complete}) to check whether our conclusions depend on the choice of judge. The discussion below focuses on complete derailment (Table~\ref{tab:judge-cmp-complete}). Winner B denotes the director; bold entries mark pairwise verdicts where the two judges disagree.
 
 Both judges agree on the direction of the result: director scores at least as high as baseline on every dimension, and both name director the Overall winner. The judges differ mainly in how far apart they place the two systems. gpt-4o compresses its scores towards the middle of the scale, with a single-story gap of only one to two points per dimension and +1.0 on Overall (5.0 vs.\ 6.0). gpt-5.6-sol separates the systems far more sharply, rating baseline lower and director higher on nearly every dimension, for an Overall gap of +4.7 (3.0 vs.\ 7.7). The largest differences under gpt-5.6-sol fall on Narrative Control (+7.0), Plot (+5.0), and Interruption Handling (+5.0), which are the dimensions most directly tied to steering the story back on track after derailment.
 

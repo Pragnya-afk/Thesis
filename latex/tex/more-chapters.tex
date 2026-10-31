@@ -1,6 +1,6 @@
 \chapter{Method}\label{sec:method}
 
-This chapter describes the system we built and how we evaluate it. After an overview of the approach (Section~\ref{sec:overview}), we introduce what all variants share: the beat-based story representation and the shared story state (Sections~\ref{sec:beats} and~\ref{sec:state}). We then present the three variants in turn, the Baseline, the Director and the Time-Constrained Director (Sections~\ref{sec:baseline}--\ref{sec:tcdirector}), followed by two extensions, a beat generator and a lenient Director mode (Section~\ref{sec:extensions}), the demo that brings all components together (Section~\ref{sec:demo}), and a full-text variant of the Director that we use to test the beat representation (Section~\ref{sec:ablations}). The chapter closes with the characters and scenarios we use (Section~\ref{sec:characters}) and the design of our two evaluations, a user study and an LLM judge (Sections~\ref{sec:design-study} and~\ref{sec:design-judge}).
+This chapter describes the system we built and how we evaluate it. After an overview of the approach (Section~\ref{sec:overview}), we introduce what all variants share: the beat-based story representation and the shared story state (Sections~\ref{sec:beats} and~\ref{sec:state}). We then present the three variants in turn, the Baseline, the Director and the Time-Constrained Director (Sections~\ref{sec:baseline} to~\ref{sec:tcdirector}), followed by two extensions, a beat generator and a lenient Director mode (Section~\ref{sec:extensions}), the demo that brings all components together (Section~\ref{sec:demo}), and a full-text variant of the Director that we use to test the beat representation (Section~\ref{sec:ablations}). The chapter closes with the characters and scenarios we use (Section~\ref{sec:characters}) and the design of our two evaluations, a user study and an LLM judge (Sections~\ref{sec:design-study} and~\ref{sec:design-judge}).
 
 \section{Overview}\label{sec:overview}
 
@@ -185,8 +185,8 @@ All seven variants exist for every story. The main comparison of Baseline and Di
 28 people took part in the study. Each participant played through two short interactive stories narrated by an LLM-driven Olaf, each story twice, under a different narrative-control condition each time (there was only text output and no audio output). Participants were members of Disney Research Studios and the Game Technology Center (GTC) at ETH Zurich. A full session took about 25 to 30 minutes, and responses were saved anonymously.
 
 \begin{itemize}
-\item \textbf{Story 1 -- Frozen} (5 narrative beats): once under \textbf{Baseline} (Olaf responds directly to the user, with no structural guardrails), once under \textbf{Director} (a beat-based director agent steers every turn toward the next story beat while trying to accommodate the user).
-\item \textbf{Story 2 -- Cinderella} (9 narrative beats): once under the same \textbf{Director} condition, once under \textbf{Time-Constrained Director} -- identical director logic, but additionally paced against a fixed 5-minute target, instructed to compress or fold together lower-importance beats as time runs out.
+\item \textbf{Story 1: Frozen} (5 narrative beats): once under \textbf{Baseline} (Olaf responds directly to the user, with no structural guardrails), once under \textbf{Director} (a beat-based director agent steers every turn toward the next story beat while trying to accommodate the user).
+\item \textbf{Story 2: Cinderella} (9 narrative beats): once under the same \textbf{Director} condition, once under \textbf{Time-Constrained Director}, which uses the same director logic but is additionally paced against a fixed 5-minute target and instructed to compress or fold together lower-importance beats as time runs out.
 \end{itemize}
 
 Condition order was randomized independently per participant and per story, so order is not confounded with condition. Of the 28 participants, 14 completed all four rounds and the closing questionnaire; all analyses in Chapter~\ref{sec:results} that require a within-subject pairing use these 14 completers, since they are the only participants who rated every condition.
@@ -223,8 +223,8 @@ Q7 & ``Did the story's pacing feel right?'' & Well-paced / Rushed / Cut short (+
 Q8 & ``Was the story ending satisfying?'' & 5-pt Likert & Story 2 only \\
 Q9 & ``Were you already familiar with this story?'' (+ free text on missing plot points if yes) & Yes / No & Story 2 only \\
 Q10 & ``Did the story feel natural, like a genuine conversation rather than a scripted performance?'' & 5-pt Likert & Story 2 only \\
--- & ``Was there a moment where the story felt off or broke down? Describe it briefly.'' & Free text (optional) & Every round \\
--- & ``Any other comments about Olaf's character or the story overall?'' & Free text (optional) & Every round \\
+(none) & ``Was there a moment where the story felt off or broke down? Describe it briefly.'' & Free text (optional) & Every round \\
+(none) & ``Any other comments about Olaf's character or the story overall?'' & Free text (optional) & Every round \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -293,12 +293,12 @@ In pairwise mode, the judge sees two transcripts, Story A and Story B, and picks
 We evaluate three systems (Baseline, Director and Time-Constrained Director) at the three derailment levels. The Time-Constrained Director runs with time budgets of 0.5, 2, 5 and 10 minutes, while the other two have no time limit. Each condition is run five times with the scripted user inputs. We run six comparisons, all with the same rubric and the same order-bias-controlled protocol. The results are in Section~\ref{sec:llm-judge}.
 
 \begin{itemize}
-\item \textbf{Baseline vs.\ director} (Section~\ref{sec:llm-baseline}) — 30 transcript pairs: 10 Olaf stories, each played at three derailment levels (none, medium, complete), plus 8 pairs with adversarial and targeted derailment on Frozen and Cinderella.
-\item \textbf{Director vs.\ CoDi} (Section~\ref{sec:llm-codi}) — the same 30 Olaf transcript pairs, comparing our Director with CoDi \cite{kim2025codi}, judged with the core rubric and the three dimensions added for this comparison.
-\item \textbf{Second character: Rocket Raccoon} (Section~\ref{sec:llm-rocket}) — the baseline-vs-director comparison repeated for a different character on 7 scenarios. A scenario here is one story, Red Riding Hood, played with a different scripted set of derailment inputs, so the 7 scenarios share the story and differ only in how the user derails it.
-\item \textbf{Beats vs.\ full-text director} (Section~\ref{sec:llm-beats-ablation}) — 7 transcript pairs on the same 7 Red Riding Hood scenarios (one story, 7 different derailment inputs), with Olaf, isolating the choice of story representation.
-\item \textbf{Judge model robustness} (Section~\ref{sec:judge-model-comparison}) — baseline vs.\ director at each derailment level, judged by both GPT-4o and GPT-5.6-sol.
-\item \textbf{Cross-check against the live study} (Section~\ref{sec:llm-vs-study}) — the exact Frozen and Cinderella stories from the user study under complete derailment, 5 runs per condition.
+\item \textbf{Baseline vs.\ director} (Section~\ref{sec:llm-baseline}): 30 transcript pairs: 10 Olaf stories, each played at three derailment levels (none, medium, complete), plus 8 pairs with adversarial and targeted derailment on Frozen and Cinderella.
+\item \textbf{Director vs.\ CoDi} (Section~\ref{sec:llm-codi}): the same 30 Olaf transcript pairs, comparing our Director with CoDi \cite{kim2025codi}, judged with the core rubric and the three dimensions added for this comparison.
+\item \textbf{Second character: Rocket Raccoon} (Section~\ref{sec:llm-rocket}): the baseline-vs-director comparison repeated for a different character on 7 scenarios. A scenario here is one story, Red Riding Hood, played with a different scripted set of derailment inputs, so the 7 scenarios share the story and differ only in how the user derails it.
+\item \textbf{Beats vs.\ full-text director} (Section~\ref{sec:llm-beats-ablation}): 7 transcript pairs on the same 7 Red Riding Hood scenarios (one story, 7 different derailment inputs), with Olaf, isolating the choice of story representation.
+\item \textbf{Judge model robustness} (Section~\ref{sec:judge-model-comparison}): baseline vs.\ director at each derailment level, judged by both GPT-4o and GPT-5.6-sol.
+\item \textbf{Cross-check against the live study} (Section~\ref{sec:llm-vs-study}): the exact Frozen and Cinderella stories from the user study under complete derailment, 5 runs per condition.
 \end{itemize}
 
 \subsection{Cross-Check Against the User Study}\label{sec:design-crosscheck}
@@ -308,7 +308,7 @@ For this cross-check, the automated side uses each story's \emph{complete-derail
 Story 1 (Section~\ref{sec:story1}), called Frozen in the user study, is \texttt{olaf\_retells\_frozen\_1\_complete\_derailment}, director vs.\ baseline. Story 2 (Section~\ref{sec:story2}), called Cinderella in the user study, is \texttt{olaf\_retells\_cinderella\_complete\_derailment}, director vs.\ a time-constrained director. Each condition is generated and judged five separate times, and the numbers reported are the mean of those five runs. This is to smooth out the noise and give a stable estimate of how the LLM judges each condition.
 
 \paragraph{Mapping the questionnaire to the judge rubric.}\label{sec:llm-vs-study-mapping}
-The two evaluators do not share a common instrument -- the live study asks 5-point Likert questions (Table~\ref{tab:instrument}), the judge scores an 8-dimension rubric (Table~\ref{tab:rubric}) on a scale of 0--10. Table~\ref{tab:question-mapping} shows the correspondence between the two, which we use when comparing them in Section~\ref{sec:llm-vs-study}.
+The two evaluators do not share a common instrument. The live study asks 5-point Likert questions (Table~\ref{tab:instrument}), the judge scores an 8-dimension rubric (Table~\ref{tab:rubric}) on a scale of 0 to 10. Table~\ref{tab:question-mapping} shows the correspondence between the two, which we use when comparing them in Section~\ref{sec:llm-vs-study}.
 
 \begin{table}[htbp]
 \centering
@@ -331,4 +331,4 @@ Q10 & Felt natural, not scripted (Story 2 only) & Language Use, Anthropomorphism
 \end{tabular}
 \end{table}
 
-The five core measures used in the comparisons in Section~\ref{sec:llm-vs-study} (Q1, Q2, Q3, Q4, Q6) fall into three groups. Q1, Q2, and Q4 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q6 has no single equivalent -- it spans both Interruption Handling (does the character acknowledge and recover from the interruption) and Narrative Control (does the story keep moving toward its beats regardless) -- so the discussion there reads it against both rather than picking one. Q3 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
+The five core measures used in the comparisons in Section~\ref{sec:llm-vs-study} (Q1, Q2, Q3, Q4, Q6) fall into three groups. Q1, Q2, and Q4 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q6 has no single equivalent. It spans both Interruption Handling (does the character acknowledge and recover from the interruption?) and Narrative Control (does the story keep moving toward its beats regardless?), so the discussion there reads it against both rather than picking one. Q3 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
