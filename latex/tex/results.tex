@@ -242,7 +242,7 @@ Time-constrained responses are the \emph{longest} of the three conditions on ave
 \section{LLM-as-Judge Results}
 \label{sec:llm-judge}
 
-The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. In this section we report seven comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), different time budgets (Section~\ref{sec:llm-timebudget}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
+The setup of the automated evaluation is described in Section~\ref{sec:design-judge}: the judge, the rubric in Table~\ref{tab:rubric}, the scoring modes and the order-bias control. Unless stated otherwise, every judge score in this chapter is the mean of five runs per condition. In this section we report seven comparisons: Baseline versus Director (Section~\ref{sec:llm-baseline}), Director versus CoDi (Section~\ref{sec:llm-codi}), a second character (Section~\ref{sec:llm-rocket}), beats versus full text (Section~\ref{sec:llm-beats-ablation}), different time budgets (Section~\ref{sec:llm-timebudget}), a second judge model (Section~\ref{sec:judge-model-comparison}), and a cross-check against the live study (Section~\ref{sec:llm-vs-study}).
 
 \subsection{Baseline vs. Director}
 \label{sec:llm-baseline}
@@ -295,7 +295,7 @@ Frozen     & complete adversarial & 7.0 & 9.0 & 8 / 0 / 0 \\
 Frozen     & medium targeted      & 5.0 & 9.0 & 7 / 0 / 1 \\
 Frozen     & complete targeted    & 4.0 & 9.0 & 7 / 0 / 1 \\
 \midrule
-Cinderella & medium adversarial   & 6.0 & 9.0$^{*}$ & 8 / 0 / 0 \\
+Cinderella & medium adversarial   & 6.0 & 9.0 & 8 / 0 / 0 \\
 Cinderella & complete adversarial & 5.0 & 8.5 & 6 / 0 / 2 \\
 Cinderella & medium targeted      & 5.0 & 9.0 & 8 / 0 / 0 \\
 Cinderella & complete targeted    & 4.0 & 8.5 & 7 / 0 / 1 \\
@@ -580,7 +580,7 @@ Derailment matters most when time is short. With 0.5 minutes, complete derailmen
 
 \begin{table}[htbp]
 \centering
-\caption{No derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol.}
+\caption{No derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol, mean of 5 runs.}
 \label{tab:judge-cmp-none}
 \small
 \begin{tabular}{lcccccc}
@@ -589,21 +589,21 @@ Derailment matters most when time is short. With 0.5 minutes, complete derailmen
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
 Dimension & Baseline & Director & Winner & Baseline & Director & Winner \\
 \midrule
-Plot                   & 6.0 & 8.0  & B    & 6.0 & 8.0 & B \\
-Development             & 8.0 & 9.0  & B    & 6.0 & 7.0 & B \\
-Language Use            & 9.0 & 9.0  & B    & 5.0 & 8.0 & B \\
-Interruption Handling   & 7.0 & 9.0  & B    & 8.0 & 9.0 & B \\
-Character Fidelity      & 9.0 & 10.0 & Same & 6.0 & 8.0 & \textbf{B} \\
-Narrative Control       & 5.0 & 8.0  & B    & 4.0 & 9.0 & B \\
-Anthropomorphism        & 8.0 & 9.0  & B    & 6.0 & 8.0 & B \\
-Overall                  & 7.0 & 9.0  & B    & 6.0 & 8.0 & B \\
+Plot                    & 6.1 & 8.0 & B    & 6.1 & 8.0 & B \\
+Development             & 8.0 & 9.1 & B    & 6.0 & 7.1 & B \\
+Language Use            & 9.0 & 9.1 & B    & 5.1 & 8.0 & B \\
+Interruption Handling   & 7.1 & 9.0 & B    & 8.0 & 9.0 & B \\
+Character Fidelity      & 9.0 & 9.9 & Same & 6.1 & 8.1 & \textbf{B} \\
+Narrative Control       & 5.1 & 8.0 & B    & 4.1 & 9.0 & B \\
+Anthropomorphism        & 8.0 & 9.1 & B    & 6.1 & 8.0 & B \\
+Overall                 & 7.0 & 9.0 & B    & 6.0 & 8.0 & B \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[htbp]
 \centering
-\caption{Medium derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol.}
+\caption{Medium derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol, mean of 5 runs.}
 \label{tab:judge-cmp-medium}
 \small
 \begin{tabular}{lcccccc}
@@ -612,21 +612,21 @@ Overall                  & 7.0 & 9.0  & B    & 6.0 & 8.0 & B \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
 Dimension & Baseline & Director & Winner & Baseline & Director & Winner \\
 \midrule
-Plot                   & 4.0 & 6.0 & B    & 6.0 & 8.0  & B \\
-Development             & 5.0 & 7.0 & B    & 5.0 & 7.0  & B \\
-Language Use            & 8.0 & 8.0 & B    & 5.0 & 8.0  & B \\
-Interruption Handling   & 5.0 & 8.0 & B    & 5.0 & 10.0 & B \\
-Character Fidelity      & 9.0 & 9.0 & Same & 6.0 & 9.0  & \textbf{B} \\
-Narrative Control       & 3.0 & 6.0 & B    & 5.0 & 9.0  & B \\
-Anthropomorphism        & 8.0 & 9.0 & Same & 4.0 & 8.0  & \textbf{B} \\
-Overall                  & 6.0 & 7.0 & B    & 5.0 & 8.5  & B \\
+Plot                    & 4.1 & 6.0 & B    & 5.2 & 8.1 & B \\
+Development             & 5.1 & 6.9 & B    & 5.0 & 7.0 & B \\
+Language Use            & 7.9 & 8.2 & B    & 5.0 & 8.0 & B \\
+Interruption Handling   & 5.1 & 8.0 & B    & 5.0 & 10.0 & B \\
+Character Fidelity      & 8.9 & 9.1 & Same & 6.0 & 9.0 & \textbf{B} \\
+Narrative Control       & 3.1 & 6.1 & B    & 3.1 & 9.0 & B \\
+Anthropomorphism        & 8.0 & 8.9 & Same & 4.1 & 8.0 & \textbf{B} \\
+Overall                 & 5.9 & 6.9 & B    & 5.0 & 8.5 & B \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 \begin{table}[htbp]
 \centering
-\caption{Complete derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol.}
+\caption{Complete derailment: baseline vs.\ director, single-story scores (0--10) and pairwise winner, gpt-4o vs.\ gpt-5.6-sol, mean of 5 runs.}
 \label{tab:judge-cmp-complete}
 \small
 \begin{tabular}{lcccccc}
@@ -635,24 +635,24 @@ Overall                  & 6.0 & 7.0 & B    & 5.0 & 8.5  & B \\
 \cmidrule(lr){2-4} \cmidrule(lr){5-7}
 Dimension & Baseline & Director & Winner & Baseline & Director & Winner \\
 \midrule
-Plot                   & 3.0 & 5.0 & B    & 2.0 & 7.0 & B \\
-Development             & 4.0 & 6.0 & B    & 4.0 & 6.0 & B \\
-Language Use            & 7.0 & 8.0 & Same & 4.0 & 8.0 & \textbf{B} \\
-Interruption Handling   & 5.0 & 6.0 & B    & 4.0 & 9.0 & B \\
-Character Fidelity      & 8.0 & 9.0 & Same & 5.0 & 8.0 & \textbf{B} \\
-Narrative Control       & 3.0 & 4.0 & B    & 2.0 & 9.0 & \textbf{Same} \\
-Anthropomorphism        & 6.0 & 7.0 & Same & 4.0 & 7.0 & \textbf{B} \\
-Overall                  & 5.0 & 6.0 & B    & 3.0 & 7.7 & B \\
+Plot                    & 3.2 & 5.1 & B    & 2.1 & 6.9 & B \\
+Development             & 3.9 & 5.9 & B    & 4.1 & 5.9 & B \\
+Language Use            & 7.1 & 8.2 & Same & 4.1 & 8.0 & \textbf{B} \\
+Interruption Handling   & 4.9 & 6.0 & B    & 4.0 & 9.0 & B \\
+Character Fidelity      & 7.9 & 9.0 & Same & 5.1 & 8.0 & \textbf{B} \\
+Narrative Control       & 3.1 & 4.2 & B    & 2.1 & 9.0 & B \\
+Anthropomorphism        & 6.1 & 7.1 & Same & 4.0 & 7.1 & \textbf{B} \\
+Overall                 & 4.9 & 5.9 & B    & 3.1 & 7.7 & B \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 We compare two judge models, gpt-4o and gpt-5.6-sol, on the same baseline-vs-director transcripts at all three derailment levels (Tables~\ref{tab:judge-cmp-none} to~\ref{tab:judge-cmp-complete}) to check whether our conclusions depend on the choice of judge. The discussion below focuses on complete derailment (Table~\ref{tab:judge-cmp-complete}). Winner B denotes the director; bold entries mark pairwise verdicts where the two judges disagree.
 
-Both judges agree on the direction of the result: director scores at least as high as baseline on every dimension, and both name director the Overall winner. The judges differ mainly in how far apart they place the two systems. gpt-4o compresses its scores towards the middle of the scale, with a single-story gap of only one to two points per dimension and +1.0 on Overall (5.0 vs.\ 6.0). gpt-5.6-sol separates the systems far more sharply, rating baseline lower and director higher on nearly every dimension, for an Overall gap of +4.7 (3.0 vs.\ 7.7). The largest differences under gpt-5.6-sol fall on Narrative Control (+7.0), Plot (+5.0), and Interruption Handling (+5.0), which are the dimensions most directly tied to steering the story back on track after derailment.
+Both judges agree on the direction of the result: director scores at least as high as baseline on every dimension, and both name director the Overall winner. The judges differ mainly in how far apart they place the two systems. gpt-4o compresses its scores towards the middle of the scale, with a single-story gap of only one to two points per dimension and +1.0 on Overall (4.9 vs.\ 5.9). gpt-5.6-sol separates the systems far more sharply, rating baseline lower and director higher on nearly every dimension, for an Overall gap of +4.6 (3.1 vs.\ 7.7). The largest differences under gpt-5.6-sol fall on Narrative Control (+6.9), Interruption Handling (+5.0) and Plot (+4.8), which are the dimensions most directly tied to steering the story back on track after derailment.
 
-The pairwise verdicts follow the same pattern. gpt-5.6-sol picks director on Language Use, Character Fidelity, and Anthropomorphism, where gpt-4o judged the two stories the same. Notably, gpt-4o rates baseline's Character Fidelity at 8.0, consistent with the main results, where baseline stays in character even when it loses the plot; gpt-5.6-sol is considerably harsher on baseline here (5.0). The one reversal is Narrative Control, where gpt-5.6-sol returns Same in the pairwise comparison despite the largest single-story gap in the table (2.0 vs.\ 9.0). This inconsistency between single-story and pairwise judgements is a reminder that individual LLM verdicts are noisy, and it is why the pairwise protocol controls for presentation order and the live-study cross-check (Section~\ref{sec:llm-vs-study}) averages over five repeated runs.
+The pairwise verdicts follow the same pattern. gpt-5.6-sol picks director on Language Use, Character Fidelity, and Anthropomorphism, where gpt-4o judged the two stories the same. Notably, gpt-4o rates baseline's Character Fidelity at 7.9, consistent with the main results, where baseline stays in character even when it loses the plot; gpt-5.6-sol is considerably harsher on baseline here (5.1). Where the two judges disagree in the pairwise comparison, it is always gpt-4o that calls a tie and gpt-5.6-sol that picks the director.
 
-The same direction holds at no and medium derailment (Tables~\ref{tab:judge-cmp-none} and~\ref{tab:judge-cmp-medium}), where gpt-5.6-sol again picks director on Character Fidelity (and, at medium derailment, Anthropomorphism) where gpt-4o calls a tie. The difference in magnitude between the judges grows with derailment: both give an Overall gap of +2.0 without derailment, +1.0 vs.\ +3.5 at medium, and +1.0 vs.\ +4.7 at complete.
+The same direction holds at no and medium derailment (Tables~\ref{tab:judge-cmp-none} and~\ref{tab:judge-cmp-medium}), where gpt-5.6-sol again picks director on Character Fidelity (and, at medium derailment, Anthropomorphism) where gpt-4o calls a tie. The difference in magnitude between the judges grows with derailment: both give an Overall gap of +2.0 without derailment, +1.0 vs.\ +3.5 at medium, and +1.0 vs.\ +4.6 at complete.
 
 Overall, swapping the judge changes the magnitude of the director's advantage but not its direction: under derailment the newer model discriminates more sharply between the two systems, and the conclusion that the director outperforms baseline holds under both judges at every derailment level.
