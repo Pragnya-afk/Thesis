@@ -53,7 +53,7 @@ Looking more closely at interruption handling in Story 1, the derailment-attempt
 Figure~\ref{fig:story1-paired} makes the individual-level pattern behind Table~\ref{tab:story1} visible: 10 of the 11 paired participants personally rated director above baseline on resisting derailment, and the remaining one gave both conditions the maximum score of 5.
 
 
-\textbf{What handling an interruption looks like.} The free-text comments show what lies behind these ratings. Reading the free-text breakdowns, a clear pattern emerges on each side. Under \textbf{baseline}, about 8 in 10 comments describe the story stalling outright the moment the user goes off-topic -- not recovering, just stopping:
+\textbf{What handling an interruption looks like.} The free-text comments show what lies behind these ratings. Reading the free-text breakdowns, a clear pattern emerges on each side. Under \textbf{baseline}, about 8 in 10 comments describe the story stalling outright the moment the user goes off-topic:  not recovering, just stopping:
 
 \begin{quote}
 \small
@@ -75,12 +75,12 @@ A smaller theme is Olaf being led astray by false or invented information rather
 ``Olaf believed the fake news that I told him.''
 \end{quote}
 
-Under \textbf{director}, roughly 8 in 10 comments describe the opposite failure mode: the story does not stall, but the recovery is rigid -- users felt that it didn't acknowledge them enough before snapping back to the script:
+Under \textbf{director}, roughly 8 in 10 comments describe the opposite failure mode: the story does not stall, but the recovery is rigid: users felt that it didn't acknowledge them enough before snapping back to the script:
 
 \begin{quote}
 \small
 
-``Each reply felt like one sentence replying to what I wrote and then immediately going back to the main script; even if I tried to interact with the story.''
+``He kept trying to go back to the story''
 
 ``I understand that this version stays in character more, but sometimes it gets annoying that you cannot even talk about anything else -- at some point he should break this cycle.''
 
@@ -191,7 +191,6 @@ The unconstrained director round almost never reaches an ending (86\% ``cut shor
 \label{fig:compression}
 \end{figure}
 
-\todo{Plot regenerated: it now shows 14 transcripts (previously 16) and separates ``skipped ahead mid-story'' from ``folded into closing turn''; the caption and text were updated to 14. Double-check why it is 14 now. The title still says ``5-minute time limit'', but the study code (\texttt{User-Study/server.py}, \texttt{STORY\_2\_TIME\_LIMIT = 3.0}) uses 3 minutes for both Cinderella conditions --- fix the title.}
 
 The pattern tracks story position closely. The opening beat is fully developed in all 14 transcripts. From there, compression builds beat by beat; from the fourth beat onward, most transcripts show compressed or skipped treatment, and the final two beats are never once given a dedicated turn in any of the 14 transcripts. They are folded into a single closing message instead. This makes sense since depending on how long the user takes to respond or how much he derails, the pacing is adjusted accordingly. So if the user is constantly trying to derail, the story will get more and more compressed towards the end. The final turn always compresses the medium and high priority beats left.
 
@@ -244,7 +243,7 @@ Time-constrained    & 8.80 $\pm$ 2.08 ($n$=15)  & 80.0 $\pm$ 17.1  & $\sim$704 \
 \bottomrule
 \end{tabular}
 \end{table}
-Time-constrained responses are the \emph{longest} of the three conditions on average, consistent with the beat-compression mechanism above. Since it needs to compress multiple beats into one turn, it ends up having longer responses than the baseline and director. Since the director needs to acknowledge the user as well as steer back to the story, its responses end up longer than baseline's. Multiplying turns by response length, time-constrained's total output per round ($\sim$704 words) is essentially equal to director's ($\sim$710) and well above baseline's ($\sim$530). Fewer turns under a time budget reflects denser turns, not a shorter story.
+Time-constrained responses are the \emph{longest} of the three conditions on average, consistent with the beat-compression mechanism above. Since it needs to compress multiple beats into one turn, it ends up having longer responses than the baseline and director. Since the director needs to acknowledge the user as well as steer back to the story, its responses end up longer than baseline's. Multiplying turns by response length, time-constrained's total output per round ($\sim$704 words) is essentially equal to director's ($\sim$710) and well above baseline's ($\sim$530). Fewer turns under a time budget reflects denser turns, not a shorter story. Since under time budget depending on the pace, the system has to compress multiple beats into one turn, each of the turns may end up longer than of the directors.
 
 \section{LLM-as-Judge Results}
 \label{sec:llm-judge}
@@ -315,7 +314,7 @@ Cinderella & medium targeted      & 5.0 & 9.0 & 8 / 0 / 0 \\
 Cinderella & complete targeted    & 4.0 & 8.5 & 7 / 0 / 1 \\
 \bottomrule
 \end{tabular}
-\par\smallskip\begin{minipage}{0.9\linewidth}\footnotesize $^{*}$The judge's scores for this transcript were not picked up by the automatic parser; the value is taken from the judge's written assessment.\end{minipage}
+
 \end{table}
 
 \subsection{Director vs.\ CoDi}
@@ -339,12 +338,11 @@ In single-story mode (Figure~\ref{fig:llm-codi-metric}), the Director scores hig
 \label{fig:llm-codi-wins}
 \end{figure}
 
-The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on most dimensions. When the judge sees both transcripts side by side, CoDi wins more often on Overall (15 vs.\ 7, with 8 ties) and on nine of the eleven dimensions, most clearly on Detail \& Thoroughness (19 vs.\ 2) and Narrative Polish (16 vs.\ 4). The Director wins clearly only on Interruption Handling (12 vs.\ 1) and Character Fidelity (9 vs.\ 3), the two dimensions most directly tied to reacting to the user in character. The two scoring modes therefore disagree. One possible reason is the difference in output described in Section~\ref{sec:design-judge}: CoDi produces complete, edited prose, which may look stronger in a direct comparison, while our system produces short turns in reaction to the user. We therefore read this comparison as showing that the Director handles interruptions and character better than CoDi, but not that it produces better stories overall. \todo{Double-check why single-story and pairwise verdicts disagree for CoDi and whether this explanation holds.}
+The pairwise verdicts (Figure~\ref{fig:llm-codi-wins}) point the other way on most dimensions. When the judge sees both transcripts side by side, CoDi wins more often on Overall (15 vs.\ 7, with 8 ties) and on nine of the eleven dimensions, most clearly on Detail \& Thoroughness (19 vs.\ 2) and Narrative Polish (16 vs.\ 4). The Director wins clearly  on Interruption Handling (12 vs.\ 1) and Character Fidelity (9 vs.\ 3), the two dimensions most directly tied to reacting to the user in character. The two scoring modes therefore disagree. One possible reason is the difference in output described in Section~\ref{sec:design-judge}: CoDi produces complete, edited prose, which may look stronger in a direct comparison, while our system produces short turns in reaction to the user. We therefore read this comparison as showing that the Director handles interruptions and character better than CoDi, but not that it produces better stories overall.
 
 \subsection{Time-Budget Ablation}
 \label{sec:llm-timebudget}
 
-\todo{Decide whether this Time-Budget Ablation should stay under LLM-as-Judge Results or move to Section~\ref{sec:ablation-results} (Ablation Studies) as a fifth subsection.}
 
 To see how the Time-Constrained Director behaves under different budgets, we ran it with budgets of 0.5, 2, 5 and 10 minutes and compared it with the unconstrained Director, on 30 scenarios per budget.
 
@@ -355,7 +353,7 @@ To see how the Time-Constrained Director behaves under different budgets, we ran
 \label{fig:llm-tb-coverage}
 \end{figure}
 
-\todo{Double-check Figure~\ref{fig:llm-tb-coverage}: the y-axis says ``beats reached / 9'' with 30 scenarios per budget. Do all scenarios have 9 beats?}
+
 
 Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the story is told. The share of beats reached rises from 0.12 at 0.5 minutes to 0.53 at 2 minutes and 0.74 at 5 minutes, and stays at 0.71 at 10 minutes. The unconstrained Director reaches only 0.23 of the beats, although its transcripts are about as long as those at 5 and 10 minutes (890 words, compared with 804 and 875). Without a budget, the Director spends its output on fewer beats; with one, it compresses and moves on.
 
@@ -366,7 +364,7 @@ Figure~\ref{fig:llm-tb-coverage} shows that the budget controls how much of the 
 \label{fig:llm-tb-overall}
 \end{figure}
 
-\todo{Plot regenerated: the y-axis is now labelled 1--5. Double-check, and note that Section~\ref{sec:design-judge} says the judge scores each dimension out of ten; explain there that this time-budget rubric uses a 1--5 scale, if that is the case. Also, the six time-budget dimensions described in Section~\ref{sec:design-judge} are not shown; add per-dimension results if available.}
+
 
 The judged quality changes little with the budget (Figure~\ref{fig:llm-tb-overall}). At 2, 5 and 10 minutes the Overall score lies between 2.74 and 2.80, slightly above the unconstrained Director (2.65). The 0.5-minute budget scores highest (3.33), even though its transcripts are only 48 words long on average, so this score should be read with care.
 
@@ -456,7 +454,7 @@ Compared with the participants' ratings in Figure~\ref{fig:story2-all}, Table~\r
 
 Every comparison so far uses Olaf as the character. A system whose director layer only works for one character's voice would be a weak result, so we repeated the baseline-vs-director comparison from Section~\ref{sec:llm-baseline} on a second character with a deliberately different personality: Rocket Raccoon, whose defensive, sarcastic, deflecting register is close to the opposite of Olaf's earnest, naive one. None of the director's rules (bridge sentences, anti-stall pacing, staying in character under derailment) are written with Olaf specifically in mind, i.e.\ they are character-agnostic, so this is a direct test of whether the director's advantage generalizes to other characters.
 
-We built a Red Riding Hood retelling suite for Rocket, matched to the same task as for Olaf (retelling a known story while the user tries to derail it) and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with the two harder derailment categories that we also ran for Olaf (Section~\ref{sec:characters}): \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (coordinated attempts to end the story). This gives 7 scenarios in total, each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:design-judge}.
+We built a Red Riding Hood retelling suite for Rocket, matched to the same task as for Olaf (retelling a known story while the user tries to derail it) and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with the two harder derailment categories that we also ran for Olaf (Section~\ref{sec:characters}): \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (coordinated attempts to end the story).Each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:design-judge}.
 
 To make the setup concrete, a \emph{scenario} is one run of the Red Riding Hood story with one scripted set of user inputs. The scenarios share the story and are all scored by the judge on the same eight dimensions (Table~\ref{tab:rubric}); they differ only in how the user derails the story. The 7 scenarios are one with no derailment, three at medium derailment and three at complete derailment. At the medium and complete levels, one scenario uses the canonical derailment inputs from the Olaf experiments, one is adversarial and one is targeted. The \emph{matched} set consists of the three canonical scenarios, one per derailment level. It mirrors the Olaf setup, so it allows a like-for-like comparison with Olaf. The \emph{full suite} consists of all 7 scenarios. \todo{Double-check this split of the 7 scenarios (1 none; medium and complete each = canonical + adversarial + targeted) and that the matched set is the 3 canonical ones.}
 
