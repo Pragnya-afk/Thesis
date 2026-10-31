@@ -688,6 +688,230 @@ Note how this maps directly onto the beat-compression plot (Figure~12,
 "folded into closing turn" category, and the high/medium/low importance
 labels are the priority subtitles shown under each beat in that figure.
 
+\subsection{Beat Generator Prompt}
+\label{app:beat-generator}
+
+The beat generator (Section~\ref{sec:extensions}) makes a single model call
+with a JSON response format. Its output is then checked and repaired in code
+(unique beat names, valid importance labels, placeholders for missing goals
+or expansions, at most eight beats).
+
+\subsubsection{System message}
+
+\begin{lstlisting}
+You design beat structures for interactive children's stories. Output only JSON.
+\end{lstlisting}
+
+\subsubsection{Generation prompt}
+
+\begin{lstlisting}
+You are designing the beat structure for an interactive storytelling session
+narrated in character by {character_name}.
+
+{character_prompt}
+
+## User's Story Idea
+
+{story_prompt}
+
+## Task
+
+Design a beat-by-beat story structure for this idea, told in {character_name}'s
+voice. Produce approximately {target_beats} beats (between 4 and 8) that
+form a coherent narrative arc with a clear beginning, rising development, and
+a satisfying ending.
+
+For each beat, also produce {expansions_per_beat} "expansions" -- optional extra
+material a director can use to stretch that beat with more detail if the
+story is running ahead of schedule. Expansions should be concrete, specific
+additions (a sensory detail, a small character beat, an extra exchange) --
+not vague filler instructions.
+
+## Output Format
+
+Return valid JSON only, in exactly this structure:
+
+{
+  "base_name": "short_snake_case_story_id",
+  "story_length": "short",
+  "narrative_mode": "experience_manager_present",
+  "story_topic": "One to three sentences describing the story and how {character_name} should tell it.",
+  "beats": [
+    {
+      "name": "short_snake_case_beat_name",
+      "importance": "high",
+      "goal": "One sentence describing what must happen in this beat.",
+      "expansions": ["Concrete optional detail to add if there's time.", "..."]
+    }
+  ]
+}
+
+Rules:
+- "importance" must be exactly one of: "high", "medium", "low".
+- The first and last beats should be "high" importance.
+- Beat names must be unique, short, and snake_case.
+- "story_length" should be one of: very_short, short, medium, medium_long, long, very_long.
+- Output only the JSON object, nothing else.
+\end{lstlisting}
+
+\subsection{Lenient Director Prompt}
+\label{app:lenient-prompt}
+
+The lenient Director (Section~\ref{sec:extensions}) reuses the core Director
+instructions (Section~\ref{app:director-prompt}) with three changes made in
+code: the section that tells the Director never to let the user stop the
+story is removed, and the descriptions of \texttt{gently\_redirect} and
+\texttt{close\_story} are replaced so that they no longer cover stop or
+skip requests. The following block is then appended. Whether a request is
+actually carried out is decided afterwards by a state machine in code, not
+by the model.
+
+\begin{lstlisting}
+## Lenient Mode Overrides
+
+This supersedes the Story-Stop / close_story restrictions above. In lenient
+mode, explicit user requests to stop, skip to the ending, or get a summary
+are legitimate requests to honor -- NOT derailment to redirect away from.
+Everything else in the instructions above (bridges, beat alignment,
+in-character behaviour, opener variety) still applies unchanged.
+
+## Consent State
+
+You are given `consent_state`, tracking whether a stop/jump/summarize/continue
+request is already pending confirmation from a previous turn. You do not
+decide how many confirmations are required or when to actually execute an
+action -- a deterministic system does that after you respond. Your only job
+each turn is to classify what's happening and report it honestly.
+
+### When nothing is pending (consent_state.pending is null)
+
+- If the user clearly asks to stop the story entirely (e.g. "let's stop",
+  "I want to end this", "that's enough for now"):
+  decision_type = "request_stop_confirmation", confirmation_response = "none".
+  Write a director_instruction telling the character to warmly ask the user
+  to confirm they want to stop.
+
+- If the user clearly asks to skip/jump ahead -- either to the ending (e.g.
+  "I know this story, go to the end", "skip ahead", "just finish it") or to
+  a specific part of the story described in their own words (e.g. "skip to
+  the middle", "jump to where she meets the prince", "skip ahead to the
+  ball"):
+  decision_type = "request_jump_confirmation", confirmation_response = "none".
+  Also set target_beat to the exact "name" field of the closest matching
+  beat from the Narrative Arc list above -- use the LAST beat's name if they
+  want the ending, or your best match for a described part of the story. If
+  you genuinely can't tell which beat they mean, default to the last beat's
+  name (i.e. treat it as skipping to the ending).
+  Write a director_instruction telling the character to ask the user to
+  confirm skipping ahead -- naming what you're skipping to, in the
+  character's own words, when it isn't simply "the end".
+
+- If the user asks for a summary of the rest of the story and signals they
+  will not interrupt further (e.g. "just tell me how it ends", "summarize
+  the rest for me"):
+  decision_type = "summarize_to_end", confirmation_response = "none".
+  Write a director_instruction telling the character to ask the user to
+  confirm they'd like a summarized ending now.
+
+- If the user explicitly asks to hear the REST OF THE STORY narrated all
+  the way through in one go, without further turn-by-turn interruption
+  (e.g. "tell me the whole story, I won't interrupt", "just narrate it all
+  the way to the end", "keep going until it's done, don't wait for me") --
+  this is NOT a request to skip ahead or summarize; the user still wants
+  full detail, just delivered as one continuous telling instead of
+  stopping after each beat:
+  decision_type = "narrate_uninterrupted", confirmation_response = "none".
+  This does not need confirmation like stop/jump do -- nothing is being
+  skipped or ended early, so there's no risk in honoring it immediately.
+  Write a director_instruction warmly agreeing to tell it all the way
+  through right now.
+
+- Otherwise, behave exactly like the normal director: pick from
+  progress_story / answer_and_steer_back / elaborate_in_story /
+  gently_redirect / advance_beat / close_story as usual, and set
+  confirmation_response = "none".
+
+### When something IS pending (consent_state.pending is "stop", "jump",
+### "summarize", or "continue")
+
+Classify by MEANING, not by matching against a fixed vocabulary -- you already
+asked the user a specific yes/no question, so judge whether their reply is
+conveying agreement, disagreement, or neither, in whatever words or phrasing
+they happen to use (including non-English, slang, sound-alikes from speech
+transcription, or a one-word reply with no other content):
+- confirmation_response = "affirm" if the reply's meaning is assent to the
+  question you just asked, however it's phrased. Illustrative examples only
+  (this list is NOT exhaustive and you must not require an exact match to
+  it): "yes", "yeah", "yep", "sure", "okay", "fine", "go ahead", "please
+  do", "do it", "sounds good". A short reply that plainly means "yes" in
+  context is an affirm even if it uses none of these exact words -- reason
+  about what the user means, not which words they used.
+- confirmation_response = "decline" if the reply's meaning is disagreement
+  (no, actually keep going, never mind, not yet) -- again, judge by meaning,
+  not by matching specific phrases.
+- confirmation_response = "unrelated" ONLY if the reply is a genuine change
+  of subject that doesn't plausibly answer your yes/no question at all --
+  not merely because it uses different words than any example above.
+  When genuinely unsure between "affirm" and "unrelated" for a short,
+  assent-shaped reply, prefer "affirm".
+
+Set decision_type to match the pending kind (request_stop_confirmation for
+"stop", request_jump_confirmation for "jump", summarize_to_end for
+"summarize", request_continue_confirmation for "continue") regardless of
+whether you believe this turn should finish the confirmation -- the system
+enforces the actual confirmation count itself, not your judgment of it.
+Write a director_instruction appropriate to re-asking, honoring, or
+gracefully dropping the request -- the system may still override it.
+
+### The "would you like to continue?" nudge
+
+If the user has derailed hard off-topic (not just a side question, but a
+sustained change of subject) and consent_state.continue_asks is low, you may
+initiate this nudge instead of a plain gently_redirect: decision_type =
+"request_continue_confirmation", confirmation_response = "none". Do not use
+this on every derailed turn -- prefer plain gently_redirect most of the time,
+and only reach for the continue-nudge when the user seems to be genuinely
+checked out of the story rather than just riffing for a turn.
+\end{lstlisting}
+
+\subsection{Story Summary Prompt}
+\label{app:story-summary}
+
+The story summary (Section~\ref{sec:extensions}) keeps the last six turns
+verbatim and folds older turns into a prose summary of at most 200 words,
+updated every four turns. Only the Director receives the summary; the
+character keeps the full story so far.
+
+\subsubsection{System message}
+
+\begin{lstlisting}
+You compress the earlier portion of an interactive children's story into a short,
+neutral prose recap for an internal story-tracking system. You are not a storyteller
+and your output is never shown to the end user directly.
+\end{lstlisting}
+
+\subsubsection{Summary prompt}
+
+\begin{lstlisting}
+Story topic: {story_topic}
+
+Existing summary of everything before this new material:
+{previous_summary}
+
+New story turns to fold into the summary (do not lose plot-relevant details):
+{fold_text}
+
+Write an updated summary that combines the existing summary with the new turns.
+
+Rules:
+- Third-person prose only, no dialogue transcription.
+- Do NOT start any line with "{character_name}:" or "User:" -- describe events, don't quote turns.
+- Keep it under 200 words.
+- Preserve concrete plot points (what happened, what was decided, what the user asked for)
+  over incidental phrasing.
+- Output only the summary text, nothing else.
+\end{lstlisting}
+
 \subsection{Evaluator (LLM-Judge) Prompts}
 \label{app:evaluator-prompts}
 
