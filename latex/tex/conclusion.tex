@@ -31,13 +31,13 @@ Our results have several limits. We tested only two characters, Olaf and Rocket 
 
 This thesis set out to make LLM-based characters tell a story that stays on track and is more likely to finish within a time limit. Our system separates deciding from performing. A Director decides on every turn how to handle the user's input and where the story should go next, and the character carries out that decision in its own voice. In our tests, this split was an effective way to keep control of the narrative when users interrupt, and it costs only one extra model call per turn. For the time limit, we keep track of time outside the language model. A simple Temporal Monitor compares the story's progress with the time that has passed and tells the Director when to speed up or slow down.
 
-Both evaluations support this design. In the user study, participants rated the Director's stories about 2.2 points higher on coherence and about 2.8 points higher on derailment resistance on a five point scale. In the LLM-as-Judge evaluation, where every pair of stories is judged in both orders to rule out position bias, the Director scored higher than the baseline on Narrative Control and Interruption Handling, with an Interruption Handling lead of 1.9 to 4.1 points depending on the derailment level.
+Both evaluations support this design. Participants rated the Director's stories higher on coherence and derailment resistance, and the LLM judge scored it higher on Narrative Control and Interruption Handling (Section~\ref{sec:summary}).
 
 \section{Future Work}
 
 Several directions remain open. The first is to bring the system closer to a real interactive character. Integrating it with animation pipelines would let the character speak and move as part of a complete experience. For this to work in real time, the Director also needs to become faster, since its extra model call adds delay to every turn.
 
-A second direction is the lenient Director. Some participants found the standard Director rigid because it steers back to the story no matter what they ask for. The lenient Director already honours requests to stop or skip after confirmation, and it could be developed further so that users feel more acknowledged, for example by taking up their ideas in the story instead of only redirecting them.
+A second direction is the lenient Director, which already honours requests to stop or skip after confirmation (Section~\ref{sec:tradeoff}). It could be developed further so that users feel more acknowledged, for example by taking up their ideas in the story instead of only redirecting them.
 
 A third direction is memory. With it, a character could switch between stories, or a user between characters, without losing what happened before.
 
