@@ -11,7 +11,7 @@ Early narrative systems relied on symbolic planning, treating story generation a
 
 A foundational insight emerged from {Façade} \cite{mateas2003facade}, a landmark interactive drama system. Its key lesson: narrative control becomes more robust when you separate what should happen next (narrative deliberation) from how characters express it (performance and dialogue generation). The system's three-layer architecture operated with story planning on one level, character behavior on another, and performance at a third. This decoupling enabled interactive steering while preserving character believability. The principle remains influential today: separating narrative decisions from character-level execution lets systems respond to user input without losing coherence. Every hierarchical approach that has followed builds on this insight.
 
-\section{LLM-based Storytelling}
+\section{LLM-based Storytelling}\label{sec:rw-llm-story}
 
 The emergence of large language models revolutionized narrative generation by replacing symbolic planning with learned, fluent text generation. However, unguided LLMs suffer from narrative drift \cite{yang2023doc}. They meander without maintaining explicit plot structure, contradict earlier plot points, or fail to reach satisfying conclusions. This limitation motivated a return to hierarchical architectures that combine LLM generative power with explicit narrative control.
 
