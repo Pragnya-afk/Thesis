@@ -1,6 +1,6 @@
 \chapter{Method}\label{sec:method}
 
-This chapter describes the system we built and how we evaluate it. After an overview of the approach (Section~\ref{sec:overview}), we introduce what all variants share: the beat-based story representation and the shared story state (Sections~\ref{sec:beats} and~\ref{sec:state}). We then present the three variants in turn, the Baseline, the Director and the Time-Constrained Director (Sections~\ref{sec:baseline}--\ref{sec:tcdirector}), followed by two extensions, a beat generator and a lenient Director mode (Section~\ref{sec:extensions}), and a full-text variant of the Director that we use to test the beat representation (Section~\ref{sec:ablations}). The chapter closes with the characters and scenarios we use (Section~\ref{sec:characters}) and the design of our two evaluations, a user study and an LLM judge (Sections~\ref{sec:design-study} and~\ref{sec:design-judge}).
+This chapter describes the system we built and how we evaluate it. After an overview of the approach (Section~\ref{sec:overview}), we introduce what all variants share: the beat-based story representation and the shared story state (Sections~\ref{sec:beats} and~\ref{sec:state}). We then present the three variants in turn, the Baseline, the Director and the Time-Constrained Director (Sections~\ref{sec:baseline}--\ref{sec:tcdirector}), followed by two extensions, a beat generator and a lenient Director mode (Section~\ref{sec:extensions}), the demo that brings all components together (Section~\ref{sec:demo}), and a full-text variant of the Director that we use to test the beat representation (Section~\ref{sec:ablations}). The chapter closes with the characters and scenarios we use (Section~\ref{sec:characters}) and the design of our two evaluations, a user study and an LLM judge (Sections~\ref{sec:design-study} and~\ref{sec:design-judge}).
 
 \section{Overview}\label{sec:overview}
 
@@ -109,6 +109,32 @@ The decision itself is not left to the model. A small state machine written in c
 \subsection{Story Summary}
 
 In long sessions, the story so far grows with every turn. To keep the Director's context short, the last six turns are passed on unchanged, and older turns are folded into a short summary of at most 200 words. The summary is updated every four turns by a separate model call. The character still receives the full text. The summary prompt is given in Appendix~\ref{app:story-summary}.
+
+\section{Demo System}\label{sec:demo}
+
+To show the system in use, we built an interactive demo that brings together all components described in this chapter. It is a web application that uses the same Director, Time-Constrained Director and extensions as the experiments, with OpenAI's Realtime API as the character. The user can talk to the character by typing or by speaking, and the character answers in text and with its voice.
+
+On the start screen (Figure~\ref{fig:demo-start}), the user first chooses a character, Olaf or Rocket Raccoon, and then one of the stories written for that character. Each story shows how many beats it has. Finally, the user picks a Director mode: the Strict Director, which stays on track and redirects derailment; the Lenient Director, which lets the user stop, skip ahead or ask for a summary (Section~\ref{sec:extensions}); or the Time-Constrained Director, for which a slider sets the target duration of the story.
+
+Instead of choosing an existing story, the user can also create their own. They type a short story idea, choose the number of beats, and the beat generator creates the story. The result is shown for review before it starts. The user can edit the story topic and every beat, including its name, importance, goal and expansions. They can also add or remove beats, or regenerate the whole story.
+
+During a story (Figure~\ref{fig:demo-session}), the header shows the story and the Director mode. A beat indicator in the top right shows the current beat and how far the story has progressed through its beats. In the time-constrained mode, it also shows a timer and the current pacing mode, such as \textit{hurry}. Each story runs as its own session, so the user can start several stories and switch between them using tabs. Buttons in the header control the audio, pause the story or stop it. Further screenshots of the demo are given in Appendix~\ref{app:demo}.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.5\linewidth]{figures/demo_start_timeconstrained}
+\caption{Start screen of the demo. The user chooses a character, a story and a Director mode; with the Time-Constrained Director, a slider sets the target duration. ``Create Your Own Story'' opens the beat generator.}
+\label{fig:demo-start}
+\end{figure}
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/demo_session_timeconstrained}
+\caption{A story in progress with the Time-Constrained Director. The header shows the current beat (3 of 6) with a progress indicator, the timer and the current pacing mode (\textit{hurry}). Each story is a separate session, shown as a tab. The user can type or use the microphone to speak.}
+\label{fig:demo-session}
+\end{figure}
+
+\todo{The screenshots are low resolution (about 350--580 pixels wide) and may look blurry in print. Retake them at a higher resolution (e.g.\ zoom the browser or use a full-screen capture) and replace the files in \texttt{figures/demo\_*.png}.}
 
 \section{Ablations}\label{sec:ablations}
 
