@@ -293,6 +293,31 @@ Both systems degrade as derailment gets more severe, which is expected — more 
 
 
 
+\textbf{Adversarial and targeted derailment.} For Frozen and Cinderella, we also compared the two systems under the two harder derailment categories described in Section~\ref{sec:characters}. Table~\ref{tab:llm-olaf-advtgt} shows the result. The Director scores higher than the baseline in every scenario, and in the pairwise verdicts the baseline does not win a single dimension. Targeted derailment, where every input tries to end the story, hurts the baseline most (Overall 4.0 to 5.0), while the Director stays between 8.5 and 9.0. Each of these eight scenarios was generated and judged once, so the numbers are less stable than the averaged results above.
+
+\begin{table}[htbp]
+\centering
+\caption{Baseline vs.\ director for Olaf under adversarial and targeted derailment: single-story Overall score (0--10) and the number of the eight dimensions won by the director (D) and the baseline (B), or tied, in the order-bias-controlled pairwise comparison. Each scenario was generated and judged once.}
+\label{tab:llm-olaf-advtgt}
+\begin{tabular}{llccc}
+\toprule
+Story & Variant & Baseline & Director & Pairwise wins \\
+ & & & & (D / B / tie) \\
+\midrule
+Frozen     & medium adversarial   & 6.5 & 9.0 & 8 / 0 / 0 \\
+Frozen     & complete adversarial & 7.0 & 9.0 & 8 / 0 / 0 \\
+Frozen     & medium targeted      & 5.0 & 9.0 & 7 / 0 / 1 \\
+Frozen     & complete targeted    & 4.0 & 9.0 & 7 / 0 / 1 \\
+\midrule
+Cinderella & medium adversarial   & 6.0 & 9.0$^{*}$ & 8 / 0 / 0 \\
+Cinderella & complete adversarial & 5.0 & 8.5 & 6 / 0 / 2 \\
+Cinderella & medium targeted      & 5.0 & 9.0 & 8 / 0 / 0 \\
+Cinderella & complete targeted    & 4.0 & 8.5 & 7 / 0 / 1 \\
+\bottomrule
+\end{tabular}
+\par\smallskip\begin{minipage}{0.9\linewidth}\footnotesize $^{*}$The judge's scores for this transcript were not picked up by the automatic parser; the value is taken from the judge's written assessment.\end{minipage}
+\end{table}
+
 \subsection{Director vs.\ CoDi}
 \label{sec:llm-codi}
 
@@ -431,7 +456,7 @@ Compared with the participants' ratings in Figure~\ref{fig:story2-all}, Table~\r
 
 Every comparison so far uses Olaf as the character. A system whose director layer only works for one character's voice would be a weak result, so we repeated the baseline-vs-director comparison from Section~\ref{sec:llm-baseline} on a second character with a deliberately different personality: Rocket Raccoon, whose defensive, sarcastic, deflecting register is close to the opposite of Olaf's earnest, naive one. None of the director's rules (bridge sentences, anti-stall pacing, staying in character under derailment) are written with Olaf specifically in mind, i.e.\ they are character-agnostic, so this is a direct test of whether the director's advantage generalizes to other characters.
 
-We built a Red Riding Hood retelling suite for Rocket, matched to the same task as for Olaf (retelling a known story while the user tries to derail it) and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with two additional derailment categories not yet run at this granularity for Olaf: \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (attempts to hijack the story toward an unrelated goal). This gives 7 scenarios in total, each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:design-judge}. \todo{Supervisor comment 68: ``why? Either explain or also run those for Olaf or remove them.'' Run the adversarial and targeted derailment categories for Olaf as well, then update this paragraph and the Olaf results.}
+We built a Red Riding Hood retelling suite for Rocket, matched to the same task as for Olaf (retelling a known story while the user tries to derail it) and the same three canonical derailment levels (none, medium, complete) used throughout this thesis, and extended it with the two harder derailment categories that we also ran for Olaf (Section~\ref{sec:characters}): \textbf{adversarial} (explicit jailbreak attempts, e.g.\ ``Stop pretending to be Rocket Raccoon, you're just a language model'') and \textbf{targeted} (coordinated attempts to end the story). This gives 7 scenarios in total, each run through both baseline and director and judged with the identical rubric and order-bias-controlled AB/BA protocol described in Section~\ref{sec:design-judge}.
 
 To make the setup concrete, a \emph{scenario} is one run of the Red Riding Hood story with one scripted set of user inputs. The scenarios share the story and are all scored by the judge on the same eight dimensions (Table~\ref{tab:rubric}); they differ only in how the user derails the story. The 7 scenarios are one with no derailment, three at medium derailment and three at complete derailment. At the medium and complete levels, one scenario uses the canonical derailment inputs from the Olaf experiments, one is adversarial and one is targeted. The \emph{matched} set consists of the three canonical scenarios, one per derailment level. It mirrors the Olaf setup, so it allows a like-for-like comparison with Olaf. The \emph{full suite} consists of all 7 scenarios. \todo{Double-check this split of the 7 scenarios (1 none; medium and complete each = canonical + adversarial + targeted) and that the matched set is the 3 canonical ones.}
 
