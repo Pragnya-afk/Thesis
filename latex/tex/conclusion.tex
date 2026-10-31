@@ -12,48 +12,18 @@ We return to the two research questions from the introduction.
 
 \textbf{RQ2: How can LLM-based characters plan and execute complete narratives within fixed time budgets?} By monitoring time outside the model and telling the Director when to compress or skip lower-importance beats. Under a 3-minute limit, the Time-Constrained Director reached a well-paced ending in 71\% of rounds, compared with 86\% of unconstrained rounds being cut short, and its endings were rated as more satisfying (\pval{0.016}), without a measurable loss on the other measures.
 
-The main findings of the user study are:
-
-\begin{itemize}
-\item Adding a director helps, clearly, on coherence and interruption handling -- the two strongest, most individually-consistent effects in the study (both $p \le 0.002$ in Story 1).
-
-\item The failure modes differ qualitatively, not just numerically: baseline lets the story stall completely when interrupted; director keeps going.
-
-\item Time-constrained vs.\ director: the unconstrained director round rarely reaches a real ending (86\% cut short), while the time-constrained round usually does (71\% well-paced) and is rated as more satisfying at the ending (\pval{0.016}).
-
-\item Character consistency is solved across all three conditions (4.00--4.29) -- what varies is narrative progress and how interruptions are handled, not whether Olaf stays Olaf.
-\end{itemize}
+Beyond the two research questions, the user study shows three things. First, the Director's clearest effects are on coherence and on resisting derailment. Both differences are large and significant ($p \le 0.002$), and 10 of the 11 paired participants rated the Director higher on staying on track. Second, the two systems fail in different ways. When the user goes off topic, the baseline lets the story stall and often never returns to it. The Director keeps the story going, but some participants found the way it steers back rigid. Third, staying in character was never the problem. All three conditions scored between 4.00 and 4.29 on it. What differs is whether the story moves forward and how interruptions are handled.
 
 \section{Limitations}\label{sec:limitations}
 
-Our setup has several limits.
-\begin{itemize}
-  \item We test only two characters, Olaf and Rocket Raccoon, and mostly on Disney stories, so we cannot say how far the results carry over to other characters and genres.
-  \item All variants use the same, small language model, GPT-4o-mini. Larger models may be less prone to drift.
-  \item The automated evaluation relies on a single judge model for most comparisons, and scripted user inputs cannot react to what the character says.
-  \item The beat generator and the lenient Director have not been tested thoroughly.
-  \item The user study has a small sample, only 14 participants who completed it, and limited time per participant.
-\end{itemize}
+Our results have several limits. We tested only two characters, Olaf and Rocket Raccoon, and mostly on Disney stories. We therefore cannot say how well the results carry over to other characters and genres. All variants use the same small language model, GPT-4o-mini, and larger models may be less prone to drift. The automated evaluation relies on a single judge model for most comparisons. Its scripted user inputs also cannot react to what the character says, as a real user would. The beat generator and the lenient Director were built but not tested thoroughly. Finally, the user study is small. Only 14 participants completed it, and each spent limited time with each condition.
 
 \chapter{Conclusion and Future Work}\label{sec:conclusion}
 
-\todo{The conclusion bullets and the Future Work list are still notes; write them up as full prose.}
+This thesis set out to make LLM-based characters tell a story that stays on track and finishes on time. Our system separates deciding from performing. A Director decides on every turn how to handle the user's input and where the story should go next, and the character carries out that decision in its own voice. This split proved to be a robust way to keep control of the narrative when users interrupt, and it costs only one extra model call per turn. For the time limit, we keep track of time outside the language model. A simple Temporal Monitor compares the story's progress with the time that has passed and tells the Director when to speed up or slow down.
 
-\begin{itemize}
-  \item separation through Director-Actor architecture provides robust, computationally tractable mechanism for maintaining narrative control under user interruption
-  \item External temporal monitoring, implemented outside LLM, provides  approach to time-budget enforcement
-  \item Pairwise AB/BA evaluation with order-bias correction reveals Director Agent significantly outperforms single-agent Baseline on Narrative Control and Interruption Handling 
-  
-\end{itemize}
+Both evaluations support this design. In the user study, the Director made the stories far more coherent and much harder to derail. In the LLM-as-Judge evaluation, where every pair of stories is judged in both orders to rule out position bias, the Director clearly outperformed the baseline on Narrative Control and Interruption Handling.
 
 \section{Future Work}
 
-\begin{itemize}
-  \item integrate with audio and animation pipelines
-  \item make it run on real-time maybe for the director (make it run faster)
-  \item introduce memory for switching between stories and characters
-  \item test with different types of stories 
-  \item further test the beat representation and the lenient director mode
-  \item compare directly against NarrativeGenie \cite{kumaran2024narrativegenie}, the closest beat-based system; no public implementation was available, so this would require a reimplementation
-  
-\end{itemize}
+Several directions remain open. A natural next step is to integrate the system with audio and animation pipelines, so that the character can speak and move as part of a complete interactive experience. For real-time use, the Director also needs to become faster, since its extra model call adds delay to every turn. Memory would allow a character to switch between stories, or a user to switch between characters, without losing what happened before. We would also like to test the approach on other kinds of stories beyond Disney retellings. The beat generator and the lenient Director deserve a proper evaluation of their own. Finally, a direct comparison with NarrativeGenie \cite{kumaran2024narrativegenie}, the closest beat-based system, would be valuable. No public implementation was available, so this would require reimplementing it.
