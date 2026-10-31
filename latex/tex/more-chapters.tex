@@ -204,7 +204,7 @@ A \emph{round} is one playthrough of one story under one condition, so each part
 
 \begin{table}[htbp]
 \centering
-\caption{Questionnaire items, shown after each round (one playthrough of one story under one condition).}
+\caption{Questionnaire items, shown after each round (one playthrough of one story under one condition). The numbers are those participants saw; Q5a is the follow-up to Q5 and was only shown if the participant answered yes.}
 \label{tab:instrument}
 \small
 \begin{tabular}{p{1.6cm}p{6.3cm}p{4.2cm}p{2cm}}
@@ -216,20 +216,18 @@ Q2 & ``Olaf stayed in character throughout the conversation.'' & 5-pt Likert (no
 Q3 & ``The story felt engaging and enjoyable to participate in.'' & 5-pt Likert & Every round \\
 Q4 & ``Overall, how would you rate the experience?'' & 5-pt Likert (poor $\to$ excellent) & Every round \\
 Q5 & ``Did you try to go off-topic or steer the conversation away from the story?'' & Yes / No & Every round \\
-Q6 & Follow-up to Q5: ``How well did Olaf stay on track?'' & 5-pt Likert (got derailed $\to$ stayed on track) & After Q5 \\
-Q7 & ``Did the story's pacing feel right?'' & Well-paced / Rushed / Cut short (+ free text) & Story 2 only \\
-Q8 & ``Was the story ending satisfying?'' & 5-pt Likert & Story 2 only \\
-Q9 & ``Were you already familiar with this story?'' (+ free text on missing plot points if yes) & Yes / No & Story 2 only \\
-Q10 & ``Did the story feel natural, like a genuine conversation rather than a scripted performance?'' & 5-pt Likert & Story 2 only \\
+Q5a & Follow-up to Q5: ``How well did Olaf stay on track?'' & 5-pt Likert (got derailed $\to$ stayed on track) & After Q5 \\
+Q6 & ``Did the story's pacing feel right?'' & Well-paced / Rushed / Cut short (+ free text) & Story 2 only \\
+Q7 & ``Was the story ending satisfying?'' & 5-pt Likert & Story 2 only \\
+Q8 & ``Were you already familiar with this story?'' (+ free text on missing plot points if yes) & Yes / No & Story 2 only \\
+Q9 & ``Did the story feel natural, like a genuine conversation rather than a scripted performance?'' & 5-pt Likert & Story 2 only \\
 (none) & ``Was there a moment where the story felt off or broke down? Describe it briefly.'' & Free text (optional) & Every round \\
 (none) & ``Any other comments about Olaf's character or the story overall?'' & Free text (optional) & Every round \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\todo{Questionnaire items were renumbered Q1--Q10 in the order of this table. Check that this is the order participants actually saw.}
-
-In the results, Q6 is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
+In the results, Q5a is the headline derailment-handling measure: it is only asked of participants who confirm they tried to derail the story, and it is the one metric that separates the conditions most sharply.
 
 \section{LLM-as-Judge Evaluation Design}\label{sec:design-judge}
 
@@ -321,12 +319,12 @@ Q1 & Story felt coherent, clear narrative arc & Plot & Direct \\
 Q2 & Olaf stayed in character & Character Fidelity & Direct \\
 Q3 & Engaging / enjoyable & \emph{No direct match} (loosely: Language Use, Anthropomorphism) & Weak \\
 Q4 & Overall rating & Overall & Direct \\
-Q6 & Stayed on track despite derailment & Interruption Handling (primary), Narrative Control (secondary) & Direct, split \\
-Q7 & Well-paced / rushed / cut short & \emph{No core-rubric match}; closest are the time-ablation's Three-Act Balance, Transition Quality & Loose \\
-Q8 & Ending satisfying (Story 2 only) & \emph{No core-rubric match}; closest is the time-ablation's Setup/Payoff Preservation & Weak \\
-Q10 & Felt natural, not scripted (Story 2 only) & Language Use, Anthropomorphism & Loose \\
+Q5a & Stayed on track despite derailment & Interruption Handling (primary), Narrative Control (secondary) & Direct, split \\
+Q6 & Well-paced / rushed / cut short & \emph{No core-rubric match}; closest are the time-ablation's Three-Act Balance, Transition Quality & Loose \\
+Q7 & Ending satisfying (Story 2 only) & \emph{No core-rubric match}; closest is the time-ablation's Setup/Payoff Preservation & Weak \\
+Q9 & Felt natural, not scripted (Story 2 only) & Language Use, Anthropomorphism & Loose \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-The five core measures used in the comparisons in Section~\ref{sec:llm-vs-study} (Q1, Q2, Q3, Q4, Q6) fall into three groups. Q1, Q2, and Q4 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q6 has no single equivalent. It spans both Interruption Handling (does the character acknowledge and recover from the interruption?) and Narrative Control (does the story keep moving toward its beats regardless?), so the discussion there reads it against both rather than picking one. Q3 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
+The five core measures used in the comparisons in Section~\ref{sec:llm-vs-study} (Q1, Q2, Q3, Q4, Q5a) fall into three groups. Q1, Q2, and Q4 have a clean one-to-one judge dimension (Plot, Character Fidelity, Overall respectively). Q5a has no single equivalent. It spans both Interruption Handling (does the character acknowledge and recover from the interruption?) and Narrative Control (does the story keep moving toward its beats regardless?), so the discussion there reads it against both rather than picking one. Q3 has no direct equivalent and is only loosely approximated by Language Use and Anthropomorphism, so it is not compared directly.
