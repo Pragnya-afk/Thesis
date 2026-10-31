@@ -17,6 +17,8 @@ Our results have several limits. We tested only two characters, Olaf and Rocket 
 
 \chapter{Conclusion and Future Work}\label{sec:conclusion}
 
+\section{Conclusion}
+
 This thesis set out to make LLM-based characters tell a story that stays on track and finishes on time. Our system separates deciding from performing. A Director decides on every turn how to handle the user's input and where the story should go next, and the character carries out that decision in its own voice. This split proved to be a robust way to keep control of the narrative when users interrupt, and it costs only one extra model call per turn. For the time limit, we keep track of time outside the language model. A simple Temporal Monitor compares the story's progress with the time that has passed and tells the Director when to speed up or slow down.
 
 Both evaluations support this design. In the user study, the Director made the stories far more coherent and much harder to derail. In the LLM-as-Judge evaluation, where every pair of stories is judged in both orders to rule out position bias, the Director clearly outperformed the baseline on Narrative Control and Interruption Handling.
