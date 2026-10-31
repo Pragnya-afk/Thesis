@@ -1,0 +1,64 @@
+\begin{tikzpicture}[
+  font=\sffamily\fontsize{9}{11}\selectfont,
+  inbox/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=5pt, text width=3.6cm, minimum height=1.7cm},
+  outbox/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=5pt, text width=4.6cm, minimum height=1.7cm},
+  llm/.style={draw=black, very thick, fill=white, rounded corners=1.5pt, align=center, inner sep=4pt, text width=3.4cm, minimum height=0.9cm},
+  st/.style={draw=black!45, fill=black!6, rounded corners=1.5pt, align=center, inner sep=4pt, text width=3.4cm, minimum height=0.8cm},
+  tmon/.style={draw=black, very thick, dashed, fill=white, rounded corners=1.5pt, align=center, inner sep=4pt, text width=3.4cm, minimum height=0.9cm},
+  panel/.style={draw=black!35, rounded corners=3pt, inner sep=7pt},
+  sec/.style={font=\sffamily\fontsize{10}{12}\selectfont\bfseries, anchor=west},
+  arr/.style={-{Latex[length=2mm]}, thick},
+  darr/.style={-{Latex[length=2mm]}, thick, dashed},
+  lab/.style={font=\sffamily\scriptsize\color{black!60}},
+]
+% ---------- Row 1: inputs ----------
+\node[sec] at (-1.95,1.55) {Inputs and configuration};
+\node[inbox] (chars) at (0,0) {{\bfseries\ttfamily character\_prompts/}\\[3pt]character identity and\\available animations};
+\node[inbox] (scen) at (4.4,0) {{\bfseries\ttfamily scenarios/}\\[3pt]story topic, beats and\\scripted user inputs};
+\node[inbox] (env) at (8.8,0) {{\bfseries\ttfamily .env}\\[3pt]API key};
+\node[inbox] (api) at (13.2,0) {{\bfseries OpenAI API}\\[3pt]language models used\\by all variants};
+% ---------- Row 2: storytelling core ----------
+\node[sec] at (7.0,-1.45) {Storytelling core: three variants};
+% Baseline panel
+\node[st] (b_in) at (0.3,-3.0) {user input + story state};
+\node[llm] (b_llm) at (0.3,-4.4) {{\bfseries Character LLM}};
+\node[st] (b_out) at (0.3,-5.8) {response, animation,\\story event, beat done};
+\draw[arr] (b_in) -- (b_llm); \draw[arr] (b_llm) -- (b_out);
+\draw[arr] (b_out.west) -- ++(-0.3,0) |- (b_in.west);
+\node[panel, fit=(b_in)(b_out), label={[font=\sffamily\fontsize{10}{12}\selectfont\bfseries]above:Baseline}] (pB) {};
+% Director panel
+\node[st] (d_in) at (5.5,-3.0) {user input + story state};
+\node[llm] (d_dir) at (5.5,-4.2) {{\bfseries Director LLM}};
+\node[llm] (d_act) at (5.5,-5.35) {{\bfseries Character LLM}};
+\node[st] (d_out) at (5.5,-6.5) {response, animation,\\story event, beat done};
+\draw[arr] (d_in) -- (d_dir); \draw[arr] (d_dir) -- (d_act); \draw[arr] (d_act) -- (d_out);
+\draw[arr] (d_out.west) -- ++(-0.3,0) |- (d_in.west);
+\node[panel, fit=(d_in)(d_out), label={[font=\sffamily\fontsize{10}{12}\selectfont\bfseries]above:Director}] (pD) {};
+% Time-constrained panel
+\node[st] (t_in) at (11.6,-3.0) {user input + story state};
+\node[llm] (t_dir) at (11.6,-4.2) {{\bfseries Director LLM}};
+\node[llm] (t_act) at (11.6,-5.35) {{\bfseries Character LLM}};
+\node[st] (t_out) at (11.6,-6.5) {response, animation,\\story event, beat done};
+\node[tmon, text width=2.4cm] (t_mon) at (16.4,-4.2) {{\bfseries Temporal Monitor}};
+\draw[arr] (t_in) -- (t_dir); \draw[arr] (t_dir) -- (t_act); \draw[arr] (t_act) -- (t_out);
+\draw[arr] (t_out.west) -- ++(-0.3,0) |- (t_in.west);
+\draw[darr] (t_mon.west) -- (t_dir.east);
+\draw[darr] (t_out.east) -| (t_mon.south);
+\node[panel, fit=(t_in)(t_out)(t_mon), label={[font=\sffamily\fontsize{10}{12}\selectfont\bfseries]above:Time-Constrained Director}] (pT) {};
+% ---------- Row 3: outputs and evaluation ----------
+\node[sec] at (7.0,-8.4) {Outputs and evaluation};
+\node[outbox] (outs) at (0.75,-9.8) {{\bfseries\ttfamily outputs/}\\[3pt]JSON transcript per\\variant, scenario and run};
+\node[outbox] (ev) at (6.6,-9.8) {{\bfseries\ttfamily evaluation\_agent/}\\[3pt]LLM judge: single-story\\scores and AB/BA pairwise};
+\node[outbox] (res) at (12.45,-9.8) {{\bfseries\ttfamily evaluation\_results/},\\{\bfseries\ttfamily evaluation\_summary/}\\[3pt]per-pair results and\\summary tables};
+\draw[arr] (outs) -- (ev); \draw[arr] (ev) -- (res);
+% ---------- connections between rows ----------
+\coordinate (bus1) at (6.6,-1.05);
+\draw[thick, black!60] (0,-0.85) -- (0,-1.05) -- (13.2,-1.05) -- (13.2,-0.85);
+\draw[thick, black!60] (4.4,-0.85) -- (4.4,-1.05); \draw[thick, black!60] (8.8,-0.85) -- (8.8,-1.05);
+\draw[arr] (pB.north |- 0,-1.05) -- ([yshift=4mm]pB.north);
+\draw[arr] (pD.north |- 0,-1.05) -- ([yshift=4mm]pD.north);
+\draw[arr] (pT.north |- 0,-1.05) -- ([yshift=4mm]pT.north);
+\draw[thick, black!60] (pB.south) -- (pB.south |- 0,-8.0); \draw[thick, black!60] (pD.south) -- (pD.south |- 0,-8.0); \draw[thick, black!60] (pT.south) -- (pT.south |- 0,-8.0);
+\draw[thick, black!60] (pB.south |- 0,-8.0) -- (pT.south |- 0,-8.0);
+\draw[arr] (outs.north |- 0,-8.0) -- (outs.north);
+\end{tikzpicture}

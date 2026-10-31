@@ -6,6 +6,15 @@ This chapter describes the system we built and how we evaluate it. After an over
 
 The goal is a character that tells a coherent, in-character story, recovers when the user interrupts, and still finishes within a fixed time budget. Instead of one large architecture, we build three variants, each adding one component to the one before it: the Baseline, the Director, and the Time-Constrained Director. This way, the effect of each component can be measured on its own, and an improvement is not credited to several changes at once. All variants use the same language model (OpenAI's GPT-4o-mini), read the same character and scenario definitions, and go through the same evaluation pipeline, so any difference in the results comes from the architecture and not from the setup. We also built two extensions, a beat generator and a lenient Director mode. They are not part of the evaluation and are described in Section~\ref{sec:extensions}.
 
+Figure~\ref{fig:system} gives an overview of the implementation.
+
+\begin{figure}[htbp]
+\centering
+\resizebox{\linewidth}{!}{\input{figures/system_architecture.tex}}
+\caption{Overview of the implementation. The character prompts, the scenarios and the API key configure all three variants, which call language models through the OpenAI API. In each variant, one turn runs from the user input and story state to the character's response and back (solid arrows). The Time-Constrained Director adds the Temporal Monitor, which receives the beat progress and passes a pacing mode to the Director (dashed arrows). The transcripts of all runs are saved and scored by the LLM judge, and the results are aggregated into summary tables.}
+\label{fig:system}
+\end{figure}
+
 \section{Beat-Based Story Representation}\label{sec:beats}
 
 We represent a story as an ordered list of beats. A beat is one narrative moment, written as a short name and a goal in plain language, for example \texttt{wolf\_appears}: ``Olaf introduces the wolf, setting the scene and the conversation.'' Because the goal is plain text, the language model can use it directly as context.
